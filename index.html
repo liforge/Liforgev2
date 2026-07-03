@@ -1,1 +1,70 @@
-<h1>LIFORGE działa</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LIFORGE</title>
+</head>
+<body>
+
+<h1>LIFORGE</h1>
+
+<p>Daily Check-in</p>
+
+<label>Sleep (hours)</label><br>
+<input id="sleep" type="number"><br><br>
+
+<label>Steps</label><br>
+<input id="steps" type="number"><br><br>
+
+<button onclick="save()">Save</button>
+
+<h2 id="result"></h2>
+
+<h3>History</h3>
+<ul id="history"></ul>
+
+<script>
+function save() {
+  const sleep = Number(document.getElementById("sleep").value);
+  const steps = Number(document.getElementById("steps").value);
+
+  const sleepTarget = 7;
+  const stepsTarget = 8000;
+
+  const sleepScore = Math.min(sleep / sleepTarget, 1);
+  const stepsScore = Math.min(steps / stepsTarget, 1);
+
+  const score = Math.round(((sleepScore + stepsScore) / 2) * 100);
+
+  document.getElementById("result").innerText =
+    "Consistency: " + score + "%";
+
+  const today = new Date().toLocaleDateString();
+
+  const entry = { date: today, score };
+
+  let data = JSON.parse(localStorage.getItem("liforge")) || [];
+  data.unshift(entry);
+
+  localStorage.setItem("liforge", JSON.stringify(data));
+
+  renderHistory();
+}
+
+function renderHistory() {
+  let data = JSON.parse(localStorage.getItem("liforge")) || [];
+
+  const list = document.getElementById("history");
+  list.innerHTML = "";
+
+  data.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.date + " - " + item.score + "%";
+    list.appendChild(li);
+  });
+}
+
+renderHistory();
+</script>
+
+</body>
+</html>

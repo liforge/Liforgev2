@@ -4,56 +4,99 @@
   <title>LIFORGE</title>
   <style>
     body {
-      font-family: Arial;
-      max-width: 650px;
-      margin: 40px auto;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1115;
+      color: #e6e6e6;
+      display: flex;
+      justify-content: center;
     }
-    input {
-      margin: 5px 0;
-      padding: 6px;
+
+    .container {
+      width: 420px;
+      margin-top: 50px;
     }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
     .card {
-      border: 1px solid #ddd;
+      background: #1a1d24;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    input {
+      width: 100%;
       padding: 10px;
-      margin-top: 10px;
+      margin-top: 6px;
+      margin-bottom: 10px;
       border-radius: 8px;
+      border: none;
+      background: #2a2f3a;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #4f7cff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3b66ff;
+    }
+
+    .score {
+      font-size: 28px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .small {
+      opacity: 0.7;
+      font-size: 12px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-<h1>LIFORGE Dashboard</h1>
+<div class="container">
 
-<h3>Daily Check-in</h3>
+  <h1>LIFORGE</h1>
+  <div class="small">Daily System Dashboard</div>
 
-<label>Sleep (hours)</label><br>
-<input id="sleep" type="number"><br>
+  <div class="card">
+    <label>Sleep (hours)</label>
+    <input id="sleep" type="number">
 
-<label>Steps</label><br>
-<input id="steps" type="number"><br><br>
+    <label>Steps</label>
+    <input id="steps" type="number">
 
-<button onclick="saveDay()">Save</button>
+    <button onclick="saveDay()">Save</button>
+  </div>
 
-<h2 id="todayScore">---</h2>
+  <div class="card">
+    <div class="small">Today Score</div>
+    <div class="score" id="todayScore">--</div>
+  </div>
 
-<hr>
+  <div class="card">
+    <div class="small">History</div>
+    <div id="history"></div>
+  </div>
 
-<h3>Weekly Goals</h3>
-
-<label>Weekly steps target</label><br>
-<input id="weeklyStepsGoal" type="number" placeholder="e.g. 56000"><br>
-
-<label>Weekly sleep target (hours total)</label><br>
-<input id="weeklySleepGoal" type="number" placeholder="e.g. 49"><br><br>
-
-<button onclick="renderWeek()">Update Week</button>
-
-<div id="weekSummary" class="card"></div>
-
-<hr>
-
-<h3>History</h3>
-<div id="history"></div>
+</div>
 
 <script>
 function getData() {
@@ -68,10 +111,9 @@ function saveDay() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
-  const score =
-    Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
+  const score = Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
 
-  document.getElementById("todayScore").innerText = "Today: " + score + "%";
+  document.getElementById("todayScore").innerText = score + "%";
 
   const entry = {
     date: new Date().toISOString().split("T")[0],
@@ -85,7 +127,6 @@ function saveDay() {
   saveData(data);
 
   renderHistory();
-  renderWeek();
 }
 
 function renderHistory() {
@@ -94,44 +135,17 @@ function renderHistory() {
 
   container.innerHTML = "";
 
-  data.slice(0, 10).forEach(d => {
+  data.slice(0, 5).forEach(d => {
     container.innerHTML += `
-      <div class="card">
+      <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
         <b>${d.date}</b><br>
-        Sleep: ${d.sleep}h<br>
-        Steps: ${d.steps}<br>
-        Score: ${d.score}%
+        ${d.sleep}h sleep • ${d.steps} steps • ${d.score}%
       </div>
     `;
   });
 }
 
-function renderWeek() {
-  const data = getData();
-
-  const sleepGoal = Number(document.getElementById("weeklySleepGoal").value) || 49;
-  const stepsGoal = Number(document.getElementById("weeklyStepsGoal").value) || 56000;
-
-  const last7 = data.slice(0, 7);
-
-  const totalSleep = last7.reduce((sum, d) => sum + d.sleep, 0);
-  const totalSteps = last7.reduce((sum, d) => sum + d.steps, 0);
-
-  const sleepProgress = Math.min(totalSleep / sleepGoal, 1) * 100;
-  const stepsProgress = Math.min(totalSteps / stepsGoal, 1) * 100;
-
-  const avg = Math.round((sleepProgress + stepsProgress) / 2);
-
-  document.getElementById("weekSummary").innerHTML = `
-    <b>Weekly progress</b><br><br>
-    Sleep: ${totalSleep} / ${sleepGoal}h (${Math.round(sleepProgress)}%)<br>
-    Steps: ${totalSteps} / ${stepsGoal} (${Math.round(stepsProgress)}%)<br><br>
-    <b>Overall: ${avg}%</b>
-  `;
-}
-
 renderHistory();
-renderWeek();
 </script>
 
 </body>

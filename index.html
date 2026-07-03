@@ -2,45 +2,61 @@
 <html>
 <head>
   <title>LIFORGE</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    input {
+      margin: 5px 0;
+      padding: 5px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>LIFORGE</h1>
+<h1>LIFORGE Dashboard</h1>
 
-<p>Daily Check-in</p>
+<h3>Daily Check-in</h3>
 
 <label>Sleep (hours)</label><br>
-<input id="sleep" type="number"><br><br>
+<input id="sleep" type="number"><br>
 
 <label>Steps</label><br>
 <input id="steps" type="number"><br><br>
 
-<button onclick="save()">Save</button>
+<button onclick="saveData()">Save</button>
 
-<h2 id="result"></h2>
+<h3>Result</h3>
+<h2 id="result">---</h2>
 
 <h3>History</h3>
-<ul id="history"></ul>
+<div id="history"></div>
 
 <script>
-function save() {
+function saveData() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
-  const sleepTarget = 7;
-  const stepsTarget = 8000;
-
-  const sleepScore = Math.min(sleep / sleepTarget, 1);
-  const stepsScore = Math.min(steps / stepsTarget, 1);
+  const sleepScore = Math.min(sleep / 7, 1);
+  const stepsScore = Math.min(steps / 8000, 1);
 
   const score = Math.round(((sleepScore + stepsScore) / 2) * 100);
 
-  document.getElementById("result").innerText =
-    "Consistency: " + score + "%";
+  document.getElementById("result").innerText = score + "%";
 
-  const today = new Date().toLocaleDateString();
-
-  const entry = { date: today, score };
+  const entry = {
+    date: new Date().toLocaleDateString(),
+    sleep,
+    steps,
+    score
+  };
 
   let data = JSON.parse(localStorage.getItem("liforge")) || [];
   data.unshift(entry);
@@ -52,14 +68,19 @@ function save() {
 
 function renderHistory() {
   let data = JSON.parse(localStorage.getItem("liforge")) || [];
+  const container = document.getElementById("history");
 
-  const list = document.getElementById("history");
-  list.innerHTML = "";
+  container.innerHTML = "";
 
-  data.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.date + " - " + item.score + "%";
-    list.appendChild(li);
+  data.forEach(d => {
+    container.innerHTML += `
+      <div class="card">
+        <b>${d.date}</b><br>
+        Sleep: ${d.sleep}h<br>
+        Steps: ${d.steps}<br>
+        Score: ${d.score}%
+      </div>
+    `;
   });
 }
 

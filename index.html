@@ -5,17 +5,18 @@
   <style>
     body {
       font-family: Arial;
-      max-width: 600px;
+      max-width: 650px;
       margin: 40px auto;
     }
     input {
       margin: 5px 0;
-      padding: 5px;
+      padding: 6px;
     }
     .card {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       margin-top: 10px;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -31,48 +32,69 @@
 <label>Steps</label><br>
 <input id="steps" type="number"><br><br>
 
-<button onclick="saveData()">Save</button>
+<button onclick="saveDay()">Save</button>
 
-<h3>Result</h3>
-<h2 id="result">---</h2>
+<h2 id="todayScore">---</h2>
+
+<hr>
+
+<h3>Weekly Goals</h3>
+
+<label>Weekly steps target</label><br>
+<input id="weeklyStepsGoal" type="number" placeholder="e.g. 56000"><br>
+
+<label>Weekly sleep target (hours total)</label><br>
+<input id="weeklySleepGoal" type="number" placeholder="e.g. 49"><br><br>
+
+<button onclick="renderWeek()">Update Week</button>
+
+<div id="weekSummary" class="card"></div>
+
+<hr>
 
 <h3>History</h3>
 <div id="history"></div>
 
 <script>
-function saveData() {
+function getData() {
+  return JSON.parse(localStorage.getItem("liforge")) || [];
+}
+
+function saveData(data) {
+  localStorage.setItem("liforge", JSON.stringify(data));
+}
+
+function saveDay() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
-  const sleepScore = Math.min(sleep / 7, 1);
-  const stepsScore = Math.min(steps / 8000, 1);
+  const score =
+    Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
 
-  const score = Math.round(((sleepScore + stepsScore) / 2) * 100);
-
-  document.getElementById("result").innerText = score + "%";
+  document.getElementById("todayScore").innerText = "Today: " + score + "%";
 
   const entry = {
-    date: new Date().toLocaleDateString(),
+    date: new Date().toISOString().split("T")[0],
     sleep,
     steps,
     score
   };
 
-  let data = JSON.parse(localStorage.getItem("liforge")) || [];
+  let data = getData();
   data.unshift(entry);
-
-  localStorage.setItem("liforge", JSON.stringify(data));
+  saveData(data);
 
   renderHistory();
+  renderWeek();
 }
 
 function renderHistory() {
-  let data = JSON.parse(localStorage.getItem("liforge")) || [];
+  const data = getData();
   const container = document.getElementById("history");
 
   container.innerHTML = "";
 
-  data.forEach(d => {
+  data.slice(0, 10).forEach(d => {
     container.innerHTML += `
       <div class="card">
         <b>${d.date}</b><br>
@@ -84,7 +106,32 @@ function renderHistory() {
   });
 }
 
+function renderWeek() {
+  const data = getData();
+
+  const sleepGoal = Number(document.getElementById("weeklySleepGoal").value) || 49;
+  const stepsGoal = Number(document.getElementById("weeklyStepsGoal").value) || 56000;
+
+  const last7 = data.slice(0, 7);
+
+  const totalSleep = last7.reduce((sum, d) => sum + d.sleep, 0);
+  const totalSteps = last7.reduce((sum, d) => sum + d.steps, 0);
+
+  const sleepProgress = Math.min(totalSleep / sleepGoal, 1) * 100;
+  const stepsProgress = Math.min(totalSteps / stepsGoal, 1) * 100;
+
+  const avg = Math.round((sleepProgress + stepsProgress) / 2);
+
+  document.getElementById("weekSummary").innerHTML = `
+    <b>Weekly progress</b><br><br>
+    Sleep: ${totalSleep} / ${sleepGoal}h (${Math.round(sleepProgress)}%)<br>
+    Steps: ${totalSteps} / ${stepsGoal} (${Math.round(stepsProgress)}%)<br><br>
+    <b>Overall: ${avg}%</b>
+  `;
+}
+
 renderHistory();
+renderWeek();
 </script>
 
 </body>

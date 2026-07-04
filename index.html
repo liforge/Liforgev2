@@ -1,38 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+  <meta charset="UTF-8">
   <title>LIFORGE</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial;
-      background: #0f1115;
-      color: #e6e6e6;
+      font-family: Arial, sans-serif;
+      color: white;
       display: flex;
       justify-content: center;
+
+      /* 🔥 tło (niebieski ogień) */
+      background: url("https://images.unsplash.com/photo-1610878180933-123728745d8d?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,20,0.75);
+      z-index: 0;
     }
 
     .container {
       width: 420px;
       margin-top: 50px;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
     }
 
     .card {
-      background: #1a1d24;
+      background: rgba(20, 25, 40, 0.85);
       padding: 15px;
       border-radius: 12px;
       margin-top: 15px;
+      backdrop-filter: blur(6px);
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
+      margin-top: 5px;
       margin-bottom: 10px;
       border-radius: 8px;
       border: none;
@@ -48,126 +62,71 @@
       background: #4f7cff;
       color: white;
       font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button.danger {
+      background: #ff4f4f;
     }
 
     .score {
-      font-size: 40px;
+      font-size: 30px;
       text-align: center;
       font-weight: bold;
     }
 
-    .streak {
+    h1 {
       text-align: center;
-      margin-top: 5px;
-      opacity: 0.8;
     }
   </style>
 </head>
+
 <body>
+
+<div class="overlay"></div>
 
 <div class="container">
 
   <h1>LIFORGE</h1>
 
   <div class="card">
-    <label>Sleep</label>
+    <label>Sen (godziny)</label>
     <input id="sleep" type="number">
 
-    <label>Steps</label>
+    <label>Kroki</label>
     <input id="steps" type="number">
 
-    <button onclick="saveDay()">Save</button>
+    <button onclick="zapiszDzien()">Zapisz dzień</button>
   </div>
 
   <div class="card">
-    <div class="score" id="todayScore">--</div>
-    <div class="streak" id="streak">Streak: 0</div>
+    <div class="score" id="wynikDnia">--</div>
+    <div style="text-align:center; opacity:0.7;">Dzisiejszy wynik</div>
   </div>
 
-  <div class="card" id="history"></div>
+  <div class="card">
+    <b>🔥 Streak:</b> <span id="streak">0</span> dni
+  </div>
+
+  <div class="card">
+    <b>Historia</b>
+    <div id="historia"></div>
+
+    <button class="danger" onclick="wyczyscHistorie()">
+      Wyczyść historię
+    </button>
+  </div>
 
 </div>
 
 <script>
-function getData() {
+function pobierz() {
   return JSON.parse(localStorage.getItem("liforge")) || [];
 }
 
-function saveData(data) {
+function zapisz(data) {
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function saveDay() {
-  const sleep = Number(document.getElementById("sleep").value);
-  const steps = Number(document.getElementById("steps").value);
-
-  const score = Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
-
-  document.getElementById("todayScore").innerText = score + "%";
-  document.getElementById("todayScore").style.color = getColor(score);
-
-  const today = new Date().toISOString().split("T")[0];
-
-  let data = getData();
-
-  data.unshift({
-    date: today,
-    sleep,
-    steps,
-    score
-  });
-
-  saveData(data);
-
-  render();
-}
-
-function getColor(score) {
-  if (score >= 80) return "#4ade80";
-  if (score >= 50) return "#facc15";
-  return "#f87171";
-}
-
-function calcStreak(data) {
-  let streak = 0;
-  let currentDate = new Date();
-
-  for (let i = 0; i < data.length; i++) {
-    const d = new Date(data[i].date);
-    const diff = Math.floor((currentDate - d) / (1000 * 60 * 60 * 24));
-
-    if (diff === streak) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
-}
-
-function render() {
-  const data = getData();
-
-  if (data.length > 0) {
-    const latest = data[0];
-    const scoreEl = document.getElementById("todayScore");
-    scoreEl.innerText = latest.score + "%";
-    scoreEl.style.color = getColor(latest.score);
-  }
-
-  document.getElementById("history").innerHTML =
-    "<b>History</b><br><br>" +
-    data.slice(0, 7).map(d =>
-      `${d.date} — ${d.score}%`
-    ).join("<br>");
-
-  document.getElementById("streak").innerText =
-    "Streak: " + calcStreak(data) + " 🔥";
-}
-
-render();
-</script>
-
-</body>
-</html>
+function zap

@@ -17,7 +17,10 @@
       margin-top: 50px;
     }
 
-    h1 { text-align: center; }
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
 
     .card {
       background: #1a1d24;
@@ -45,19 +48,18 @@
       background: #4f7cff;
       color: white;
       font-weight: bold;
-      cursor: pointer;
     }
 
     .score {
-      font-size: 34px;
+      font-size: 40px;
       text-align: center;
       font-weight: bold;
     }
 
-    .small {
-      opacity: 0.7;
+    .streak {
       text-align: center;
-      font-size: 12px;
+      margin-top: 5px;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -66,7 +68,6 @@
 <div class="container">
 
   <h1>LIFORGE</h1>
-  <div class="small">System Dashboard</div>
 
   <div class="card">
     <label>Sleep</label>
@@ -79,15 +80,11 @@
   </div>
 
   <div class="card">
-    <div class="small">Today Score</div>
     <div class="score" id="todayScore">--</div>
-    <div class="small" id="streak">Streak: 0 🔥</div>
+    <div class="streak" id="streak">Streak: 0</div>
   </div>
 
-  <div class="card">
-    <div class="small">History</div>
-    <div id="history"></div>
-  </div>
+  <div class="card" id="history"></div>
 
 </div>
 
@@ -100,78 +97,76 @@ function saveData(data) {
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function getColor(score) {
-  if (score >= 85) return "#4ade80"; // green
-  if (score >= 60) return "#facc15"; // yellow
-  return "#f87171"; // red
-}
-
-function calcStreak(data) {
-  if (data.length === 0) return 0;
-
-  let streak = 1;
-  for (let i = 1; i < data.length; i++) {
-    const prev = new Date(data[i-1].date);
-    const curr = new Date(data[i].date);
-
-    const diff = (prev - curr) / (1000 * 60 * 60 * 24);
-
-    if (diff === 1) streak++;
-    else break;
-  }
-  return streak;
-}
-
 function saveDay() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
   const score = Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
 
-  const entry = {
-    date: new Date().toISOString().split("T")[0],
-    sleep,
-    steps,
-    score
-  };
-
-  let data = getData();
-  data.unshift(entry);
-
-  saveData(data);
-
   document.getElementById("todayScore").innerText = score + "%";
   document.getElementById("todayScore").style.color = getColor(score);
 
-  renderHistory();
-  renderStreak();
-}
+  const today = new Date().toISOString().split("T")[0];
 
-function renderHistory() {
-  const data = getData();
-  const container = document.getElementById("history");
+  let data = getData();
 
-  container.innerHTML = "";
-
-  data.slice(0, 7).forEach(d => {
-    container.innerHTML += `
-      <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
-        <b>${d.date}</b><br>
-        ${d.sleep}h • ${d.steps} steps • 
-        <span style="color:${getColor(d.score)}">${d.score}%</span>
-      </div>
-    `;
+  data.unshift({
+    date: today,
+    sleep,
+    steps,
+    score
   });
+
+  saveData(data);
+
+  render();
 }
 
-function renderStreak() {
+function getColor(score) {
+  if (score >= 80) return "#4ade80";
+  if (score >= 50) return "#facc15";
+  return "#f87171";
+}
+
+function calcStreak(data) {
+  let streak = 0;
+  let currentDate = new Date();
+
+  for (let i = 0; i < data.length; i++) {
+    const d = new Date(data[i].date);
+    const diff = Math.floor((currentDate - d) / (1000 * 60 * 60 * 24));
+
+    if (diff === streak) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
+function render() {
   const data = getData();
-  const streak = calcStreak(data);
-  document.getElementById("streak").innerText = "Streak: " + streak + " 🔥";
+
+  if (data.length > 0) {
+    const latest = data[0];
+    const scoreEl = document.getElementById("todayScore");
+    scoreEl.innerText = latest.score + "%";
+    scoreEl.style.color = getColor(latest.score);
+  }
+
+  document.getElementById("history").innerHTML =
+    "<b>History</b><br><br>" +
+    data.slice(0, 7).map(d =>
+      `${d.date} — ${d.score}%`
+    ).join("<br>");
+
+  document.getElementById("streak").innerText =
+    "Streak: " + calcStreak(data) + " 🔥";
 }
 
-renderHistory();
-renderStreak();
+render();
 </script>
 
 </body>

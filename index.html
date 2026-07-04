@@ -2,6 +2,14 @@
 <html>
 <head>
   <title>LIFORGE</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f1115">
+
   <style>
     body {
       margin: 0;
@@ -84,6 +92,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -173,6 +182,15 @@ function zoom(img) {
 }
 
 render();
+</script>
+
+<!-- PWA SERVICE WORKER -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
+}
 </script>
 
 </body>

@@ -212,7 +212,88 @@ function render(){
   c.innerHTML=html;
 }
 
-render();
+render();function getSleepArrow(h){
+  if(h >= 7) return "↑↑";
+  if(h >= 6) return "↑";
+  if(h >= 5) return "→";
+  if(h >= 4) return "↓";
+  return "↓↓";
+}
+
+function getStepsArrow(s){
+  if(s >= 10000) return "↑↑";
+  if(s >= 8000) return "↑";
+  if(s >= 5000) return "→";
+  if(s >= 3000) return "↓";
+  return "↓↓";
+}
+
+function arrowToValue(a){
+  if(a === "↑↑") return 2;
+  if(a === "↑") return 1;
+  if(a === "→") return 0;
+  if(a === "↓") return -1;
+  return -2;
+}
+
+function valueToArrow(v){
+  if(v >= 1.5) return "↑↑";
+  if(v >= 0.5) return "↑";
+  if(v > -0.5) return "→";
+  if(v > -1.5) return "↓";
+  return "↓↓";
+}
+
+function render(){
+  const c=document.getElementById("history");
+  c.innerHTML="";
+
+  const data=getData().slice(0,10);
+
+  let html="";
+
+  data.forEach(d=>{
+
+    const sleepA = getSleepArrow(d.sleep);
+    const stepsA = getStepsArrow(d.steps);
+
+    const avg =
+      (arrowToValue(sleepA) + arrowToValue(stepsA)) / 2;
+
+    const globalA = valueToArrow(avg);
+
+    html += `
+      <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:14px;
+        margin:10px 0;
+        font-size:18px;
+      ">
+
+        <div style="color:#7cf7ff;text-shadow:0 0 10px rgba(124,247,255,.5)">
+          ${sleepA}
+        </div>
+
+        <div style="opacity:.4">|</div>
+
+        <div style="color:#7cf7ff;text-shadow:0 0 10px rgba(124,247,255,.5)">
+          ${stepsA}
+        </div>
+
+        <div style="opacity:.4">=</div>
+
+        <div style="font-size:22px;color:#7cf7ff;text-shadow:0 0 18px rgba(124,247,255,.8)">
+          ${globalA}
+        </div>
+
+      </div>
+    `;
+  });
+
+  c.innerHTML=html;
+}
 
 </script>
 

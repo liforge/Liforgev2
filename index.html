@@ -90,10 +90,32 @@
       background: #2a2f3a;
       border-radius: 8px;
     }
+
+    /* 🔘 INSTALL BUTTON */
+    #installBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      padding: 10px 12px;
+      background: #4f7cff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 999;
+      display: none;
+    }
+
+    #installBtn:hover {
+      background: #3b66ff;
+    }
   </style>
 </head>
 
 <body>
+
+<!-- 🔘 INSTALL BUTTON -->
+<button id="installBtn">Zainstaluj</button>
 
 <div class="container">
 
@@ -191,6 +213,31 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js');
   });
 }
+</script>
+
+<!-- 🔘 INSTALL LOGIC -->
+<script>
+let deferredPrompt;
+const btn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  btn.style.display = "block";
+});
+
+btn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+
+  if (choice.outcome === "accepted") {
+    btn.style.display = "none";
+  }
+
+  deferredPrompt = null;
+});
 </script>
 
 </body>

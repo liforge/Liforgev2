@@ -9,15 +9,10 @@
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f1115">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
     html, body {
       height: 100%;
-    }
-
-    body {
       margin: 0;
       font-family: Arial;
       background: #0f1115;
@@ -34,9 +29,28 @@
       margin-top: 40px;
     }
 
+    /* BRAND */
+    .brand {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      width: 90px;
+      height: auto;
+      display: block;
+      margin: 0 auto 8px;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #7f8da3;
+      font-size: 12px;
+    }
+
     h1 {
       text-align: center;
-      margin-bottom: 5px;
+      margin: 0;
     }
 
     .card {
@@ -113,10 +127,6 @@
       z-index: 999;
       display: none;
     }
-
-    #installBtn:hover {
-      background: #3b66ff;
-    }
   </style>
 </head>
 
@@ -126,7 +136,12 @@
 
 <div class="container">
 
-  <h1>LIFORGE</h1>
+  <!-- BRAND -->
+  <div class="brand">
+    <img src="logo.png" class="logo" alt="LIFORGE logo">
+    <h1>LIFORGE</h1>
+    <p>Forge Yourself</p>
+  </div>
 
   <div class="card">
     <label>Sleep (hours)</label>

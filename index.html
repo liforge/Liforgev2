@@ -2,14 +2,41 @@
 <html>
 <head>
   <title>LIFORGE</title>
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0f1115;
       color: #e6e6e6;
       display: flex;
       justify-content: center;
+
+      background: radial-gradient(circle at top,
+        #0f1115,
+        #0a0f1f,
+        #05070f
+      );
+    }
+
+    .glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      transform: translateX(-50%);
+      background: radial-gradient(circle,
+        rgba(79,124,255,0.25),
+        transparent 60%
+      );
+      filter: blur(80px);
+      animation: float 6s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateX(-50%) translateY(0px); }
+      50% { transform: translateX(-50%) translateY(40px); }
     }
 
     .container {
@@ -20,12 +47,6 @@
     h1 {
       text-align: center;
       margin-bottom: 5px;
-    }
-
-    .small {
-      opacity: 0.7;
-      font-size: 12px;
-      text-align: center;
     }
 
     .card {
@@ -62,42 +83,27 @@
       background: #3b66ff;
     }
 
-    .score {
-      font-size: 28px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    /* TOP RIGHT CLEAR BUTTON */
-    .topbar {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-    }
-
-    .clear-btn {
-      width: auto;
-      padding: 8px 12px;
-      background: #ff4d4d;
-      border-radius: 8px;
+    .small {
+      opacity: 0.7;
       font-size: 12px;
+      text-align: center;
     }
 
-    .clear-btn:hover {
-      background: #ff2d2d;
+    canvas {
+      width: 100%;
+      margin-top: 10px;
     }
   </style>
 </head>
+
 <body>
 
-<div class="topbar">
-  <button class="clear-btn" onclick="clearHistory()">Clear history</button>
-</div>
+<div class="glow"></div>
 
 <div class="container">
 
   <h1>LIFORGE</h1>
-  <div class="small">Weekly System Dashboard</div>
+  <div class="small">Daily System Dashboard</div>
 
   <div class="card">
     <label>Sleep (hours)</label>
@@ -110,13 +116,8 @@
   </div>
 
   <div class="card">
-    <div class="small">Today Score</div>
-    <div class="score" id="todayScore">--</div>
-  </div>
-
-  <div class="card">
-    <div class="small">Weekly Progress</div>
-    <div id="weekStats"></div>
+    <div class="small">Trend (7 dni)</div>
+    <canvas id="chart" width="400" height="120"></canvas>
   </div>
 
   <div class="card">
@@ -127,6 +128,7 @@
 </div>
 
 <script>
+
 function getData() {
   return JSON.parse(localStorage.getItem("liforge")) || [];
 }
@@ -139,9 +141,8 @@ function saveDay() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
-  const score = Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
-
-  document.getElementById("todayScore").innerText = score + "%";
+  const score =
+    Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
 
   const entry = {
     date: new Date().toISOString().split("T")[0],
@@ -154,26 +155,8 @@ function saveDay() {
   data.unshift(entry);
   saveData(data);
 
-  renderAll();
-}
-
-function renderWeek() {
-  const data = getData();
-  const last7 = data.slice(0, 7);
-
-  const avg =
-    last7.length === 0
-      ? 0
-      : Math.round(last7.reduce((s, d) => s + d.score, 0) / last7.length);
-
-  const totalSteps = last7.reduce((s, d) => s + d.steps, 0);
-  const totalSleep = last7.reduce((s, d) => s + d.sleep, 0);
-
-  document.getElementById("weekStats").innerHTML = `
-    Avg score: <b>${avg}%</b><br>
-    Total steps: <b>${totalSteps}</b><br>
-    Total sleep: <b>${totalSleep}h</b>
-  `;
+  renderHistory();
+  drawChart();
 }
 
 function renderHistory() {
@@ -182,27 +165,45 @@ function renderHistory() {
 
   container.innerHTML = "";
 
-  data.slice(0, 7).forEach(d => {
+  data.slice(0, 5).forEach(d => {
     container.innerHTML += `
       <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
         <b>${d.date}</b><br>
-        ${d.sleep}h • ${d.steps} steps • ${d.score}%
+        ${d.sleep}h sleep • ${d.steps} steps • ${d.score}%
       </div>
     `;
   });
 }
 
-function renderAll() {
-  renderHistory();
-  renderWeek();
+function drawChart() {
+  const data = getData().slice(0, 7).reverse();
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (data.length === 0) return;
+
+  const stepX = canvas.width / (data.length - 1 || 1);
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#4f7cff";
+  ctx.lineWidth = 3;
+
+  data.forEach((d, i) => {
+    const x = i * stepX;
+    const y = canvas.height - (d.score / 100) * canvas.height;
+
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+
+  ctx.stroke();
 }
 
-function clearHistory() {
-  localStorage.removeItem("liforge");
-  renderAll();
-}
+renderHistory();
+drawChart();
 
-renderAll();
 </script>
 
 </body>

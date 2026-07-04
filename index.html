@@ -1,82 +1,77 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>LIFORGE</title>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      color: white;
+      background: radial-gradient(circle at top, #1b1f2a, #0b0d12);
+      color: #fff;
       display: flex;
       justify-content: center;
-
-      /* 🔥 tło (niebieski ogień) */
-      background: url("https://images.unsplash.com/photo-1610878180933-123728745d8d?auto=format&fit=crop&w=1400&q=80");
-      background-size: cover;
-      background-position: center;
-      min-height: 100vh;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,20,0.75);
-      z-index: 0;
     }
 
     .container {
       width: 420px;
       margin-top: 50px;
-      position: relative;
-      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, #ff4d4d, #ffb84d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 42px;
     }
 
     .card {
-      background: rgba(20, 25, 40, 0.85);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 14px;
       margin-top: 15px;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      margin-top: 6px;
       margin-bottom: 10px;
       border-radius: 8px;
       border: none;
-      background: #2a2f3a;
+      background: #111521;
       color: white;
     }
 
     button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: none;
       border-radius: 10px;
-      background: #4f7cff;
+      background: linear-gradient(90deg, #ff4d4d, #ff9a3c);
       color: white;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 5px;
     }
 
-    button.danger {
-      background: #ff4f4f;
+    button:hover {
+      transform: scale(1.02);
     }
 
     .score {
-      font-size: 30px;
+      font-size: 34px;
       text-align: center;
       font-weight: bold;
+      color: #ffb84d;
     }
 
-    h1 {
+    .small {
+      opacity: 0.7;
+      font-size: 12px;
       text-align: center;
     }
   </style>
@@ -84,114 +79,83 @@
 
 <body>
 
-<div class="overlay"></div>
-
 <div class="container">
 
   <h1>LIFORGE</h1>
+  <div class="small">Daily System</div>
 
   <div class="card">
-    <label>Sen (godziny)</label>
+    <label>Sleep (hours)</label>
     <input id="sleep" type="number">
 
-    <label>Kroki</label>
+    <label>Steps</label>
     <input id="steps" type="number">
 
-    <button onclick="zapiszDzien()">Zapisz dzień</button>
+    <button onclick="saveDay()">Save</button>
   </div>
 
   <div class="card">
-    <div class="score" id="wynikDnia">--</div>
-    <div style="text-align:center; opacity:0.7;">Dzisiejszy wynik</div>
+    <div class="small">Today Score</div>
+    <div class="score" id="todayScore">--</div>
   </div>
 
   <div class="card">
-    <b>🔥 Streak:</b> <span id="streak">0</span> dni
-  </div>
-
-  <div class="card">
-    <b>Historia</b>
-    <div id="historia"></div>
-
-    <button class="danger" onclick="wyczyscHistorie()">
-      Wyczyść historię
-    </button>
+    <div class="small">History</div>
+    <div id="history"></div>
   </div>
 
 </div>
 
 <script>
-function pobierz() {
+function getData() {
   return JSON.parse(localStorage.getItem("liforge")) || [];
 }
 
-function zapisz(data) {
+function saveData(data) {
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function zapiszDzien() {
-  const sen = Number(document.getElementById("sleep").value);
-  const kroki = Number(document.getElementById("steps").value);
+function saveDay() {
+  const sleep = Number(document.getElementById("sleep").value);
+  const steps = Number(document.getElementById("steps").value);
 
-  const dzis = new Date().toISOString().split("T")[0];
+  const score = Math.round(
+    ((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100
+  );
 
-  const wynik = Math.round(((Math.min(sen / 7, 1) + Math.min(kroki / 8000, 1)) / 2) * 100);
+  document.getElementById("todayScore").innerText = score + "%";
 
-  let dane = pobierz();
+  const entry = {
+    date: new Date().toISOString().split("T")[0],
+    sleep,
+    steps,
+    score
+  };
 
-  let streak = Number(localStorage.getItem("streak")) || 0;
-  let ostatni = localStorage.getItem("ostatniaData");
+  let data = getData();
+  data.unshift(entry);
+  saveData(data);
 
-  if (ostatni) {
-    const roznica = (new Date(dzis) - new Date(ostatni)) / (1000*60*60*24);
-
-    if (roznica === 1) streak++;
-    else if (roznica > 1) streak = 1;
-  } else {
-    streak = 1;
-  }
-
-  localStorage.setItem("streak", streak);
-  localStorage.setItem("ostatniaData", dzis);
-
-  dane.unshift({ data: dzis, sen, kroki, wynik });
-
-  zapisz(dane);
-
-  document.getElementById("wynikDnia").innerText = wynik + "%";
-  document.getElementById("streak").innerText = streak;
-
-  render();
+  renderHistory();
 }
 
-function render() {
-  const dane = pobierz();
-  const box = document.getElementById("historia");
+function renderHistory() {
+  const data = getData();
+  const container = document.getElementById("history");
 
-  box.innerHTML = "";
+  container.innerHTML = "";
 
-  dane.slice(0, 7).forEach(d => {
-    box.innerHTML += `
-      <div style="margin-top:8px; padding:8px; background:#2a2f3a; border-radius:8px;">
-        ${d.data} • ${d.wynik}%
+  data.slice(0, 5).forEach(d => {
+    container.innerHTML += `
+      <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
+        <b>${d.date}</b><br>
+        ${d.sleep}h sleep • ${d.steps} steps • ${d.score}%
       </div>
     `;
   });
 }
 
-function wyczyscHistorie() {
-  localStorage.removeItem("liforge");
-  localStorage.removeItem("streak");
-  localStorage.removeItem("ostatniaData");
-
-  document.getElementById("wynikDnia").innerText = "--";
-  document.getElementById("streak").innerText = "0";
-  document.getElementById("historia").innerHTML = "";
-}
-
-document.getElementById("streak").innerText = localStorage.getItem("streak") || 0;
-
-render();
+renderHistory();
 </script>
 
 </body>

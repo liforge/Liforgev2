@@ -19,17 +19,30 @@
       height: 100%;
       margin: 0;
       font-family: Arial;
-      background: #0f1115;
       color: #e6e6e6;
       overflow-x: hidden;
     }
 
+    /* BACKGROUND IMAGE */
     body {
       min-height: 100vh;
+      background: url("liforge.png") center center / cover no-repeat fixed;
+      position: relative;
+    }
+
+    /* DARK OVERLAY FOR READABILITY */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 0;
     }
 
     /* APP SHELL */
     .app {
+      position: relative;
+      z-index: 1;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -55,7 +68,7 @@
 
     .brand p {
       margin: 0;
-      color: #7f8da3;
+      color: #b9c2d0;
       font-size: 12px;
     }
 
@@ -65,7 +78,8 @@
     }
 
     .card {
-      background: #1a1d24;
+      background: rgba(26, 29, 36, 0.75);
+      backdrop-filter: blur(8px);
       padding: 15px;
       border-radius: 12px;
       margin-top: 15px;
@@ -147,7 +161,6 @@
 <div class="app">
   <div class="container">
 
-    <!-- BRAND -->
     <div class="brand">
       <img src="logo-512.png" class="logo" alt="LIFORGE logo">
       <h1>LIFORGE</h1>

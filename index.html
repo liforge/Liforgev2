@@ -70,10 +70,7 @@ button{
   font-weight:bold;
 }
 
-/* ===================== */
-/*  ENERGY SCORE HERO    */
-/* ===================== */
-
+/* HERO */
 .hero{
   text-align:center;
   margin-top:10px;
@@ -82,7 +79,6 @@ button{
 .energyScore{
   font-size:56px;
   font-weight:bold;
-  transition:.4s;
 }
 
 .label{
@@ -91,26 +87,32 @@ button{
   letter-spacing:2px;
 }
 
-/* ===================== */
-/* STATES (light system) */
-/* ===================== */
-
-body.energy::before{background:rgba(0,0,0,.20)}
-body.energy .energyScore{text-shadow:0 0 25px rgba(124,247,255,.5)}
-
-body.recovery::before{background:rgba(0,0,0,.5)}
-body.recovery .energyScore{opacity:.7;filter:saturate(.7)}
-
-body.focus::before{background:rgba(0,0,0,.65)}
-body.focus .energyScore{font-size:60px;text-shadow:0 0 30px rgba(255,255,255,.25)}
-
-.history-item{
+/* HISTORY */
+.historyWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   margin-top:10px;
-  padding:10px;
-  background:rgba(255,255,255,.06);
-  border-radius:10px;
-  font-size:13px;
 }
+
+.arrow{
+  font-size:22px;
+  margin:4px 0;
+  opacity:.85;
+}
+
+/* STATES */
+body.energy::before{background:rgba(0,0,0,.20)}
+body.recovery::before{background:rgba(0,0,0,.5)}
+body.focus::before{background:rgba(0,0,0,.65)}
+
+.historyTitle{
+  font-size:12px;
+  opacity:.6;
+  margin-bottom:10px;
+  text-align:center;
+}
+
 </style>
 </head>
 
@@ -124,13 +126,13 @@ body.focus .energyScore{font-size:60px;text-shadow:0 0 30px rgba(255,255,255,.25
     <div class="label">Forge Yourself</div>
   </div>
 
-  <!-- HERO -->
+  <!-- SCORE -->
   <div class="hero">
     <div class="label">ENERGY SCORE</div>
     <div class="energyScore" id="score">--</div>
   </div>
 
-  <!-- INPUTS -->
+  <!-- INPUT -->
   <div class="card">
     <div class="label">Sleep (hours)</div>
     <input id="sleep" type="number">
@@ -143,8 +145,8 @@ body.focus .energyScore{font-size:60px;text-shadow:0 0 30px rgba(255,255,255,.25
 
   <!-- HISTORY -->
   <div class="card">
-    <div class="label">History</div>
-    <div id="history"></div>
+    <div class="historyTitle">2026</div>
+    <div class="historyWrap" id="history"></div>
   </div>
 
 </div>
@@ -188,21 +190,29 @@ function render(){
   const c=document.getElementById("history");
   c.innerHTML="";
 
-  getData().slice(0,5).forEach(d=>{
-    c.innerHTML+=`
-      <div class="history-item">
-        ${d.date} — ${d.score}% • ${d.sleep}h • ${d.steps}
-      </div>`;
+  const data=getData().slice(0,10);
+
+  let prev=null;
+  let html="";
+
+  data.forEach(d=>{
+    let arrow="→";
+
+    if(prev!==null){
+      if(d.score>prev) arrow="↑";
+      else if(d.score<prev) arrow="↓";
+      else arrow="→";
+    }
+
+    prev=d.score;
+
+    html+=`<div class="arrow">${arrow}</div>`;
   });
+
+  c.innerHTML=html;
 }
 
 render();
-
-/* optional state switch */
-function setState(state){
-  document.body.classList.remove("energy","recovery","focus");
-  document.body.classList.add(state);
-}
 
 </script>
 

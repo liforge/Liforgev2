@@ -19,6 +19,7 @@
 
     h1 {
       text-align: center;
+      margin-bottom: 5px;
     }
 
     .card {
@@ -58,18 +59,28 @@
       font-size: 28px;
       text-align: center;
       font-weight: bold;
+      margin-top: 10px;
     }
 
     img {
       width: 100%;
+      height: 260px;
+      object-fit: cover;
       border-radius: 12px;
       margin-top: 10px;
-      transition: 0.3s;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     img:active {
       transform: scale(1.05);
+    }
+
+    .history-item {
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2f3a;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -95,8 +106,8 @@
   </div>
 
   <div class="card">
-    <div>Cat test (UI interaction)</div>
-    <img src="https://placekitten.com/500/300" onclick="zoom(this)">
+    <div>Dog test 🐶</div>
+    <img src="https://images.dog.ceo/breeds/dachshund/dachshund-1.jpg" onclick="zoom(this)">
   </div>
 
   <div class="card">
@@ -145,9 +156,9 @@ function render() {
 
   data.slice(0, 5).forEach(d => {
     container.innerHTML += `
-      <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
+      <div class="history-item">
         <b>${d.date}</b><br>
-        ${d.sleep}h • ${d.steps} steps • ${d.score}%
+        ${d.sleep}h sleep • ${d.steps} steps • ${d.score}%
       </div>
     `;
   });

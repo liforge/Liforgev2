@@ -129,4 +129,70 @@ function zapisz(data) {
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function zap
+function zapiszDzien() {
+  const sen = Number(document.getElementById("sleep").value);
+  const kroki = Number(document.getElementById("steps").value);
+
+  const dzis = new Date().toISOString().split("T")[0];
+
+  const wynik = Math.round(((Math.min(sen / 7, 1) + Math.min(kroki / 8000, 1)) / 2) * 100);
+
+  let dane = pobierz();
+
+  let streak = Number(localStorage.getItem("streak")) || 0;
+  let ostatni = localStorage.getItem("ostatniaData");
+
+  if (ostatni) {
+    const roznica = (new Date(dzis) - new Date(ostatni)) / (1000*60*60*24);
+
+    if (roznica === 1) streak++;
+    else if (roznica > 1) streak = 1;
+  } else {
+    streak = 1;
+  }
+
+  localStorage.setItem("streak", streak);
+  localStorage.setItem("ostatniaData", dzis);
+
+  dane.unshift({ data: dzis, sen, kroki, wynik });
+
+  zapisz(dane);
+
+  document.getElementById("wynikDnia").innerText = wynik + "%";
+  document.getElementById("streak").innerText = streak;
+
+  render();
+}
+
+function render() {
+  const dane = pobierz();
+  const box = document.getElementById("historia");
+
+  box.innerHTML = "";
+
+  dane.slice(0, 7).forEach(d => {
+    box.innerHTML += `
+      <div style="margin-top:8px; padding:8px; background:#2a2f3a; border-radius:8px;">
+        ${d.data} • ${d.wynik}%
+      </div>
+    `;
+  });
+}
+
+function wyczyscHistorie() {
+  localStorage.removeItem("liforge");
+  localStorage.removeItem("streak");
+  localStorage.removeItem("ostatniaData");
+
+  document.getElementById("wynikDnia").innerText = "--";
+  document.getElementById("streak").innerText = "0";
+  document.getElementById("historia").innerHTML = "";
+}
+
+document.getElementById("streak").innerText = localStorage.getItem("streak") || 0;
+
+render();
+</script>
+
+</body>
+</html>

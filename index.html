@@ -23,7 +23,7 @@
       overflow-x: hidden;
     }
 
-    /* BACKGROUND IMAGE */
+    /* BACKGROUND IMAGE (THEME) */
     body {
       min-height: 100vh;
       background: url("liforge.png") center center / cover no-repeat fixed;
@@ -39,7 +39,7 @@
       z-index: 0;
     }
 
-    /* APP SHELL */
+    /* APP LAYER */
     .app {
       position: relative;
       z-index: 1;
@@ -118,19 +118,6 @@
       margin-top: 10px;
     }
 
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    img:active {
-      transform: scale(1.05);
-    }
-
     .history-item {
       margin-top: 10px;
       padding: 10px;
@@ -180,10 +167,6 @@
     <div class="card">
       <div>Today score</div>
       <div class="score" id="score">--</div>
-    </div>
-
-    <div class="card">
-      <img src="liforge.png" onclick="zoom(this)" alt="LIFORGE image">
     </div>
 
     <div class="card">
@@ -239,11 +222,6 @@ function render() {
       </div>
     `;
   });
-}
-
-function zoom(img) {
-  img.style.transform =
-    img.style.transform === "scale(1.5)" ? "scale(1)" : "scale(1.5)";
 }
 
 render();

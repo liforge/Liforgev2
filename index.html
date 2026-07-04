@@ -9,8 +9,14 @@
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f1115">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
+    html, body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
       font-family: Arial;
@@ -18,6 +24,9 @@
       color: #e6e6e6;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .container {
@@ -91,7 +100,6 @@
       border-radius: 8px;
     }
 
-    /* 🔘 INSTALL BUTTON */
     #installBtn {
       position: fixed;
       top: 12px;
@@ -114,7 +122,6 @@
 
 <body>
 
-<!-- 🔘 INSTALL BUTTON -->
 <button id="installBtn">Zainstaluj</button>
 
 <div class="container">
@@ -196,17 +203,13 @@ function render() {
 }
 
 function zoom(img) {
-  if (img.style.transform === "scale(1.5)") {
-    img.style.transform = "scale(1)";
-  } else {
-    img.style.transform = "scale(1.5)";
-  }
+  img.style.transform =
+    img.style.transform === "scale(1.5)" ? "scale(1)" : "scale(1.5)";
 }
 
 render();
 </script>
 
-<!-- PWA SERVICE WORKER -->
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -215,7 +218,6 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<!-- 🔘 INSTALL LOGIC -->
 <script>
 let deferredPrompt;
 const btn = document.getElementById("installBtn");

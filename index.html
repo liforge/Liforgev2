@@ -2,51 +2,23 @@
 <html>
 <head>
   <title>LIFORGE</title>
-
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial;
+      background: #0f1115;
       color: #e6e6e6;
       display: flex;
       justify-content: center;
-
-      background: radial-gradient(circle at top,
-        #0f1115,
-        #0a0f1f,
-        #05070f
-      );
-    }
-
-    .glow {
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      width: 600px;
-      height: 600px;
-      transform: translateX(-50%);
-      background: radial-gradient(circle,
-        rgba(79,124,255,0.25),
-        transparent 60%
-      );
-      filter: blur(80px);
-      animation: float 6s ease-in-out infinite;
-      z-index: -1;
-    }
-
-    @keyframes float {
-      0%,100% { transform: translateX(-50%) translateY(0px); }
-      50% { transform: translateX(-50%) translateY(40px); }
     }
 
     .container {
       width: 420px;
-      margin-top: 50px;
+      margin-top: 40px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 5px;
     }
 
     .card {
@@ -54,13 +26,12 @@
       padding: 15px;
       border-radius: 12px;
       margin-top: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
+      margin-top: 5px;
       margin-bottom: 10px;
       border-radius: 8px;
       border: none;
@@ -83,27 +54,30 @@
       background: #3b66ff;
     }
 
-    .small {
-      opacity: 0.7;
-      font-size: 12px;
+    .score {
+      font-size: 28px;
       text-align: center;
+      font-weight: bold;
     }
 
-    canvas {
+    img {
       width: 100%;
+      border-radius: 12px;
       margin-top: 10px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    img:active {
+      transform: scale(1.05);
     }
   </style>
 </head>
-
 <body>
-
-<div class="glow"></div>
 
 <div class="container">
 
   <h1>LIFORGE</h1>
-  <div class="small">Daily System Dashboard</div>
 
   <div class="card">
     <label>Sleep (hours)</label>
@@ -112,23 +86,27 @@
     <label>Steps</label>
     <input id="steps" type="number">
 
-    <button onclick="saveDay()">Save</button>
+    <button onclick="save()">Save</button>
   </div>
 
   <div class="card">
-    <div class="small">Trend (7 dni)</div>
-    <canvas id="chart" width="400" height="120"></canvas>
+    <div>Today score</div>
+    <div class="score" id="score">--</div>
   </div>
 
   <div class="card">
-    <div class="small">History</div>
+    <div>Cat test (UI interaction)</div>
+    <img src="https://placekitten.com/500/300" onclick="zoom(this)">
+  </div>
+
+  <div class="card">
+    <div>History</div>
     <div id="history"></div>
   </div>
 
 </div>
 
 <script>
-
 function getData() {
   return JSON.parse(localStorage.getItem("liforge")) || [];
 }
@@ -137,12 +115,13 @@ function saveData(data) {
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function saveDay() {
+function save() {
   const sleep = Number(document.getElementById("sleep").value);
   const steps = Number(document.getElementById("steps").value);
 
-  const score =
-    Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
+  const score = Math.round(((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100);
+
+  document.getElementById("score").innerText = score + "%";
 
   const entry = {
     date: new Date().toISOString().split("T")[0],
@@ -155,11 +134,10 @@ function saveDay() {
   data.unshift(entry);
   saveData(data);
 
-  renderHistory();
-  drawChart();
+  render();
 }
 
-function renderHistory() {
+function render() {
   const data = getData();
   const container = document.getElementById("history");
 
@@ -169,41 +147,21 @@ function renderHistory() {
     container.innerHTML += `
       <div style="margin-top:10px; padding:10px; background:#2a2f3a; border-radius:8px;">
         <b>${d.date}</b><br>
-        ${d.sleep}h sleep • ${d.steps} steps • ${d.score}%
+        ${d.sleep}h • ${d.steps} steps • ${d.score}%
       </div>
     `;
   });
 }
 
-function drawChart() {
-  const data = getData().slice(0, 7).reverse();
-  const canvas = document.getElementById("chart");
-  const ctx = canvas.getContext("2d");
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (data.length === 0) return;
-
-  const stepX = canvas.width / (data.length - 1 || 1);
-
-  ctx.beginPath();
-  ctx.strokeStyle = "#4f7cff";
-  ctx.lineWidth = 3;
-
-  data.forEach((d, i) => {
-    const x = i * stepX;
-    const y = canvas.height - (d.score / 100) * canvas.height;
-
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  });
-
-  ctx.stroke();
+function zoom(img) {
+  if (img.style.transform === "scale(1.5)") {
+    img.style.transform = "scale(1)";
+  } else {
+    img.style.transform = "scale(1.5)";
+  }
 }
 
-renderHistory();
-drawChart();
-
+render();
 </script>
 
 </body>

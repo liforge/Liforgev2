@@ -1,10 +1,10 @@
-const CACHE_NAME = "liforge-v3";
+const CACHE_NAME = "liforge-v2";
 
 const FILES = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./logo-512.png"
+  "/Liforgev2/",
+  "/Liforgev2/index.html",
+  "/Liforgev2/manifest.json",
+  "/Liforgev2/logo-512.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -17,9 +17,9 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
+    caches.keys().then(keys =>
       Promise.all(
-        keys.map((key) => {
+        keys.map(key => {
           if (key !== CACHE_NAME) return caches.delete(key);
         })
       )

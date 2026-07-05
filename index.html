@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE v0.3.3</title>
+<title>LIFORGE v0.3.4</title>
 
 <style>
 *{box-sizing:border-box}
@@ -22,7 +22,7 @@ background:rgba(0,0,0,.45);
 z-index:0;
 }
 
-/* APP LAYER */
+/* APP */
 .app{
 position:relative;
 z-index:1;
@@ -129,18 +129,20 @@ backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.08);
 }
 
-/* INPUT */
+/* INPUT (FIX WIDTH) */
 input{
-width:100%;
+width:120px;
 padding:10px;
 border-radius:10px;
 border:none;
 margin-top:8px;
 background:#2a2f3a;
 color:#fff;
+text-align:center;
+font-size:16px;
 }
 
-/* BUTTON */
+/* BUTTONS */
 button{
 width:100%;
 padding:10px;
@@ -151,6 +153,21 @@ background:#4f7cff;
 color:#fff;
 font-weight:bold;
 cursor:pointer;
+}
+
+/* GLASS BUTTON */
+.glassBtn{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.15);
+font-weight:normal;
+letter-spacing:1px;
+transition:.2s;
+}
+
+.glassBtn:hover{
+background:rgba(255,255,255,.12);
+transform:scale(1.02);
 }
 
 /* SCORE */
@@ -177,20 +194,17 @@ font-size:13px;
 
 <body>
 
-<!-- 🔥 INTRO -->
+<!-- INTRO -->
 <div id="intro">
   <div style="font-size:60px">⚡</div>
   <div style="font-size:28px;font-weight:bold;letter-spacing:2px;margin-top:10px">LIFORGE</div>
   <div style="opacity:.6;margin:10px 0 30px">Forge Yourself</div>
 
-  <button class="enterBtn" onclick="enterSystem()">
-    ENTER THE SYSTEM
-  </button>
+  <button class="enterBtn" onclick="enterSystem()">ENTER THE SYSTEM</button>
 </div>
 
-<!-- 🔥 APP -->
+<!-- APP -->
 <div class="app">
-
 <div class="container">
 
 <!-- MAIN -->
@@ -201,9 +215,22 @@ font-size:13px;
     <div class="logo">LIFORGE</div>
     <div class="sub">Forge Yourself</div>
 
-    <svg class="silhouette" viewBox="0 0 100 180">
+    <!-- SILHOUETTE -->
+    <svg class="silhouette" viewBox="0 0 100 200">
       <circle cx="50" cy="25" r="18"/>
-      <path d="M50 45 C30 55,30 85,35 110 C38 130,32 150,25 170 L75 170 C68 150,62 130,65 110 C70 85,70 55,50 45 Z"/>
+      <path d="
+        M50 45
+        C35 55,30 75,35 95
+        C38 110,30 130,28 150
+        C26 165,30 180,40 190
+        C45 180,47 165,48 150
+        C49 135,51 120,50 105
+        C49 120,51 135,52 150
+        C53 165,55 180,60 190
+        C70 180,74 165,72 150
+        C70 130,62 110,65 95
+        C70 75,65 55,50 45
+      "/>
     </svg>
 
     <div id="score" class="score">--</div>
@@ -216,11 +243,11 @@ font-size:13px;
     <div>Steps</div>
     <input id="steps" type="number">
 
-    <button onclick="save()">Save</button>
+    <button class="glassBtn" onclick="save()">Save</button>
   </div>
 
   <div class="card">
-    <button onclick="showHistory()">History</button>
+    <button class="glassBtn" onclick="showHistory()">History</button>
   </div>
 
 </div>

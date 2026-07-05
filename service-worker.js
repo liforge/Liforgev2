@@ -1,10 +1,10 @@
-const CACHE_NAME = "liforge-v2";
+const CACHE_NAME = "liforge-v3";
 
 const FILES = [
-  "/Liforgev2/",
-  "/Liforgev2/index.html",
-  "/Liforgev2/manifest.json",
-  "/Liforgev2/logo-512.png"
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./logo-512.png"
 ];
 
 self.addEventListener("install", (event) => {

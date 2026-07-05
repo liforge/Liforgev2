@@ -3,24 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE</title>
-
-<meta name="theme-color" content="#000000">
-
-<!-- 🔥 PWA MANIFEST (OBOWIĄZKOWE) -->
-<link rel="manifest" href="./manifest.json">
+<title>LIFORGE v0.3</title>
 
 <style>
 *{box-sizing:border-box}
-
-html,body{
-margin:0;
-height:100%;
-font-family:Arial;
-color:#e6e6e6;
-background:#000;
-overflow:hidden;
-}
+html,body{margin:0;height:100%;font-family:Arial;color:#e6e6e6}
 
 .screen{
 position:fixed;
@@ -46,6 +33,12 @@ border:1px solid rgba(255,255,255,.25);
 background:rgba(0,0,0,.35);
 backdrop-filter:blur(10px);
 color:white;
+transition:.2s;
+}
+
+.enterBtn:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,.15);
 }
 
 #app{
@@ -113,34 +106,73 @@ margin-top:8px;
 cursor:pointer;
 color:#fff;
 font-weight:bold;
-background:rgba(255,255,255,.08);
 }
 
+.glassBtn{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.15);
+transition:.2s;
+}
+
+.glassBtn:hover{
+transform:scale(1.02);
+background:rgba(255,255,255,.12);
+}
+
+.score{
+font-size:56px;
+font-weight:bold;
+text-shadow:0 0 20px rgba(124,247,255,.5);
+}
+
+#historyView{display:none}
+
+.historyItem{
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+display:flex;
+justify-content:space-between;
+font-size:13px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
 <div id="intro" class="screen">
   <button class="enterBtn" onclick="enterSystem()">ENTER THE SYSTEM</button>
 </div>
 
-<!-- APP -->
 <div id="app" class="screen">
 <div class="overlay"></div>
 
 <div class="container">
 <div class="inner">
 
+<div class="hero">
+  <div class="logo">LIFORGE</div>
+  <div class="sub">Forge Yourself</div>
+  <div id="score" class="score">--</div>
+</div>
+
 <div class="card">
   <div>Sleep</div>
-  <input id="sleep" type="number">
+  <input id="sleep" type="number" min="0">
 
   <div>Steps</div>
-  <input id="steps" type="number">
+  <input id="steps" type="number" min="0">
 
-  <button onclick="save()">Save</button>
+  <button class="glassBtn" onclick="save()">Save</button>
+</div>
+
+<div class="card">
+  <button class="glassBtn" onclick="showHistory()">History</button>
+</div>
+
+<div id="historyView" class="card">
+  <button onclick="hideHistory()">← Back</button>
+  <div id="history"></div>
 </div>
 
 </div>
@@ -150,26 +182,97 @@ background:rgba(255,255,255,.08);
 <script>
 
 function enterSystem(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("app").style.display="block";
+  const intro = document.getElementById("intro");
+  const app = document.getElementById("app");
+
+  if(intro && app){
+    intro.style.display="none";
+    app.style.display="block";
+  }
 }
 
-/* 🔥 SERVICE WORKER FIX */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
+function getData(){
+  try{
+    return JSON.parse(localStorage.getItem("liforge")) || [];
+  } catch(e){
+    return [];
+  }
 }
 
-/* INSTALL HOOK (NIE UI, TYLKO DETEKCJA) */
-let deferredPrompt = null;
+function saveData(d){
+  localStorage.setItem("liforge", JSON.stringify(d));
+}
 
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  console.log("PWA install available");
-});
+function calcScore(sleep,steps){
+  sleep = sleep || 0;
+  steps = steps || 0;
+  return Math.round(((Math.min(sleep/7,1)+Math.min(steps/8000,1))/2)*100);
+}
+
+function getArrow(score){
+  if(score>=85) return "↑↑";
+  if(score>=65) return "↑";
+  if(score>=40) return "→";
+  if(score>=20) return "↓";
+  return "↓↓";
+}
 
 function save(){
-  alert("Saved");
+
+  const sleepEl = document.getElementById("sleep");
+  const stepsEl = document.getElementById("steps");
+  const scoreEl = document.getElementById("score");
+
+  if(!sleepEl || !stepsEl || !scoreEl) return;
+
+  const sleep = Number(sleepEl.value || 0);
+  const steps = Number(stepsEl.value || 0);
+
+  const score = calcScore(sleep,steps);
+
+  scoreEl.textContent = score + "%";
+
+  const data = getData();
+
+  data.unshift({
+    date: new Date().toISOString().split("T")[0],
+    sleep,
+    steps,
+    score
+  });
+
+  saveData(data);
+}
+
+function renderHistory(){
+  const h = document.getElementById("history");
+  if(!h) return;
+
+  h.innerHTML = "";
+
+  getData().slice(0,10).forEach(d=>{
+    h.innerHTML += `
+      <div class="historyItem">
+        <div>${d.date} • ${d.sleep}h • ${d.steps}</div>
+        <div>${d.score}% <span>${getArrow(d.score)}</span></div>
+      </div>
+    `;
+  });
+}
+
+function showHistory(){
+  const hv = document.getElementById("historyView");
+  if(!hv) return;
+
+  renderHistory();
+  hv.style.display="block";
+}
+
+function hideHistory(){
+  const hv = document.getElementById("historyView");
+  if(!hv) return;
+
+  hv.style.display="none";
 }
 
 </script>

@@ -19,7 +19,6 @@ background:#000;
 overflow:hidden;
 }
 
-/* SCREEN BASE */
 .screen{
 position:fixed;
 inset:0;
@@ -27,7 +26,6 @@ width:100%;
 height:100%;
 }
 
-/* INTRO */
 #intro{
 background:url('intro.png') center/cover no-repeat;
 display:flex;
@@ -53,20 +51,17 @@ transform:scale(1.05);
 background:rgba(255,255,255,.15);
 }
 
-/* APP */
 #app{
 display:none;
 background:url('liforge.png') center/cover no-repeat;
 }
 
-/* DARK OVERLAY */
 .overlay{
 position:absolute;
 inset:0;
 background:rgba(0,0,0,.45);
 }
 
-/* CONTENT */
 .container{
 position:relative;
 z-index:2;
@@ -172,12 +167,10 @@ letter-spacing:1px;
 
 <body>
 
-<!-- INTRO -->
 <div id="intro" class="screen">
   <button class="enterBtn" onclick="enterSystem()">ENTER THE SYSTEM</button>
 </div>
 
-<!-- APP -->
 <div id="app" class="screen">
 
 <div class="overlay"></div>
@@ -226,12 +219,14 @@ function enterSystem(){
   document.getElementById("app").style.display="block";
 }
 
-/* 🔥 KLUCZOWA POPRAWKA: SERVICE WORKER */
+/* 🔥 SERVICE WORKER FIX (KLUCZOWE) */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
+  navigator.serviceWorker.register('./service-worker.js').then(reg => {
+    console.log("SW registered:", reg.scope);
+  });
 }
 
-/* INSTALL LOGIC */
+/* INSTALL FLOW */
 let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
@@ -263,14 +258,6 @@ function calcScore(sleep,steps){
   return Math.round(((Math.min(sleep/7,1)+Math.min(steps/8000,1))/2)*100);
 }
 
-function getArrow(score){
-  if(score>=85) return "↑↑";
-  if(score>=65) return "↑";
-  if(score>=40) return "→";
-  if(score>=20) return "↓";
-  return "↓↓";
-}
-
 function save(){
   const sleep=Number(document.getElementById("sleep").value);
   const steps=Number(document.getElementById("steps").value);
@@ -297,7 +284,7 @@ function renderHistory(){
     h.innerHTML+=`
       <div class="historyItem">
         <div>${d.date} • ${d.sleep}h • ${d.steps}</div>
-        <div>${d.score}% <span class="arrow">${getArrow(d.score)}</span></div>
+        <div>${d.score}%</div>
       </div>
     `;
   });

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE v0.3.1</title>
+<title>LIFORGE v0.3.2</title>
 
 <style>
 *{box-sizing:border-box}
@@ -38,10 +38,19 @@ align-items:flex-start;
 .hero{text-align:center}
 
 .logo{
-font-size:52px;
+font-size:54px;
 font-weight:bold;
-text-shadow:0 0 20px rgba(124,247,255,.5);
+letter-spacing:2px;
+text-shadow:0 0 25px rgba(124,247,255,.65);
 margin-bottom:6px;
+animation:logoPulse 3.5s ease-in-out infinite;
+position:relative;
+}
+
+@keyframes logoPulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.04)}
+100%{transform:scale(1)}
 }
 
 .sub{
@@ -57,9 +66,29 @@ width:90px;
 height:140px;
 margin:0 auto 10px;
 opacity:.35;
-filter:drop-shadow(0 0 10px rgba(124,247,255,.25));
+filter:drop-shadow(0 0 12px rgba(124,247,255,.25));
+animation:float 4s ease-in-out infinite;
 }
 
+@keyframes float{
+0%{transform:translateY(0px) scale(1)}
+50%{transform:translateY(-6px) scale(1.02)}
+100%{transform:translateY(0px) scale(1)}
+}
+
+.silhouette path,
+.silhouette circle{
+animation:glow 2.8s ease-in-out infinite;
+transform-origin:center;
+}
+
+@keyframes glow{
+0%{fill:rgba(255,255,255,.75)}
+50%{fill:rgba(124,247,255,.95)}
+100%{fill:rgba(255,255,255,.75)}
+}
+
+/* CARD */
 .card{
 margin-top:14px;
 padding:15px;
@@ -69,13 +98,7 @@ backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.08);
 }
 
-/* INPUT ROW — FIX WIDTH ISSUE */
-.row{
-display:flex;
-justify-content:space-between;
-gap:10px;
-}
-
+/* INPUTS */
 input{
 width:100%;
 padding:10px;
@@ -84,10 +107,6 @@ border:none;
 margin-top:8px;
 background:#2a2f3a;
 color:#fff;
-}
-
-.inputSmall{
-max-width:120px;
 }
 
 /* BUTTONS */
@@ -103,7 +122,7 @@ font-weight:bold;
 cursor:pointer;
 }
 
-/* GLASS HISTORY BUTTON */
+/* GLASS BUTTON */
 .glassBtn{
 background:rgba(255,255,255,.08);
 backdrop-filter:blur(10px);
@@ -172,12 +191,11 @@ font-size:13px;
   </div>
 
   <div class="card">
-
     <div class="label">Sleep (hours)</div>
-    <input id="sleep" type="number" class="inputSmall">
+    <input id="sleep" type="number">
 
     <div class="label">Steps</div>
-    <input id="steps" type="number" class="inputSmall">
+    <input id="steps" type="number">
 
     <button onclick="save()">Save</button>
   </div>

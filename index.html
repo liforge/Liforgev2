@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LIFORGE v0.3</title>
 
-<!-- FIX SYSTEM BAR (ANDROID) -->
 <meta name="theme-color" content="#000000">
 
 <style>
@@ -151,6 +150,24 @@ display:flex;
 justify-content:space-between;
 font-size:13px;
 }
+
+/* INSTALL TILE */
+.installTile{
+margin-top:14px;
+padding:14px;
+border-radius:16px;
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.15);
+text-align:center;
+}
+
+.installTitle{
+font-size:13px;
+opacity:.7;
+margin-bottom:8px;
+letter-spacing:1px;
+}
 </style>
 </head>
 
@@ -173,6 +190,12 @@ font-size:13px;
   <div class="logo">LIFORGE</div>
   <div class="sub">Forge Yourself</div>
   <div id="score" class="score">--</div>
+</div>
+
+<!-- INSTALL TILE -->
+<div id="installTile" class="installTile" style="display:none">
+  <div class="installTitle">Zainstaluj LIFORGE</div>
+  <button id="installBtn" class="glassBtn">Zainstaluj aplikację</button>
 </div>
 
 <div class="card">
@@ -204,6 +227,26 @@ function enterSystem(){
   document.getElementById("intro").style.display="none";
   document.getElementById("app").style.display="block";
 }
+
+/* PWA INSTALL LOGIC */
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  document.getElementById("installTile").style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+  if(!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+
+  deferredPrompt = null;
+  document.getElementById("installTile").style.display = "none";
+});
 
 function getData(){
   return JSON.parse(localStorage.getItem("liforge")||"[]");

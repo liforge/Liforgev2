@@ -151,7 +151,6 @@ justify-content:space-between;
 font-size:13px;
 }
 
-/* INSTALL TILE */
 .installTile{
 margin-top:14px;
 padding:14px;
@@ -192,7 +191,6 @@ letter-spacing:1px;
   <div id="score" class="score">--</div>
 </div>
 
-<!-- INSTALL TILE -->
 <div id="installTile" class="installTile" style="display:none">
   <div class="installTitle">Zainstaluj LIFORGE</div>
   <button id="installBtn" class="glassBtn">Zainstaluj aplikację</button>
@@ -228,7 +226,12 @@ function enterSystem(){
   document.getElementById("app").style.display="block";
 }
 
-/* PWA INSTALL LOGIC */
+/* 🔥 KLUCZOWA POPRAWKA: SERVICE WORKER */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js');
+}
+
+/* INSTALL LOGIC */
 let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {

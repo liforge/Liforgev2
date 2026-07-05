@@ -1,14 +1,14 @@
 {
   "name": "LIFORGE",
   "short_name": "LIFORGE",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/Liforgev2/",
+  "scope": "/Liforgev2/",
   "display": "standalone",
   "background_color": "#0f0f1a",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "logo-512.png",
+      "src": "/Liforgev2/logo-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

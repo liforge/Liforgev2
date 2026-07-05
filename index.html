@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE v0.3.4</title>
+<title>LIFORGE v0.3</title>
 
 <style>
 *{box-sizing:border-box}
@@ -22,7 +22,6 @@ background:rgba(0,0,0,.45);
 z-index:0;
 }
 
-/* APP */
 .app{
 position:relative;
 z-index:1;
@@ -42,7 +41,7 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-background:rgba(8,10,18,.7);
+background:rgba(8,10,18,.75);
 backdrop-filter:blur(10px);
 transition:.8s ease;
 }
@@ -50,18 +49,38 @@ transition:.8s ease;
 #intro.hide{
 opacity:0;
 pointer-events:none;
+transform:scale(1.05);
+}
+
+#intro img{
+width:120px;
+margin-bottom:20px;
+filter:drop-shadow(0 0 20px rgba(124,247,255,.4));
+animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.05)}
+100%{transform:scale(1)}
 }
 
 .enterBtn{
 padding:16px 34px;
-border:none;
 border-radius:30px;
 font-size:16px;
 font-weight:bold;
-background:#4f7cff;
-color:white;
 cursor:pointer;
-box-shadow:0 0 25px rgba(79,124,255,.4);
+border:1px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+color:white;
+transition:.2s;
+}
+
+.enterBtn:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,.12);
 }
 
 /* CONTAINER */
@@ -85,41 +104,8 @@ animation:logoPulse 3.5s ease-in-out infinite;
 100%{transform:scale(1)}
 }
 
-.sub{
-opacity:.6;
-font-size:12px;
-letter-spacing:2px;
-margin-bottom:10px;
-}
+.sub{opacity:.6;font-size:12px;letter-spacing:2px;margin-bottom:10px}
 
-/* SILHOUETTE */
-.silhouette{
-width:90px;
-height:140px;
-margin:0 auto 10px;
-opacity:.35;
-filter:drop-shadow(0 0 12px rgba(124,247,255,.25));
-animation:float 4s ease-in-out infinite;
-}
-
-@keyframes float{
-0%{transform:translateY(0px)}
-50%{transform:translateY(-6px)}
-100%{transform:translateY(0px)}
-}
-
-.silhouette circle,
-.silhouette path{
-animation:glow 2.8s ease-in-out infinite;
-}
-
-@keyframes glow{
-0%{fill:rgba(255,255,255,.7)}
-50%{fill:rgba(124,247,255,.95)}
-100%{fill:rgba(255,255,255,.7)}
-}
-
-/* CARD */
 .card{
 margin-top:14px;
 padding:15px;
@@ -127,9 +113,14 @@ border-radius:16px;
 background:rgba(15,16,20,.18);
 backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.08);
+animation:fadeIn .6s ease;
 }
 
-/* INPUT (FIX WIDTH) */
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
 input{
 width:120px;
 padding:10px;
@@ -142,35 +133,30 @@ text-align:center;
 font-size:16px;
 }
 
-/* BUTTONS */
 button{
 width:100%;
 padding:10px;
 border-radius:10px;
 border:none;
 margin-top:8px;
-background:#4f7cff;
+cursor:pointer;
 color:#fff;
 font-weight:bold;
-cursor:pointer;
 }
 
-/* GLASS BUTTON */
 .glassBtn{
 background:rgba(255,255,255,.08);
 backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.15);
 font-weight:normal;
-letter-spacing:1px;
 transition:.2s;
 }
 
 .glassBtn:hover{
-background:rgba(255,255,255,.12);
 transform:scale(1.02);
+background:rgba(255,255,255,.12);
 }
 
-/* SCORE */
 .score{
 font-size:56px;
 font-weight:bold;
@@ -196,10 +182,7 @@ font-size:13px;
 
 <!-- INTRO -->
 <div id="intro">
-  <div style="font-size:60px">⚡</div>
-  <div style="font-size:28px;font-weight:bold;letter-spacing:2px;margin-top:10px">LIFORGE</div>
-  <div style="opacity:.6;margin:10px 0 30px">Forge Yourself</div>
-
+  <img src="intro.png">
   <button class="enterBtn" onclick="enterSystem()">ENTER THE SYSTEM</button>
 </div>
 
@@ -207,32 +190,11 @@ font-size:13px;
 <div class="app">
 <div class="container">
 
-<!-- MAIN -->
 <div id="mainView">
 
   <div class="hero">
-
     <div class="logo">LIFORGE</div>
     <div class="sub">Forge Yourself</div>
-
-    <!-- SILHOUETTE -->
-    <svg class="silhouette" viewBox="0 0 100 200">
-      <circle cx="50" cy="25" r="18"/>
-      <path d="
-        M50 45
-        C35 55,30 75,35 95
-        C38 110,30 130,28 150
-        C26 165,30 180,40 190
-        C45 180,47 165,48 150
-        C49 135,51 120,50 105
-        C49 120,51 135,52 150
-        C53 165,55 180,60 190
-        C70 180,74 165,72 150
-        C70 130,62 110,65 95
-        C70 75,65 55,50 45
-      "/>
-    </svg>
-
     <div id="score" class="score">--</div>
   </div>
 
@@ -248,16 +210,20 @@ font-size:13px;
 
   <div class="card">
     <button class="glassBtn" onclick="showHistory()">History</button>
+    <button class="glassBtn" onclick="clearHistory()">Clear History</button>
+  </div>
+
+  <div class="card">
+    <div>Global Trend</div>
+    <div id="trend">Stable</div>
   </div>
 
 </div>
 
 <!-- HISTORY -->
 <div id="historyView" class="card">
-
   <button onclick="hideHistory()">← Back</button>
   <div id="history"></div>
-
 </div>
 
 </div>
@@ -306,6 +272,7 @@ function save(){
   });
 
   saveData(data);
+  updateTrend();
 }
 
 function renderHistory(){
@@ -331,6 +298,28 @@ function showHistory(){
 function hideHistory(){
   document.getElementById("historyView").style.display="none";
   document.getElementById("mainView").style.display="block";
+}
+
+function clearHistory(){
+  if(confirm("Clear all history?")){
+    localStorage.removeItem("liforge");
+    document.getElementById("history").innerHTML="<div>History wiped.</div>";
+  }
+}
+
+function updateTrend(){
+  const data=getData();
+  if(data.length<2) return;
+
+  const latest=data[0].score;
+  const prev=data[1].score;
+
+  const diff=latest-prev;
+  const trend=document.getElementById("trend");
+
+  if(diff>5) trend.textContent="Rising ↑";
+  else if(diff<-5) trend.textContent="Falling ↓";
+  else trend.textContent="Stable →";
 }
 
 </script>

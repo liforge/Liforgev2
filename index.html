@@ -5,9 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LIFORGE v0.3</title>
 
+<!-- FIX SYSTEM BAR (ANDROID) -->
+<meta name="theme-color" content="#000000">
+
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:Arial;color:#e6e6e6}
+
+html,body{
+margin:0;
+height:100%;
+font-family:Arial;
+color:#e6e6e6;
+background:#000;
+overflow:hidden;
+}
 
 /* SCREEN BASE */
 .screen{
@@ -49,7 +60,7 @@ display:none;
 background:url('liforge.png') center/cover no-repeat;
 }
 
-/* DARK OVERLAY (jedna warstwa, nie pseudo-elementy) */
+/* DARK OVERLAY */
 .overlay{
 position:absolute;
 inset:0;

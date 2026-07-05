@@ -3,63 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE v0.2</title>
+<title>LIFORGE v0.3</title>
+
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:Arial;background:#0f1115;color:#e6e6e6}
-body{background:url('liforge.png') center/cover fixed no-repeat;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:0}
-#intro{
-position:fixed;inset:0;z-index:9999;
-display:flex;flex-direction:column;
-justify-content:center;align-items:center;
-background:rgba(8,10,18,.55);
-backdrop-filter:blur(10px);
-transition:.8s ease;
+
+body{
+background:url('liforge.png') center/cover fixed no-repeat;
+overflow:hidden;
 }
-#intro.hide{
-opacity:0;
-pointer-events:none;
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.4);
+z-index:0;
 }
-.logo{
-font-size:60px;
-margin-bottom:10px;
-text-shadow:0 0 20px rgba(124,247,255,.6);
-animation:pulse 2.5s infinite;
-}
-h1{margin:0}
-.sub{opacity:.75;margin:8px 0 35px}
-.enter{
-padding:16px 34px;
-border:none;
-border-radius:30px;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-background:#4f7cff;
-color:#fff;
-box-shadow:0 0 25px rgba(79,124,255,.45);
-transition:.25s;
-}
-.enter:hover{transform:scale(1.03)}
-@keyframes pulse{
-50%{transform:scale(1.05)}
-}
+
 .app{
 position:relative;
 z-index:1;
 height:100%;
-overflow:auto;
 padding:40px 12px;
-transform:translateY(60px);
-opacity:0;
-transition:.8s ease;
+display:flex;
+justify-content:center;
+align-items:flex-start;
 }
-.app.show{
-transform:translateY(0);
-opacity:1;
-}
-.container{max-width:420px;margin:auto}
+
+.container{max-width:420px;width:100%}
+
 .card{
 margin-top:16px;
 padding:15px;
@@ -68,6 +42,7 @@ background:rgba(15,16,20,.18);
 backdrop-filter:blur(8px);
 border:1px solid rgba(255,255,255,.08);
 }
+
 input,button{
 width:100%;
 padding:10px;
@@ -75,85 +50,157 @@ border-radius:10px;
 border:none;
 margin-top:8px;
 }
-button{background:#4f7cff;color:#fff;font-weight:bold}
+
+button{
+background:#4f7cff;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+}
+
 .hero{text-align:center}
-.score{font-size:56px;font-weight:bold;text-shadow:0 0 20px rgba(124,247,255,.5)}
-.label{opacity:.65;font-size:12px;letter-spacing:2px}
+.score{
+font-size:56px;
+font-weight:bold;
+text-shadow:0 0 20px rgba(124,247,255,.5);
+}
+
+.label{
+opacity:.65;
+font-size:12px;
+letter-spacing:2px;
+}
+
+#historyView{
+display:none;
+}
+
+.historyItem{
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:14px;
+}
+
+.arrow{
+font-size:18px;
+margin-left:10px;
+}
 </style>
 </head>
+
 <body>
 
-<div id="intro">
-<div class="logo">⚡</div>
-<h1>LIFORGE</h1>
-<div class="sub">Forge Yourself</div>
-<button class="enter" onclick="enterSystem()">ENTER THE SYSTEM</button>
-</div>
-
-<div class="app" id="app">
+<div class="app">
 <div class="container">
 
-<div class="hero">
-<div class="label">TARGET SCORE</div>
-<div id="score" class="score">--</div>
+<!-- MAIN -->
+<div id="mainView">
+
+  <div class="hero">
+    <div class="label">TARGET SCORE</div>
+    <div id="score" class="score">--</div>
+  </div>
+
+  <div class="card">
+    <div class="label">Sleep (hours)</div>
+    <input id="sleep" type="number">
+
+    <div class="label">Steps</div>
+    <input id="steps" type="number">
+
+    <button onclick="save()">Save</button>
+  </div>
+
+  <div class="card">
+    <button onclick="showHistory()">Check history</button>
+  </div>
+
 </div>
 
-<div class="card">
-<div class="label">Sleep (hours)</div>
-<input id="sleep" type="number">
+<!-- HISTORY -->
+<div id="historyView" class="card">
 
-<div class="label">Steps</div>
-<input id="steps" type="number">
+  <button onclick="hideHistory()">← Back</button>
 
-<button onclick="save()">Save</button>
-</div>
+  <div id="history"></div>
 
-<div class="card">
-<div class="label">History</div>
-<div id="history"></div>
 </div>
 
 </div>
 </div>
 
 <script>
-function enterSystem(){
- document.getElementById("intro").classList.add("hide");
- document.getElementById("app").classList.add("show");
-}
 
 function getData(){
- return JSON.parse(localStorage.getItem("liforge")||"[]");
+  return JSON.parse(localStorage.getItem("liforge")||"[]");
 }
 
 function saveData(d){
- localStorage.setItem("liforge",JSON.stringify(d));
+  localStorage.setItem("liforge",JSON.stringify(d));
+}
+
+function calcScore(sleep,steps){
+  return Math.round(
+    ((Math.min(sleep/7,1)+Math.min(steps/8000,1))/2)*100
+  );
+}
+
+function getArrow(score){
+  if(score>=85) return "↑↑";
+  if(score>=65) return "↑";
+  if(score>=40) return "→";
+  if(score>=20) return "↓";
+  return "↓↓";
 }
 
 function save(){
- const sleep=Number(document.getElementById("sleep").value);
- const steps=Number(document.getElementById("steps").value);
+  const sleep=Number(document.getElementById("sleep").value);
+  const steps=Number(document.getElementById("steps").value);
 
- const score=Math.round(((Math.min(sleep/7,1)+Math.min(steps/8000,1))/2)*100);
+  const score=calcScore(sleep,steps);
 
- document.getElementById("score").textContent=score+"%";
+  document.getElementById("score").textContent=score+"%";
 
- const data=getData();
- data.unshift({date:new Date().toISOString().split("T")[0],sleep,steps,score});
- saveData(data);
- render();
+  const data=getData();
+  data.unshift({
+    date:new Date().toISOString().split("T")[0],
+    sleep,
+    steps,
+    score
+  });
+
+  saveData(data);
+  renderHistory();
 }
 
-function render(){
- const h=document.getElementById("history");
- h.innerHTML="";
- getData().slice(0,7).forEach(d=>{
-   h.innerHTML+=`<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)">
-   ${d.date} • ${d.sleep}h • ${d.steps} • ${d.score}%
-   </div>`;
- });
+function renderHistory(){
+  const h=document.getElementById("history");
+  h.innerHTML="";
+
+  getData().slice(0,10).forEach(d=>{
+    h.innerHTML+=`
+      <div class="historyItem">
+        <div>${d.date} • ${d.sleep}h • ${d.steps}</div>
+        <div>${d.score}% <span class="arrow">${getArrow(d.score)}</span></div>
+      </div>
+    `;
+  });
 }
-render();
+
+function showHistory(){
+  renderHistory();
+  document.getElementById("mainView").style.display="none";
+  document.getElementById("historyView").style.display="block";
+}
+
+function hideHistory(){
+  document.getElementById("historyView").style.display="none";
+  document.getElementById("mainView").style.display="block";
+}
+
 </script>
 
 </body>

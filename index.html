@@ -7,65 +7,36 @@
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:Arial;background:#0f1115;color:#e6e6e6}
+html,body{margin:0;height:100%;font-family:Arial;color:#e6e6e6}
 
-body{
-background:url('liforge.png') center/cover fixed no-repeat;
-overflow:hidden;
-}
-
-body::before{
-content:"";
+/* GLOBAL */
+.screen{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.45);
-z-index:0;
-}
-
-.app{
-position:relative;
-z-index:1;
+width:100%;
 height:100%;
-padding:40px 12px;
-display:flex;
-justify-content:center;
-align-items:flex-start;
 }
 
-/* INTRO */
+/* INTRO SCREEN */
 #intro{
-position:fixed;
-inset:0;
-z-index:9999;
+background:url('intro.png') center/cover no-repeat;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-background:rgba(8,10,18,.75);
-backdrop-filter:blur(10px);
-transition:.8s ease;
+flex-direction:column;
+z-index:10;
 }
 
-#intro.hide{
-opacity:0;
-pointer-events:none;
-transform:scale(1.05);
-}
-
-#intro img{
-width:120px;
-margin-bottom:20px;
-filter:drop-shadow(0 0 20px rgba(124,247,255,.4));
-animation:pulse 3s infinite;
-}
-
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.05)}
-100%{transform:scale(1)}
+#intro::before{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.55);
 }
 
 .enterBtn{
+position:relative;
+z-index:2;
 padding:16px 34px;
 border-radius:30px;
 font-size:16px;
@@ -73,7 +44,7 @@ font-weight:bold;
 cursor:pointer;
 border:1px solid rgba(255,255,255,.2);
 background:rgba(255,255,255,.08);
-backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 color:white;
 transition:.2s;
 }
@@ -83,10 +54,32 @@ transform:scale(1.05);
 background:rgba(255,255,255,.12);
 }
 
-/* CONTAINER */
-.container{max-width:420px;width:100%}
+/* APP SCREEN */
+#app{
+display:none;
+background:url('liforge.png') center/cover no-repeat;
+}
 
-/* HERO */
+#app::before{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.45);
+}
+
+/* CONTENT */
+.container{
+position:relative;
+z-index:2;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+padding:40px 12px;
+}
+
+.inner{max-width:420px;width:100%}
+
 .hero{text-align:center}
 
 .logo{
@@ -95,13 +88,6 @@ font-weight:bold;
 letter-spacing:2px;
 text-shadow:0 0 25px rgba(124,247,255,.65);
 margin-bottom:6px;
-animation:logoPulse 3.5s ease-in-out infinite;
-}
-
-@keyframes logoPulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.04)}
-100%{transform:scale(1)}
 }
 
 .sub{opacity:.6;font-size:12px;letter-spacing:2px;margin-bottom:10px}
@@ -113,12 +99,6 @@ border-radius:16px;
 background:rgba(15,16,20,.18);
 backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.08);
-animation:fadeIn .6s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
 }
 
 input{
@@ -148,7 +128,6 @@ font-weight:bold;
 background:rgba(255,255,255,.08);
 backdrop-filter:blur(10px);
 border:1px solid rgba(255,255,255,.15);
-font-weight:normal;
 transition:.2s;
 }
 
@@ -163,7 +142,6 @@ font-weight:bold;
 text-shadow:0 0 20px rgba(124,247,255,.5);
 }
 
-/* HISTORY */
 #historyView{display:none}
 
 .historyItem{
@@ -181,46 +159,36 @@ font-size:13px;
 <body>
 
 <!-- INTRO -->
-<div id="intro">
-  <img src="intro.png">
+<div id="intro" class="screen">
   <button class="enterBtn" onclick="enterSystem()">ENTER THE SYSTEM</button>
 </div>
 
 <!-- APP -->
-<div class="app">
+<div id="app" class="screen">
+
 <div class="container">
+<div class="inner">
 
-<div id="mainView">
-
-  <div class="hero">
-    <div class="logo">LIFORGE</div>
-    <div class="sub">Forge Yourself</div>
-    <div id="score" class="score">--</div>
-  </div>
-
-  <div class="card">
-    <div>Sleep</div>
-    <input id="sleep" type="number">
-
-    <div>Steps</div>
-    <input id="steps" type="number">
-
-    <button class="glassBtn" onclick="save()">Save</button>
-  </div>
-
-  <div class="card">
-    <button class="glassBtn" onclick="showHistory()">History</button>
-    <button class="glassBtn" onclick="clearHistory()">Clear History</button>
-  </div>
-
-  <div class="card">
-    <div>Global Trend</div>
-    <div id="trend">Stable</div>
-  </div>
-
+<div class="hero">
+  <div class="logo">LIFORGE</div>
+  <div class="sub">Forge Yourself</div>
+  <div id="score" class="score">--</div>
 </div>
 
-<!-- HISTORY -->
+<div class="card">
+  <div>Sleep</div>
+  <input id="sleep" type="number">
+
+  <div>Steps</div>
+  <input id="steps" type="number">
+
+  <button class="glassBtn" onclick="save()">Save</button>
+</div>
+
+<div class="card">
+  <button class="glassBtn" onclick="showHistory()">History</button>
+</div>
+
 <div id="historyView" class="card">
   <button onclick="hideHistory()">← Back</button>
   <div id="history"></div>
@@ -228,11 +196,13 @@ font-size:13px;
 
 </div>
 </div>
+</div>
 
 <script>
 
 function enterSystem(){
-  document.getElementById("intro").classList.add("hide");
+  document.getElementById("intro").style.display="none";
+  document.getElementById("app").style.display="block";
 }
 
 function getData(){
@@ -260,7 +230,6 @@ function save(){
   const steps=Number(document.getElementById("steps").value);
 
   const score=calcScore(sleep,steps);
-
   document.getElementById("score").textContent=score+"%";
 
   const data=getData();
@@ -272,7 +241,6 @@ function save(){
   });
 
   saveData(data);
-  updateTrend();
 }
 
 function renderHistory(){
@@ -291,35 +259,11 @@ function renderHistory(){
 
 function showHistory(){
   renderHistory();
-  document.getElementById("mainView").style.display="none";
   document.getElementById("historyView").style.display="block";
 }
 
 function hideHistory(){
   document.getElementById("historyView").style.display="none";
-  document.getElementById("mainView").style.display="block";
-}
-
-function clearHistory(){
-  if(confirm("Clear all history?")){
-    localStorage.removeItem("liforge");
-    document.getElementById("history").innerHTML="<div>History wiped.</div>";
-  }
-}
-
-function updateTrend(){
-  const data=getData();
-  if(data.length<2) return;
-
-  const latest=data[0].score;
-  const prev=data[1].score;
-
-  const diff=latest-prev;
-  const trend=document.getElementById("trend");
-
-  if(diff>5) trend.textContent="Rising ↑";
-  else if(diff<-5) trend.textContent="Falling ↓";
-  else trend.textContent="Stable →";
 }
 
 </script>

@@ -70,7 +70,6 @@ button{
   font-weight:bold;
 }
 
-/* HERO */
 .hero{
   text-align:center;
   margin-top:10px;
@@ -87,7 +86,6 @@ button{
   letter-spacing:2px;
 }
 
-/* HISTORY */
 .historyWrap{
   display:flex;
   flex-direction:column;
@@ -95,28 +93,16 @@ button{
   margin-top:10px;
 }
 
-.arrow{
-  font-size:22px;
-  margin:4px 0;
-  opacity:.85;
-}
-
-/* STATES */
-body.energy::before{background:rgba(0,0,0,.20)}
-body.recovery::before{background:rgba(0,0,0,.5)}
-body.focus::before{background:rgba(0,0,0,.65)}
-
 .historyTitle{
   font-size:12px;
   opacity:.6;
   margin-bottom:10px;
   text-align:center;
 }
-
 </style>
 </head>
 
-<body class="energy">
+<body>
 
 <div class="app">
 <div class="container">
@@ -146,7 +132,7 @@ body.focus::before{background:rgba(0,0,0,.65)}
   <!-- HISTORY -->
   <div class="card">
     <div class="historyTitle">2026</div>
-    <div class="historyWrap" id="history"></div>
+    <div id="history" class="historyWrap"></div>
   </div>
 
 </div>
@@ -155,31 +141,42 @@ body.focus::before{background:rgba(0,0,0,.65)}
 <script>
 
 function getData(){
-  return JSON.parse(localStorage.getItem("liforge"))||[];
+  return JSON.parse(localStorage.getItem("liforge")) || [];
 }
 
 function saveData(d){
-  localStorage.setItem("liforge",JSON.stringify(d));
+  localStorage.setItem("liforge", JSON.stringify(d));
 }
 
-function calcScore(sleep,steps){
+function calcScore(sleep, steps){
   return Math.round(
-    ((Math.min(sleep/7,1)+Math.min(steps/8000,1))/2)*100
+    ((Math.min(sleep / 7, 1) + Math.min(steps / 8000, 1)) / 2) * 100
   );
 }
 
+function getArrowFromScore(score){
+  if(score >= 85) return "↑↑";
+  if(score >= 65) return "↑";
+  if(score >= 40) return "→";
+  if(score >= 20) return "↓";
+  return "↓↓";
+}
+
 function save(){
-  const sleep=Number(document.getElementById("sleep").value);
-  const steps=Number(document.getElementById("steps").value);
+  const sleep = Number(document.getElementById("sleep").value);
+  const steps = Number(document.getElementById("steps").value);
 
-  const score=calcScore(sleep,steps);
+  const score = calcScore(sleep, steps);
 
-  document.getElementById("score").innerText=score+"%";
+  document.getElementById("score").innerText = score + "%";
 
-  let data=getData();
+  let data = getData();
+
   data.unshift({
-    date:new Date().toISOString().split("T")[0],
-    sleep,steps,score
+    date: new Date().toISOString().split("T")[0],
+    sleep,
+    steps,
+    score
   });
 
   saveData(data);
@@ -187,80 +184,23 @@ function save(){
 }
 
 function render(){
-  const c=document.getElementById("history");
-  c.innerHTML="";
+  const c = document.getElementById("history");
+  c.innerHTML = "";
 
-  const data=getData().slice(0,10);
+  const data = getData().slice(0, 10);
 
-  let prev=null;
-  let html="";
+  let html = "";
+  let prev = null;
 
-  data.forEach(d=>{
-    let arrow="→";
+  data.forEach(d => {
 
-    if(prev!==null){
-      if(d.score>prev) arrow="↑";
-      else if(d.score<prev) arrow="↓";
-      else arrow="→";
-    }
+    const trend = prev !== null
+      ? (d.score > prev ? "↑" : d.score < prev ? "↓" : "→")
+      : "→";
 
-    prev=d.score;
+    prev = d.score;
 
-    html+=`<div class="arrow">${arrow}</div>`;
-  });
-
-  c.innerHTML=html;
-}
-
-render();function getSleepArrow(h){
-  if(h >= 7) return "↑↑";
-  if(h >= 6) return "↑";
-  if(h >= 5) return "→";
-  if(h >= 4) return "↓";
-  return "↓↓";
-}
-
-function getStepsArrow(s){
-  if(s >= 10000) return "↑↑";
-  if(s >= 8000) return "↑";
-  if(s >= 5000) return "→";
-  if(s >= 3000) return "↓";
-  return "↓↓";
-}
-
-function arrowToValue(a){
-  if(a === "↑↑") return 2;
-  if(a === "↑") return 1;
-  if(a === "→") return 0;
-  if(a === "↓") return -1;
-  return -2;
-}
-
-function valueToArrow(v){
-  if(v >= 1.5) return "↑↑";
-  if(v >= 0.5) return "↑";
-  if(v > -0.5) return "→";
-  if(v > -1.5) return "↓";
-  return "↓↓";
-}
-
-function render(){
-  const c=document.getElementById("history");
-  c.innerHTML="";
-
-  const data=getData().slice(0,10);
-
-  let html="";
-
-  data.forEach(d=>{
-
-    const sleepA = getSleepArrow(d.sleep);
-    const stepsA = getStepsArrow(d.steps);
-
-    const avg =
-      (arrowToValue(sleepA) + arrowToValue(stepsA)) / 2;
-
-    const globalA = valueToArrow(avg);
+    const globalArrow = getArrowFromScore(d.score);
 
     html += `
       <div style="
@@ -271,29 +211,29 @@ function render(){
         margin:10px 0;
         font-size:18px;
       ">
-
         <div style="color:#7cf7ff;text-shadow:0 0 10px rgba(124,247,255,.5)">
-          ${sleepA}
+          ${d.sleep}h
         </div>
 
         <div style="opacity:.4">|</div>
 
         <div style="color:#7cf7ff;text-shadow:0 0 10px rgba(124,247,255,.5)">
-          ${stepsA}
+          ${d.steps}
         </div>
 
         <div style="opacity:.4">=</div>
 
         <div style="font-size:22px;color:#7cf7ff;text-shadow:0 0 18px rgba(124,247,255,.8)">
-          ${globalA}
+          ${globalArrow} ${d.score}%
         </div>
-
       </div>
     `;
   });
 
-  c.innerHTML=html;
+  c.innerHTML = html;
 }
+
+render();
 
 </script>
 

@@ -101,12 +101,28 @@ html,body{
   gap:10px;
 }
 
-.card{
+.statCard{
   padding:15px;
   border-radius:16px;
   background:rgba(15,16,20,.18);
   backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,.08);
+
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  transition:transform .15s ease, border .15s ease;
+}
+
+.statCard:hover{
+  transform:translateY(-2px);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.statLabel{
+  font-size:13px;
+  opacity:.8;
 }
 
 input{

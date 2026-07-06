@@ -262,8 +262,14 @@ function calcScore(sleep, steps, training, water){
     ) / 4 * 100
   );
 }
-function getData(){
-  // METRICS (jedno miejsce prawdy dla całej aplikacji)
+  function getData(){
+  try{
+    const d = localStorage.getItem("liforge");
+    return d ? JSON.parse(d) : [];
+  }catch(e){
+    return [];
+  }
+  }// METRICS (jedno miejsce prawdy dla całej aplikacji)
 const METRICS = {
   sleep: {
     target: 7,

@@ -223,7 +223,13 @@ button{
         <div class="card">
           <button onclick="save()">Save</button>
         </div>
+<div class="card">
+  <button onclick="showHistory()">History</button>
+</div>
 
+<div class="card">
+  <button onclick="clearHistory()">Clear history</button>
+</div>
         <div class="card">
           <button onclick="showHistory()">History</button>
         </div>
@@ -321,6 +327,10 @@ function showHistory(){
 function hideHistory(){
   document.getElementById("historyView").style.display="none";
 }
+  function clearHistory(){
+  localStorage.removeItem("liforge");
+  renderHistory();
+  }
 
 </script>
 

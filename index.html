@@ -176,7 +176,6 @@ button{
   justify-content:space-between;
   font-size:13px;
 }
-
 </style>
 </head>
 
@@ -270,7 +269,7 @@ function saveData(data){
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-// SCORE (v1)
+// SCORE
 function calcScore(sleep,steps,training){
   sleep = sleep || 0;
   steps = steps || 0;
@@ -305,15 +304,19 @@ function save(){
 
   saveData(data);
 
+  document.getElementById("sleep").value = "";
+  document.getElementById("steps").value = "";
+  document.getElementById("training").value = "";
+
   alert("Saved");
 }
 
 // HISTORY
 function renderHistory(){
   const h = document.getElementById("history");
-  h.innerHTML = "";
-
   const data = getData();
+
+  h.innerHTML = "";
 
   if(data.length === 0){
     h.innerHTML = "<div>No data yet</div>";
@@ -331,8 +334,8 @@ function renderHistory(){
 }
 
 function showHistory(){
-  document.getElementById("historyView").style.display="flex";
   renderHistory();
+  document.getElementById("historyView").style.display="flex";
 }
 
 function hideHistory(){

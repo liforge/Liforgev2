@@ -1,106 +1,170 @@
 *{
-  box-sizing:border-box;
+box-sizing:border-box;
 }
+
 
 html,body{
-  margin:0;
-  min-height:100%;
-  font-family:Arial, sans-serif;
-  color:#e6e6e6;
-  background:#000;
-  overflow-x:hidden;
+
+margin:0;
+min-height:100%;
+
+font-family:Arial,sans-serif;
+
+color:#e6e6e6;
+
+background:#000;
+
+overflow-x:hidden;
 
 }
+
 
 
 /* =====================
-   INTRO SCREEN
+   FIXED BACKGROUND
 ===================== */
 
-#intro{
-  background:url('intro.png') center/cover no-repeat;
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:20;
+
+.background{
+
+position:fixed;
+
+inset:0;
+
+background:url("liforge.png") center/cover no-repeat;
+
+z-index:0;
+
 }
+
+
+
+
+/* =====================
+   INTRO
+===================== */
+
+
+#intro{
+
+position:fixed;
+
+inset:0;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:url("intro.png") center/cover no-repeat;
+
+z-index:20;
+
+}
+
 
 
 .enterBtn{
-  padding:16px 34px;
-  border-radius:30px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
 
-  border:1px solid rgba(255,255,255,.25);
+padding:16px 34px;
 
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(10px);
+border-radius:30px;
 
-  color:white;
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+border:1px solid rgba(255,255,255,.25);
+
+background:rgba(0,0,0,.35);
+
+backdrop-filter:blur(10px);
+
+color:white;
+
 }
+
+
 
 
 
 /* =====================
-   MAIN APP
+   APP
 ===================== */
 
-  #app{
-  display:none;
-  min-height:100vh;
-  padding-bottom:40px;
-  position:relative;
-  z-index:1;
+
+#app{
+
+display:none;
+
+min-height:100vh;
+
+position:relative;
+
+z-index:2;
+
+padding-bottom:40px;
+
 }
 
-#app::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:url("liforge.png") center/cover no-repeat;
-  z-index:-1;
-}
+
 
 
 .overlay{
-  position:absolute;
-  inset:0;
 
-  background:rgba(0,0,0,.45);
+position:absolute;
 
-  pointer-events:none;
+inset:0;
+
+background:rgba(0,0,0,.45);
+
+pointer-events:none;
+
 }
 
+
+
+
+
+/* =====================
+   LAYOUT
+===================== */
 
 
 .container{
 
-  position:relative;
-  z-index:2;
+position:relative;
 
-  display:flex;
-  justify-content:center;
+z-index:3;
 
-  padding:40px 12px;
+display:flex;
+
+justify-content:center;
+
+padding:40px 12px;
+
 }
 
 
 
 .inner{
 
-  max-width:420px;
-  width:100%;
+width:100%;
 
-  display:flex;
-  flex-direction:column;
+max-width:420px;
 
-  gap:16px;
+display:flex;
+
+flex-direction:column;
+
+gap:16px;
 
 }
+
+
 
 
 
@@ -111,33 +175,41 @@ html,body{
 
 .hero{
 
-  height:220px;
+height:220px;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+
+justify-content:center;
+
+align-items:center;
 
 }
+
 
 
 .heroPlaceholder{
 
-  width:140px;
-  height:140px;
+width:140px;
 
-  border-radius:20px;
+height:140px;
 
-  border:1px dashed rgba(255,255,255,.2);
+border-radius:20px;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+border:1px dashed rgba(255,255,255,.2);
 
-  font-size:12px;
+display:flex;
 
-  opacity:.6;
+justify-content:center;
+
+align-items:center;
+
+font-size:12px;
+
+opacity:.6;
 
 }
+
+
 
 
 
@@ -148,10 +220,11 @@ html,body{
 
 .panel{
 
-  display:flex;
-  flex-direction:column;
+display:flex;
 
-  gap:10px;
+flex-direction:column;
+
+gap:10px;
 
 }
 
@@ -159,27 +232,31 @@ html,body{
 
 .statCard{
 
-  padding:15px;
+padding:15px;
 
-  border-radius:16px;
+border-radius:16px;
 
-  background:rgba(15,16,20,.18);
+background:rgba(15,16,20,.18);
 
-  backdrop-filter:blur(10px);
+backdrop-filter:blur(10px);
 
-  border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.08);
 
 }
+
+
 
 
 
 .statLabel{
 
-  font-size:13px;
+font-size:13px;
 
-  opacity:.8;
+opacity:.8;
 
 }
+
+
 
 
 
@@ -188,21 +265,29 @@ html,body{
 ===================== */
 
 
-  input{
-  width:90px;
-  padding:10px;
+input{
 
-  border-radius:10px;
-  border:none;
+width:90px;
 
-  margin-top:8px;
+padding:10px;
 
-  background:#2a2f3a;
-  color:#fff;
+border-radius:10px;
 
-  text-align:center;
-  font-size:16px;
+border:none;
+
+margin-top:8px;
+
+background:#2a2f3a;
+
+color:white;
+
+text-align:center;
+
+font-size:16px;
+
 }
+
+
 
 
 
@@ -213,23 +298,23 @@ html,body{
 
 button{
 
-  width:100%;
+width:100%;
 
-  padding:10px;
+padding:10px;
 
-  border-radius:10px;
+border-radius:10px;
 
-  border:none;
+border:none;
 
-  margin-top:8px;
+margin-top:8px;
 
-  cursor:pointer;
+cursor:pointer;
 
-  color:#fff;
+color:white;
 
-  font-weight:bold;
+font-weight:bold;
 
-  background:rgba(255,255,255,.08);
+background:rgba(255,255,255,.08);
 
 }
 
@@ -237,107 +322,110 @@ button{
 
 button:hover{
 
-  background:rgba(255,255,255,.15);
+background:rgba(255,255,255,.15);
 
 }
 
 
 
+
+
 /* =====================
-   HISTORY / SETTINGS WINDOWS
+   WINDOWS
 ===================== */
 
 
 .historyOverlay{
 
-  position:fixed;
+position:fixed;
 
-  inset:0;
+inset:0;
 
-  background:rgba(0,0,0,.6);
+background:rgba(0,0,0,.6);
 
-  display:none;
+display:none;
 
-  justify-content:center;
+justify-content:center;
 
-  align-items:center;
+align-items:center;
 
-  z-index:30;
+z-index:30;
 
 }
+
+
 
 
 
 .historyCard{
 
-  width:90%;
+width:90%;
 
-  max-width:420px;
+max-width:420px;
 
-  padding:15px;
+padding:15px;
 
-  border-radius:16px;
+border-radius:16px;
 
+background:rgba(15,16,20,.95);
 
-  background:rgba(15,16,20,.95);
-
-  border:1px solid rgba(255,255,255,.1);
+border:1px solid rgba(255,255,255,.1);
 
 }
 
 
 
-/* =====================
-   HISTORY ITEMS
-===================== */
 
 
 .historyItem{
 
-  display:flex;
+display:flex;
 
-  justify-content:space-between;
+justify-content:space-between;
 
-  gap:10px;
+gap:10px;
 
-  padding:8px 0;
+padding:8px 0;
 
-  border-bottom:1px solid rgba(255,255,255,.08);
+border-bottom:1px solid rgba(255,255,255,.08);
 
-  font-size:13px;
+font-size:13px;
 
 }
 
 
 
+
+
 /* =====================
-   FUTURE METRICS
+   FUTURE DASHBOARD
 ===================== */
 
 
 .progressBar{
 
-  width:100%;
+width:100%;
 
-  height:10px;
+height:10px;
 
-  border-radius:20px;
+border-radius:20px;
 
-  background:rgba(255,255,255,.1);
+background:rgba(255,255,255,.1);
 
-  overflow:hidden;
+overflow:hidden;
 
 }
 
 
+
 .progressFill{
 
-  height:100%;
+height:100%;
 
-  width:0%;
+width:0%;
 
-  border-radius:20px;
+border-radius:20px;
 
-  background:white;
+background:white;
 
 }

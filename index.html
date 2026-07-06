@@ -10,10 +10,12 @@
 
 <body>
 
+<!-- INTRO -->
 <div id="intro">
   <button class="enterBtn" onclick="enterSystem()">ENTER</button>
 </div>
 
+<!-- APP -->
 <div id="app">
   <div class="overlay"></div>
 
@@ -24,6 +26,7 @@
         <div class="heroPlaceholder">SVG PLACEHOLDER</div>
       </div>
 
+      <!-- INPUTY DANYCH -->
       <div class="panel">
 
         <div class="statCard">
@@ -45,39 +48,44 @@
           <div class="statLabel">Water</div>
           <input id="water" type="number">
         </div>
-        <div class="panel">
-
-  <div class="statCard">
-    <div class="statLabel">SET METRICS</div>
-
-    <input id="set_sleep" placeholder="Sleep target">
-    <input id="set_steps" placeholder="Steps target">
-    <input id="set_training" placeholder="Training target">
-    <input id="set_water" placeholder="Water target">
-
-    <button onclick="saveMetrics()">Save metrics</button>
-  </div>
-
-        </div>
 
       </div>
 
+      <!-- ACTIONS -->
       <div class="panel">
-        <div class="statCard"><button onclick="save()">Save</button></div>
-        <div class="statCard"><button onclick="showHistory()">History</button></div>
-        <div class="statCard"><button onclick="clearHistory()">Clear</button></div>
-        <div class="statCard"><button onclick="showSettings()">Settings</button></div>
+
+        <div class="statCard">
+          <button onclick="save()">Save</button>
+        </div>
+
+        <div class="statCard">
+          <button onclick="showHistory()">History</button>
+        </div>
+
+        <div class="statCard">
+          <button onclick="showSettings()">Settings</button>
+        </div>
+
+        <div class="statCard">
+          <button onclick="clearHistory()">Clear</button>
+        </div>
+
       </div>
 
     </div>
   </div>
 </div>
 
+<!-- HISTORY -->
 <div id="historyView" class="historyOverlay">
   <div class="historyCard">
     <button onclick="hideHistory()">Back</button>
     <div id="history"></div>
-    <div id="settingsView" class="historyOverlay">
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="settingsView" class="historyOverlay">
   <div class="historyCard">
     <button onclick="hideSettings()">Back</button>
 
@@ -106,10 +114,9 @@
     </div>
 
   </div>
-    </div>
-  </div>
 </div>
 
 <script src="app.js"></script>
+
 </body>
 </html>

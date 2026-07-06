@@ -6,6 +6,15 @@
 <title>LIFORGE v0.4</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* zabezpieczenie overlayi */
+.historyOverlay,
+.settingsOverlay{
+  display:none;
+}
+</style>
+
 </head>
 
 <body>
@@ -85,7 +94,7 @@
 </div>
 
 <!-- SETTINGS -->
-<div id="settingsView" class="historyOverlay">
+<div id="settingsView" class="settingsOverlay historyOverlay">
   <div class="historyCard">
     <button onclick="hideSettings()">Back</button>
 

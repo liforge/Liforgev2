@@ -181,24 +181,20 @@ html,body{
 ===================== */
 
 
-input{
-
-  width:100%;
-
+  input{
+  width:90px;
   padding:10px;
 
   border-radius:10px;
-
   border:none;
 
   margin-top:8px;
 
   background:#2a2f3a;
-
   color:#fff;
 
   text-align:center;
-
+  font-size:16px;
 }
 
 

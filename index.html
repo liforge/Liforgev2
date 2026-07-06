@@ -8,12 +8,15 @@
 <style>
 *{box-sizing:border-box}
 html,body{
+  
   margin:0;
   height:100%;
   font-family:Arial;
   color:#e6e6e6;
   background:#000;
-}
+  overflow-x:hidden;
+  }
+
 
 /* SCREEN */
 .screen{
@@ -59,11 +62,13 @@ html,body{
 .container{
   position:relative;
   z-index:2;
-  height:100%;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:flex-start;
   padding:40px 12px;
+  overflow-y:auto;
+}
 }
 
 .inner{

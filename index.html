@@ -1,131 +1,292 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFORGE v0.4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>LIFORGE v0.5</title>
 
 <link rel="stylesheet" href="style.css">
 
-<style>
-/* zabezpieczenie overlayi */
-.historyOverlay,
-.settingsOverlay{
-  display:none;
-}
-</style>
-
 </head>
+
 
 <body>
 
+
+<!-- STAŁE TŁO -->
+<div class="background"></div>
+
+
 <!-- INTRO -->
+
 <div id="intro">
-  <button class="enterBtn" onclick="enterSystem()">ENTER</button>
+
+  <button class="enterBtn" onclick="enterSystem()">
+    ENTER
+  </button>
+
 </div>
+
+
 
 <!-- APP -->
+
 <div id="app">
-  <div class="overlay"></div>
 
-  <div class="container">
-    <div class="inner">
 
-      <div class="hero">
-        <div class="heroPlaceholder">SVG PLACEHOLDER</div>
-      </div>
+<div class="overlay"></div>
 
-      <!-- INPUTY DANYCH -->
-      <div class="panel">
 
-        <div class="statCard">
-          <div class="statLabel">Sleep</div>
-          <input id="sleep" type="number">
-        </div>
+<div class="container">
 
-        <div class="statCard">
-          <div class="statLabel">Steps</div>
-          <input id="steps" type="number">
-        </div>
+<div class="inner">
 
-        <div class="statCard">
-          <div class="statLabel">Training</div>
-          <input id="training" type="number">
-        </div>
 
-        <div class="statCard">
-          <div class="statLabel">Water</div>
-          <input id="water" type="number">
-        </div>
 
-      </div>
+<!-- HERO -->
 
-      <!-- ACTIONS -->
-      <div class="panel">
+<div class="hero">
 
-        <div class="statCard">
-          <button onclick="save()">Zapisz dzień</button>
-        </div>
-
-        <div class="statCard">
-          <button onclick="showHistory()">Zapisane dni</button>
-        </div>
-
-        <div class="statCard">
-          <button onclick="showSettings()">Dostosuj kierunek</button>
-        </div>
-
-        <div class="statCard">
-          <button onclick="clearHistory()">Wyczyść historie</button>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
+<div class="heroPlaceholder">
+SVG PLACEHOLDER
 </div>
 
-<!-- HISTORY -->
+</div>
+
+
+
+
+<!-- DAILY METRICS -->
+
+<div class="panel">
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Sleep
+</div>
+
+<input id="sleep" type="number">
+
+</div>
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Steps
+</div>
+
+<input id="steps" type="number">
+
+</div>
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Training
+</div>
+
+<input id="training" type="number">
+
+</div>
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Water
+</div>
+
+<input id="water" type="number">
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- ACTIONS -->
+
+<div class="panel">
+
+
+<div class="statCard">
+<button onclick="save()">
+Save
+</button>
+</div>
+
+
+
+<div class="statCard">
+<button onclick="showHistory()">
+History
+</button>
+</div>
+
+
+
+<div class="statCard">
+<button onclick="showSettings()">
+Adjust your direction
+</button>
+</div>
+
+
+
+<div class="statCard">
+<button onclick="clearHistory()">
+Clear
+</button>
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- HISTORY WINDOW -->
+
 <div id="historyView" class="historyOverlay">
-  <div class="historyCard">
-    <button onclick="hideHistory()">Back</button>
-    <div id="history"></div>
-  </div>
+
+
+<div class="historyCard">
+
+
+<button onclick="hideHistory()">
+Back
+</button>
+
+
+<div id="history"></div>
+
+
 </div>
 
-<!-- SETTINGS -->
-<div id="settingsView" class="settingsOverlay historyOverlay">
-  <div class="historyCard">
-    <button onclick="hideSettings()">Back</button>
 
-    <div class="statCard">
-      <div class="statLabel">Sleep target</div>
-      <input id="set_sleep" type="number">
-    </div>
-
-    <div class="statCard">
-      <div class="statLabel">Steps target</div>
-      <input id="set_steps" type="number">
-    </div>
-
-    <div class="statCard">
-      <div class="statLabel">Training target</div>
-      <input id="set_training" type="number">
-    </div>
-
-    <div class="statCard">
-      <div class="statLabel">Water target</div>
-      <input id="set_water" type="number">
-    </div>
-
-    <div class="statCard">
-      <button onclick="saveMetrics()">Save metrics</button>
-    </div>
-
-  </div>
 </div>
+
+
+
+
+
+
+
+
+<!-- SETTINGS WINDOW -->
+
+
+<div id="settingsView" class="historyOverlay">
+
+
+<div class="historyCard">
+
+
+<button onclick="hideSettings()">
+Back
+</button>
+
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Sleep target
+</div>
+
+<input id="set_sleep" type="number">
+
+</div>
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Steps target
+</div>
+
+<input id="set_steps" type="number">
+
+</div>
+
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Training target
+</div>
+
+<input id="set_training" type="number">
+
+</div>
+
+
+
+
+<div class="statCard">
+
+<div class="statLabel">
+Water target
+</div>
+
+<input id="set_water" type="number">
+
+</div>
+
+
+
+
+<div class="statCard">
+
+<button onclick="saveMetrics()">
+Save metrics
+</button>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
 
 <script src="app.js"></script>
 
+
 </body>
+
 </html>

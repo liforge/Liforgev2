@@ -429,3 +429,51 @@ border-radius:20px;
 background:white;
 
 }
+/* =====================
+   LIFORGE TOAST
+===================== */
+
+#toast{
+
+  position:fixed;
+
+  left:50%;
+
+  bottom:30px;
+
+  transform:translateX(-50%) translateY(20px);
+
+  padding:12px 20px;
+
+  border-radius:20px;
+
+  background:rgba(15,16,20,.92);
+
+  border:1px solid rgba(120,255,120,.25);
+
+  color:#9cff9c;
+
+  font-size:13px;
+
+  letter-spacing:1px;
+
+  backdrop-filter:blur(10px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.3s ease;
+
+  z-index:100;
+
+}
+
+
+#toast.show{
+
+  opacity:1;
+
+  transform:translateX(-50%) translateY(0);
+
+}

@@ -270,7 +270,7 @@ water = water || 0;
     (
       Math.min(sleep/7,1) +
       Math.min(steps/8000,1) +
-      Math.min(training/2,1)
+      Math.min(training/2,1) +
       Math.min(water/2.5,1)
     ) / 4 * 100
   );
@@ -297,7 +297,7 @@ const water = Number(document.getElementById("water").value ||0);
   document.getElementById("sleep").value = "";
   document.getElementById("steps").value = "";
   document.getElementById("training").value = "";
-
+  document.getElementById("water").value ="";
   alert("Saved");
 }
 
@@ -315,7 +315,7 @@ function renderHistory(){
   data.slice(0,10).forEach(d=>{
     h.innerHTML += `
       <div class="historyItem">
-        <div>${d.date} • ${d.sleep}h • ${d.steps} • ${d.training}h</div>
+        <div>${d.date} • ${d.sleep}h • ${d.steps} • ${d.training}h • ${d.water}L</div>
         <div>${d.score}%</div>
       </div>
     `;

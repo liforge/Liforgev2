@@ -362,3 +362,27 @@ function clearHistory(){
   renderHistory();
 
 }
+// =====================
+// PWA SERVICE WORKER
+// =====================
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener("load",()=>{
+
+    navigator.serviceWorker
+    .register("/Liforgev2/service-worker.js")
+    .then(()=>{
+
+      console.log("LIFORGE PWA ready");
+
+    })
+    .catch(err=>{
+
+      console.log("Service Worker error:", err);
+
+    });
+
+  });
+
+}

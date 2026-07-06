@@ -18,13 +18,11 @@ html,body{
   overflow-y:auto;
 }
 
-/* SCREEN (NAPRAWIONE - NIE FIXED) */
 .screen{
   width:100%;
   min-height:100vh;
 }
 
-/* INTRO */
 #intro{
   background:url('intro.png') center/cover no-repeat;
   display:flex;
@@ -46,7 +44,6 @@ html,body{
   color:white;
 }
 
-/* APP */
 #app{
   display:none;
   background:url('liforge.png') center/cover no-repeat;
@@ -60,7 +57,6 @@ html,body{
   background:rgba(0,0,0,.45);
 }
 
-/* LAYOUT */
 .container{
   position:relative;
   z-index:2;
@@ -78,7 +74,6 @@ html,body{
   gap:16px;
 }
 
-/* HERO */
 .hero{
   height:220px;
   display:flex;
@@ -98,7 +93,6 @@ html,body{
   opacity:.6;
 }
 
-/* SYSTEM CARD */
 .panel{
   display:flex;
   flex-direction:column;
@@ -114,20 +108,10 @@ html,body{
   display:flex;
   flex-direction:column;
   gap:8px;
-  transition:transform .15s ease, border .15s ease;
 }
 
-.statCard:hover{
-  transform:translateY(-2px);
-  border:1px solid rgba(255,255,255,.2);
-}
+.statLabel{font-size:13px;opacity:.8}
 
-.statLabel{
-  font-size:13px;
-  opacity:.8;
-}
-
-/* INPUTS */
 input{
   width:100%;
   padding:10px;
@@ -139,7 +123,6 @@ input{
   text-align:center;
 }
 
-/* BUTTONS */
 button{
   width:100%;
   padding:10px;
@@ -152,7 +135,6 @@ button{
   background:rgba(255,255,255,.08);
 }
 
-/* HISTORY */
 .historyOverlay{
   position:fixed;
   inset:0;
@@ -185,13 +167,11 @@ button{
 
 <body>
 
-<!-- INTRO -->
 <div id="intro">
   <button class="enterBtn" onclick="enterSystem()">ENTER</button>
 </div>
 
-<!-- APP -->
-<div id="app" class="screen">
+<div id="app">
   <div class="overlay"></div>
 
   <div class="container">
@@ -204,35 +184,35 @@ button{
       <div class="panel">
         <div class="statCard">
           <div class="statLabel">Sleep</div>
-          <input id="sleep" type="number" min="0">
+          <input id="sleep" type="number">
         </div>
 
         <div class="statCard">
           <div class="statLabel">Steps</div>
-          <input id="steps" type="number" min="0">
+          <input id="steps" type="number">
         </div>
 
         <div class="statCard">
-          <div class="statLabel">Training (hours)</div>
-          <input id="training" type="number" min="0">
+          <div class="statLabel">Training</div>
+          <input id="training" type="number">
         </div>
+
         <div class="statCard">
-  <div class="statLabel">Water (L)</div>
-  <input id="water" type="number" min="0">
-</div>
+          <div class="statLabel">Water</div>
+          <input id="water" type="number">
+        </div>
       </div>
 
       <div class="panel">
         <div class="statCard"><button onclick="save()">Save</button></div>
         <div class="statCard"><button onclick="showHistory()">History</button></div>
-        <div class="statCard"><button onclick="clearHistory()">Clear history</button></div>
+        <div class="statCard"><button onclick="clearHistory()">Clear</button></div>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- HISTORY -->
 <div id="historyView" class="historyOverlay">
   <div class="historyCard">
     <button onclick="hideHistory()">Back</button>
@@ -242,11 +222,33 @@ button{
 
 <script>
 
+/* ===== METRICS (JEDNO MIEJSCE PRAWDY) ===== */
+const METRICS = {
+  sleep: { target: 7, max: 1 },
+  steps: { target: 8000, max: 1 },
+  training: { target: 2, max: 1 },
+  water: { target: 2.5, max: 1 }
+};
+
 function enterSystem(){
   document.getElementById("intro").style.display="none";
   document.getElementById("app").style.display="block";
 }
-function calcScore(sleep, steps, training, water){
+
+function getData(){
+  try{
+    const d = localStorage.getItem("liforge");
+    return d ? JSON.parse(d) : [];
+  }catch(e){
+    return [];
+  }
+}
+
+function saveData(data){
+  localStorage.setItem("liforge", JSON.stringify(data));
+}
+
+function calcScore(sleep,steps,training,water){
 
   sleep = sleep || 0;
   steps = steps || 0;
@@ -262,52 +264,14 @@ function calcScore(sleep, steps, training, water){
     ) / 4 * 100
   );
 }
-  function getData(){
-  try{
-    const d = localStorage.getItem("liforge");
-    return d ? JSON.parse(d) : [];
-  }catch(e){
-    return [];
-  }
-  }// METRICS (jedno miejsce prawdy dla całej aplikacji)
-const METRICS = {
-  sleep: {
-    target: 7,
-    max: 1
-  },
-  steps: {
-    target: 8000,
-    max: 1
-  },
-  training: {
-    target: 2,
-    max: 1
-  },
-  water: {
-    target: 2.5,
-    max: 1
-  }
-};
-  
-  try{
-    const d = localStorage.getItem("liforge");
-    return d ? JSON.parse(d) : [];
-  }catch(e){
-    return [];
-  }
-}
-
-function saveData(data){
-  localStorage.setItem("liforge", JSON.stringify(data));
-}
-
-
 
 function save(){
+
   const sleep = Number(document.getElementById("sleep").value || 0);
   const steps = Number(document.getElementById("steps").value || 0);
   const training = Number(document.getElementById("training").value || 0);
-const water = Number(document.getElementById("water").value ||0);
+  const water = Number(document.getElementById("water").value || 0);
+
   const data = getData();
 
   data.unshift({
@@ -324,7 +288,8 @@ const water = Number(document.getElementById("water").value ||0);
   document.getElementById("sleep").value = "";
   document.getElementById("steps").value = "";
   document.getElementById("training").value = "";
-  document.getElementById("water").value ="";
+  document.getElementById("water").value = "";
+
   alert("Saved");
 }
 

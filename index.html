@@ -246,8 +246,43 @@ function enterSystem(){
   document.getElementById("intro").style.display="none";
   document.getElementById("app").style.display="block";
 }
+function calcScore(sleep, steps, training, water){
 
+  sleep = sleep || 0;
+  steps = steps || 0;
+  training = training || 0;
+  water = water || 0;
+
+  return Math.round(
+    (
+      Math.min(sleep / METRICS.sleep.target, METRICS.sleep.max) +
+      Math.min(steps / METRICS.steps.target, METRICS.steps.max) +
+      Math.min(training / METRICS.training.target, METRICS.training.max) +
+      Math.min(water / METRICS.water.target, METRICS.water.max)
+    ) / 4 * 100
+  );
+}
 function getData(){
+  // METRICS (jedno miejsce prawdy dla całej aplikacji)
+const METRICS = {
+  sleep: {
+    target: 7,
+    max: 1
+  },
+  steps: {
+    target: 8000,
+    max: 1
+  },
+  training: {
+    target: 2,
+    max: 1
+  },
+  water: {
+    target: 2.5,
+    max: 1
+  }
+};
+  
   try{
     const d = localStorage.getItem("liforge");
     return d ? JSON.parse(d) : [];
@@ -260,21 +295,7 @@ function saveData(data){
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-function calcScore(sleep,steps,training,water){
-  sleep = sleep || 0;
-  steps = steps || 0;
-  training = training || 0;
-water = water || 0;
-  
-  return Math.round(
-    (
-      Math.min(sleep/7,1) +
-      Math.min(steps/8000,1) +
-      Math.min(training/2,1) +
-      Math.min(water/2.5,1)
-    ) / 4 * 100
-  );
-}
+
 
 function save(){
   const sleep = Number(document.getElementById("sleep").value || 0);

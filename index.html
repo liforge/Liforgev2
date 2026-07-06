@@ -5,164 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LIFORGE v0.4</title>
 
-<style>
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  font-family:Arial;
-  color:#e6e6e6;
-  background:#000;
-  overflow-x:hidden;
-  overflow-y:auto;
-}
-
-.screen{
-  width:100%;
-  min-height:100vh;
-}
-
-#intro{
-  background:url('intro.png') center/cover no-repeat;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:fixed;
-  inset:0;
-}
-
-.enterBtn{
-  padding:16px 34px;
-  border-radius:30px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  border:1px solid rgba(255,255,255,.25);
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(10px);
-  color:white;
-}
-
-#app{
-  display:none;
-  background:url('liforge.png') center/cover no-repeat;
-  min-height:100vh;
-  padding-bottom:40px;
-}
-
-.overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.45);
-}
-
-.container{
-  position:relative;
-  z-index:2;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  padding:40px 12px;
-}
-
-.inner{
-  max-width:420px;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-
-.hero{
-  height:220px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.heroPlaceholder{
-  width:140px;
-  height:140px;
-  border-radius:20px;
-  border:1px dashed rgba(255,255,255,.2);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:12px;
-  opacity:.6;
-}
-
-.panel{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.statCard{
-  padding:15px;
-  border-radius:16px;
-  background:rgba(15,16,20,.18);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.08);
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.statLabel{font-size:13px;opacity:.8}
-
-input{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin-top:8px;
-  background:#2a2f3a;
-  color:#fff;
-  text-align:center;
-}
-
-button{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin-top:8px;
-  cursor:pointer;
-  color:#fff;
-  font-weight:bold;
-  background:rgba(255,255,255,.08);
-}
-
-.historyOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:10;
-}
-
-.historyCard{
-  width:90%;
-  max-width:420px;
-  padding:15px;
-  border-radius:16px;
-  background:rgba(15,16,20,.95);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(10px);
-}
-
-.historyItem{
-  padding:8px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -182,6 +25,7 @@ button{
       </div>
 
       <div class="panel">
+
         <div class="statCard">
           <div class="statLabel">Sleep</div>
           <input id="sleep" type="number">
@@ -201,6 +45,7 @@ button{
           <div class="statLabel">Water</div>
           <input id="water" type="number">
         </div>
+
       </div>
 
       <div class="panel">
@@ -220,115 +65,6 @@ button{
   </div>
 </div>
 
-<script>
-
-/* ===== METRICS (JEDNO MIEJSCE PRAWDY) ===== */
-const METRICS = {
-  sleep: { target: 7, max: 1 },
-  steps: { target: 8000, max: 1 },
-  training: { target: 2, max: 1 },
-  water: { target: 2.5, max: 1 }
-};
-
-function enterSystem(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("app").style.display="block";
-}
-
-function getData(){
-  try{
-    const d = localStorage.getItem("liforge");
-    return d ? JSON.parse(d) : [];
-  }catch(e){
-    return [];
-  }
-}
-
-function saveData(data){
-  localStorage.setItem("liforge", JSON.stringify(data));
-}
-
-function calcScore(sleep,steps,training,water){
-
-  sleep = sleep || 0;
-  steps = steps || 0;
-  training = training || 0;
-  water = water || 0;
-
-  return Math.round(
-    (
-      Math.min(sleep / METRICS.sleep.target, METRICS.sleep.max) +
-      Math.min(steps / METRICS.steps.target, METRICS.steps.max) +
-      Math.min(training / METRICS.training.target, METRICS.training.max) +
-      Math.min(water / METRICS.water.target, METRICS.water.max)
-    ) / 4 * 100
-  );
-}
-
-function save(){
-
-  const sleep = Number(document.getElementById("sleep").value || 0);
-  const steps = Number(document.getElementById("steps").value || 0);
-  const training = Number(document.getElementById("training").value || 0);
-  const water = Number(document.getElementById("water").value || 0);
-
-  const data = getData();
-
-  data.unshift({
-    date: new Date().toISOString().split("T")[0],
-    sleep,
-    steps,
-    training,
-    water,
-    score: calcScore(sleep,steps,training,water)
-  });
-
-  saveData(data);
-
-  document.getElementById("sleep").value = "";
-  document.getElementById("steps").value = "";
-  document.getElementById("training").value = "";
-  document.getElementById("water").value = "";
-
-  alert("Saved");
-}
-
-function renderHistory(){
-  const h = document.getElementById("history");
-  const data = getData();
-
-  h.innerHTML = "";
-
-  if(data.length === 0){
-    h.innerHTML = "<div>No data yet</div>";
-    return;
-  }
-
-  data.slice(0,10).forEach(d=>{
-    h.innerHTML += `
-      <div class="historyItem">
-        <div>${d.date} • ${d.sleep}h • ${d.steps} • ${d.training}h • ${d.water}L</div>
-        <div>${d.score}%</div>
-      </div>
-    `;
-  });
-}
-
-function showHistory(){
-  renderHistory();
-  document.getElementById("historyView").style.display="flex";
-}
-
-function hideHistory(){
-  document.getElementById("historyView").style.display="none";
-}
-
-function clearHistory(){
-  localStorage.removeItem("liforge");
-  renderHistory();
-}
-
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>

@@ -49,13 +49,20 @@ html,body{
    MAIN APP
 ===================== */
 
-#app{
+  #app{
   display:none;
   min-height:100vh;
-
-  background:url('liforge.png') center/cover no-repeat;
-
   padding-bottom:40px;
+  position:relative;
+}
+
+#app::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url('liforge.png') center/cover no-repeat;
+  z-index:-1;
+}
 }
 
 

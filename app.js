@@ -30,18 +30,28 @@ function saveMetrics(){
   };
 
   localStorage.setItem("metrics", JSON.stringify(METRICS));
-
   alert("Saved metrics");
 }
 
 // =====================
-// CORE
+// CORE NAVIGATION
 // =====================
 function enterSystem(){
   document.getElementById("intro").style.display = "none";
   document.getElementById("app").style.display = "block";
 }
 
+function showSettings(){
+  document.getElementById("settingsView").style.display = "flex";
+}
+
+function hideSettings(){
+  document.getElementById("settingsView").style.display = "none";
+}
+
+// =====================
+// DATA
+// =====================
 function getData(){
   try{
     return JSON.parse(localStorage.getItem("liforge")) || [];

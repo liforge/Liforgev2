@@ -64,7 +64,7 @@ function saveMetrics(){
   );
 
 
-  alert("Saved metrics");
+  console.log("Metrics saved");
 
 }
 

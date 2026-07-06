@@ -64,7 +64,7 @@ function saveMetrics(){
   );
 
 
-  console.log("Metrics saved");
+  showToast("DIRECTION UPDATED");
 
 }
 
@@ -363,6 +363,26 @@ function clearHistory(){
 
 }
 // =====================
+// TOAST SYSTEM
+// =====================
+
+function showToast(message){
+
+  const toast = document.getElementById("toast");
+
+  toast.innerText = message;
+
+  toast.classList.add("show");
+
+
+  setTimeout(()=>{
+
+    toast.classList.remove("show");
+
+  },2500);
+
+}
+// =====================
 // PWA SERVICE WORKER
 // =====================
 
@@ -384,5 +404,52 @@ if("serviceWorker" in navigator){
     });
 
   });
+
+}
+/* =====================
+   LIFORGE TOAST
+===================== */
+
+#toast{
+
+  position:fixed;
+
+  bottom:30px;
+  left:50%;
+
+  transform:translateX(-50%) translateY(20px);
+
+  background:rgba(15,16,20,.9);
+
+  border:1px solid rgba(120,255,120,.25);
+
+  color:#9cff9c;
+
+  padding:12px 20px;
+
+  border-radius:20px;
+
+  font-size:13px;
+
+  letter-spacing:1px;
+
+  backdrop-filter:blur(10px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.3s ease;
+
+  z-index:100;
+
+}
+
+
+#toast.show{
+
+  opacity:1;
+
+  transform:translateX(-50%) translateY(0);
 
 }

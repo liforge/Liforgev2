@@ -54,13 +54,14 @@ html,body{
   min-height:100vh;
   padding-bottom:40px;
   position:relative;
+  z-index:1;
 }
 
 #app::before{
   content:"";
   position:fixed;
   inset:0;
-  background:url('liforge.png') center/cover no-repeat;
+  background:url("liforge.png") center/cover no-repeat;
   z-index:-1;
 }
 

@@ -1,3 +1,6 @@
+// =====================
+// METRICS (system konfiguracji)
+// =====================
 let METRICS = loadMetrics();
 
 function loadMetrics(){
@@ -21,9 +24,13 @@ function saveMetrics(){
   localStorage.setItem("metrics", JSON.stringify(METRICS));
   alert("Saved metrics");
 }
+
+// =====================
+// APP CORE
+// =====================
 function enterSystem(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("app").style.display="block";
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("app").style.display = "block";
 }
 
 function getData(){
@@ -36,6 +43,11 @@ function getData(){
 
 function saveData(data){
   localStorage.setItem("liforge", JSON.stringify(data));
+}
+
+// =====================
+// SCORE ENGINE (METRICS-BASED)
+// =====================
 function calcScore(sleep, steps, training, water){
 
   sleep = sleep || 0;
@@ -52,6 +64,10 @@ function calcScore(sleep, steps, training, water){
     ) / 4 * 100
   );
 }
+
+// =====================
+// SAVE DATA
+// =====================
 function save(){
 
   const sleep = Number(document.getElementById("sleep").value || 0);
@@ -67,27 +83,30 @@ function save(){
     steps,
     training,
     water,
-    score: calcScore(sleep,steps,training,water)
+    score: calcScore(sleep, steps, training, water)
   });
 
   saveData(data);
 
-  document.getElementById("sleep").value="";
-  document.getElementById("steps").value="";
-  document.getElementById("training").value="";
-  document.getElementById("water").value="";
+  document.getElementById("sleep").value = "";
+  document.getElementById("steps").value = "";
+  document.getElementById("training").value = "";
+  document.getElementById("water").value = "";
 
   alert("Saved");
 }
 
+// =====================
+// HISTORY
+// =====================
 function renderHistory(){
   const h = document.getElementById("history");
   const data = getData();
 
-  h.innerHTML="";
+  h.innerHTML = "";
 
   if(!data.length){
-    h.innerHTML="<div>No data yet</div>";
+    h.innerHTML = "<div>No data yet</div>";
     return;
   }
 
@@ -103,13 +122,16 @@ function renderHistory(){
 
 function showHistory(){
   renderHistory();
-  document.getElementById("historyView").style.display="flex";
+  document.getElementById("historyView").style.display = "flex";
 }
 
 function hideHistory(){
-  document.getElementById("historyView").style.display="none";
+  document.getElementById("historyView").style.display = "none";
 }
 
+// =====================
+// RESET
+// =====================
 function clearHistory(){
   localStorage.removeItem("liforge");
   renderHistory();

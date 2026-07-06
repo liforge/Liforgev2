@@ -7,16 +7,16 @@
 
 <style>
 *{box-sizing:border-box}
+
 html,body{
-  
   margin:0;
-  height:100%;
+  min-height:100%;
   font-family:Arial;
   color:#e6e6e6;
   background:#000;
   overflow-x:hidden;
-  }
-
+  overflow-y:auto;
+}
 
 /* SCREEN */
 .screen{
@@ -50,6 +50,7 @@ html,body{
 #app{
   display:none;
   background:url('liforge.png') center/cover no-repeat;
+  min-height:100vh;
 }
 
 .overlay{
@@ -62,13 +63,10 @@ html,body{
 .container{
   position:relative;
   z-index:2;
-  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:flex-start;
   padding:40px 12px;
-  overflow-y:auto;
-
 }
 
 .inner{
@@ -198,14 +196,11 @@ button{
   <div class="container">
     <div class="inner">
 
-      <!-- HERO -->
       <div class="hero">
         <div class="heroPlaceholder">SVG PLACEHOLDER</div>
       </div>
 
-      <!-- STATS -->
       <div class="panel">
-
         <div class="statCard">
           <div class="statLabel">Sleep</div>
           <input id="sleep" type="number" min="0">
@@ -220,24 +215,12 @@ button{
           <div class="statLabel">Training (hours)</div>
           <input id="training" type="number" min="0">
         </div>
-
       </div>
 
-      <!-- ACTIONS -->
       <div class="panel">
-
-        <div class="statCard">
-          <button onclick="save()">Save</button>
-        </div>
-
-        <div class="statCard">
-          <button onclick="showHistory()">History</button>
-        </div>
-
-        <div class="statCard">
-          <button onclick="clearHistory()">Clear history</button>
-        </div>
-
+        <div class="statCard"><button onclick="save()">Save</button></div>
+        <div class="statCard"><button onclick="showHistory()">History</button></div>
+        <div class="statCard"><button onclick="clearHistory()">Clear history</button></div>
       </div>
 
     </div>
@@ -254,13 +237,11 @@ button{
 
 <script>
 
-// ENTER
 function enterSystem(){
   document.getElementById("intro").style.display="none";
   document.getElementById("app").style.display="block";
 }
 
-// DATA
 function getData(){
   try{
     const d = localStorage.getItem("liforge");
@@ -274,7 +255,6 @@ function saveData(data){
   localStorage.setItem("liforge", JSON.stringify(data));
 }
 
-// SCORE
 function calcScore(sleep,steps,training){
   sleep = sleep || 0;
   steps = steps || 0;
@@ -289,13 +269,10 @@ function calcScore(sleep,steps,training){
   );
 }
 
-// SAVE
 function save(){
   const sleep = Number(document.getElementById("sleep").value || 0);
   const steps = Number(document.getElementById("steps").value || 0);
   const training = Number(document.getElementById("training").value || 0);
-
-  const score = calcScore(sleep,steps,training);
 
   const data = getData();
 
@@ -304,7 +281,7 @@ function save(){
     sleep,
     steps,
     training,
-    score
+    score: calcScore(sleep,steps,training)
   });
 
   saveData(data);
@@ -316,7 +293,6 @@ function save(){
   alert("Saved");
 }
 
-// HISTORY
 function renderHistory(){
   const h = document.getElementById("history");
   const data = getData();
@@ -347,7 +323,6 @@ function hideHistory(){
   document.getElementById("historyView").style.display="none";
 }
 
-// CLEAR
 function clearHistory(){
   localStorage.removeItem("liforge");
   renderHistory();

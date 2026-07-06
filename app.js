@@ -4,8 +4,16 @@
 let METRICS = loadMetrics();
 
 function loadMetrics(){
-  const m = localStorage.getItem("metrics");
-  return m ? JSON.parse(m) : {
+  try{
+    const m = localStorage.getItem("metrics");
+    return m ? JSON.parse(m) : getDefaultMetrics();
+  }catch{
+    return getDefaultMetrics();
+  }
+}
+
+function getDefaultMetrics(){
+  return {
     sleep: { target: 7, max: 1 },
     steps: { target: 8000, max: 1 },
     training: { target: 2, max: 1 },
@@ -22,11 +30,12 @@ function saveMetrics(){
   };
 
   localStorage.setItem("metrics", JSON.stringify(METRICS));
+
   alert("Saved metrics");
 }
 
 // =====================
-// APP CORE
+// CORE
 // =====================
 function enterSystem(){
   document.getElementById("intro").style.display = "none";
@@ -46,9 +55,11 @@ function saveData(data){
 }
 
 // =====================
-// SCORE ENGINE (METRICS-BASED)
+// SCORE ENGINE
 // =====================
 function calcScore(sleep, steps, training, water){
+
+  const m = METRICS || getDefaultMetrics();
 
   sleep = sleep || 0;
   steps = steps || 0;
@@ -57,16 +68,16 @@ function calcScore(sleep, steps, training, water){
 
   return Math.round(
     (
-      Math.min(sleep / METRICS.sleep.target, METRICS.sleep.max) +
-      Math.min(steps / METRICS.steps.target, METRICS.steps.max) +
-      Math.min(training / METRICS.training.target, METRICS.training.max) +
-      Math.min(water / METRICS.water.target, METRICS.water.max)
+      Math.min(sleep / m.sleep.target, m.sleep.max) +
+      Math.min(steps / m.steps.target, m.steps.max) +
+      Math.min(training / m.training.target, m.training.max) +
+      Math.min(water / m.water.target, m.water.max)
     ) / 4 * 100
   );
 }
 
 // =====================
-// SAVE DATA
+// SAVE
 // =====================
 function save(){
 

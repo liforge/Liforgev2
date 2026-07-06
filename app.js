@@ -6,18 +6,22 @@ let METRICS = loadMetrics();
 
 
 function getDefaultMetrics(){
+
   return {
-    sleep: { target: 7, max: 1 },
-    steps: { target: 8000, max: 1 },
-    training: { target: 2, max: 1 },
-    water: { target: 2.5, max: 1 }
+    sleep:{ target:7, max:1 },
+    steps:{ target:8000, max:1 },
+    training:{ target:2, max:1 },
+    water:{ target:2.5, max:1 }
   };
+
 }
+
 
 
 function loadMetrics(){
 
   try{
+
     const m = localStorage.getItem("metrics");
 
     return m ? JSON.parse(m) : getDefaultMetrics();
@@ -29,6 +33,7 @@ function loadMetrics(){
   }
 
 }
+
 
 
 function saveMetrics(){
@@ -140,6 +145,7 @@ function calcScore(
   return Math.round(
 
     (
+
       Math.min(
         sleep / m.sleep.target,
         m.sleep.max
@@ -181,7 +187,6 @@ function calcScore(
 // =====================
 
 function save(){
-
 
   const sleep =
     Number(document.getElementById("sleep").value || 0);
@@ -236,7 +241,7 @@ function save(){
   document.getElementById("water").value="";
 
 
-  alert("Saved");
+  showToast("DAY SAVED");
 
 }
 
@@ -248,23 +253,17 @@ function save(){
 
 function renderHistory(){
 
-  const h =
-    document.getElementById("history");
+  const h=document.getElementById("history");
 
-
-  const data =
-    getData();
-
+  const data=getData();
 
 
   h.innerHTML="";
 
 
-
   if(!data.length){
 
-    h.innerHTML=
-    "<div>No data yet</div>";
+    h.innerHTML="<div>No data yet</div>";
 
     return;
 
@@ -274,7 +273,6 @@ function renderHistory(){
 
   data.slice(0,10)
   .forEach(d=>{
-
 
     h.innerHTML += `
 
@@ -296,9 +294,7 @@ function renderHistory(){
 
     `;
 
-
   });
-
 
 }
 
@@ -336,7 +332,6 @@ function showSettings(){
   .getElementById("settingsView")
   .style.display="flex";
 
-
 }
 
 
@@ -361,16 +356,24 @@ function clearHistory(){
 
   renderHistory();
 
+  showToast("DATA CLEARED");
+
 }
+
+
+
 // =====================
 // TOAST SYSTEM
 // =====================
 
 function showToast(message){
 
-  const toast = document.getElementById("toast");
+  const toast =
+    document.getElementById("toast");
 
-  toast.innerText = message;
+
+  toast.innerText=message;
+
 
   toast.classList.add("show");
 
@@ -382,6 +385,9 @@ function showToast(message){
   },2500);
 
 }
+
+
+
 // =====================
 // PWA SERVICE WORKER
 // =====================
@@ -392,64 +398,22 @@ if("serviceWorker" in navigator){
 
     navigator.serviceWorker
     .register("/Liforgev2/service-worker.js")
+
     .then(()=>{
 
       console.log("LIFORGE PWA ready");
 
     })
+
     .catch(err=>{
 
-      console.log("Service Worker error:", err);
+      console.log(
+        "Service Worker error:",
+        err
+      );
 
     });
 
   });
-
-}
-/* =====================
-   LIFORGE TOAST
-===================== */
-
-#toast{
-
-  position:fixed;
-
-  bottom:30px;
-  left:50%;
-
-  transform:translateX(-50%) translateY(20px);
-
-  background:rgba(15,16,20,.9);
-
-  border:1px solid rgba(120,255,120,.25);
-
-  color:#9cff9c;
-
-  padding:12px 20px;
-
-  border-radius:20px;
-
-  font-size:13px;
-
-  letter-spacing:1px;
-
-  backdrop-filter:blur(10px);
-
-  opacity:0;
-
-  pointer-events:none;
-
-  transition:.3s ease;
-
-  z-index:100;
-
-}
-
-
-#toast.show{
-
-  opacity:1;
-
-  transform:translateX(-50%) translateY(0);
 
 }

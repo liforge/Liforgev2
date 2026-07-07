@@ -230,7 +230,64 @@ function calcScore(
   );
 
 }
+function getMetricProgress(){
 
+  const day = getTodayState();
+
+
+  if(!day){
+
+    return {
+
+      sleep:0,
+      steps:0,
+      training:0,
+      water:0
+
+    };
+
+  }
+
+
+  const m = METRICS || getDefaultMetrics();
+
+
+  return {
+
+    sleep: Math.min(
+      Math.round(
+        (day.sleep / m.sleep.target) * 100
+      ),
+      100
+    ),
+
+
+    steps: Math.min(
+      Math.round(
+        (day.steps / m.steps.target) * 100
+      ),
+      100
+    ),
+
+
+    training: Math.min(
+      Math.round(
+        (day.training / m.training.target) * 100
+      ),
+      100
+    ),
+
+
+    water: Math.min(
+      Math.round(
+        (day.water / m.water.target) * 100
+      ),
+      100
+    )
+
+  };
+
+}
 
 
 

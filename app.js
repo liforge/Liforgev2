@@ -182,8 +182,9 @@ function calcScore(
 
 
 
+
 // =====================
-// SAVE DAY
+// UPDATE TODAY
 // =====================
 
 function save(){
@@ -205,15 +206,27 @@ function save(){
 
 
 
+  const today =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+
+
   const data = getData();
 
 
 
-  data.unshift({
+  const todayIndex =
+    data.findIndex(
+      d => d.date === today
+    );
 
-    date:new Date()
-    .toISOString()
-    .split("T")[0],
+
+
+  const updatedDay = {
+
+    date: today,
 
     sleep,
     steps,
@@ -227,7 +240,19 @@ function save(){
       water
     )
 
-  });
+  };
+
+
+
+  if(todayIndex !== -1){
+
+    data[todayIndex] = updatedDay;
+
+  }else{
+
+    data.unshift(updatedDay);
+
+  }
 
 
 
@@ -241,10 +266,12 @@ function save(){
   document.getElementById("water").value="";
 
 
-  showToast("DAY SAVED");
+  renderHistory();
+
+
+  showToast("DAY UPDATED");
 
 }
-
 
 
 // =====================

@@ -106,7 +106,12 @@ function getData(){
     return [];
 
   }
-  function getTodayState(){
+
+}
+
+
+
+function getTodayState(){
 
   const data = getData();
 
@@ -121,8 +126,11 @@ function getData(){
     d => d.date === today
   ) || null;
 
-  }
-  function getDashboardData(){
+}
+
+
+
+function getDashboardData(){
 
   const day = getTodayState();
 
@@ -155,8 +163,6 @@ function getData(){
     score:day.score
 
   };
-
-  }
 
 }
 

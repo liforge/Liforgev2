@@ -79,15 +79,16 @@ function saveMetrics(){
 // APP START
 // =====================
 
+
 function enterSystem(){
 
   document.getElementById("intro").style.display="none";
 
   document.getElementById("app").style.display="block";
 
+  renderDashboard();
+
 }
-
-
 
 // =====================
 // DATA STORAGE
@@ -294,6 +295,55 @@ function getMetricProgress(){
   };
 
 }
+function renderDashboard(){
+
+  const dashboard =
+    document.getElementById("dashboard");
+
+
+  const day =
+    getDashboardData();
+
+
+  const progress =
+    getMetricProgress();
+
+
+  dashboard.innerHTML = `
+
+    <h2>${day.score}%</h2>
+
+    <div>Direction Alignment</div>
+
+    <br>
+
+    <div>
+      Sleep:
+      ${day.sleep}/${METRICS.sleep.target}h
+      (${progress.sleep}%)
+    </div>
+
+    <div>
+      Steps:
+      ${day.steps}/${METRICS.steps.target}
+      (${progress.steps}%)
+    </div>
+
+    <div>
+      Training:
+      ${day.training}/${METRICS.training.target}
+      (${progress.training}%)
+    </div>
+
+    <div>
+      Water:
+      ${day.water}/${METRICS.water.target}L
+      (${progress.water}%)
+    </div>
+
+  `;
+
+}
 
 
 
@@ -440,6 +490,8 @@ document.getElementById("water").value = "";
 
 
   renderHistory();
+
+  renderDashboard();
 
 
   showToast("DAY UPDATED");

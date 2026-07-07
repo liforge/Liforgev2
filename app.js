@@ -67,7 +67,7 @@ function saveMetrics(){
     "metrics",
     JSON.stringify(METRICS)
   );
-  render(dashboard);
+  renderDashboard();
 
 
   showToast("DIRECTION UPDATED");
@@ -301,6 +301,7 @@ function getMetricProgress(){
 
 
 
+
 function renderDashboard(){
 
   const dashboard =
@@ -320,122 +321,141 @@ function renderDashboard(){
     getMetricProgress();
 
 
+
   dashboard.innerHTML = `
 
-    <div class="scoreCard">
 
-      <h1>${day.score}%</h1>
+    <div class="coreScore">
 
-      <div>
-        Direction Alignment
+
+      <div class="energyLabel">
+        ENERGY SCORE
       </div>
+
+
+      <div class="energyValue">
+        ${day.score}%
+      </div>
+
+
+      <div class="energyStatus">
+        CURRENT ALIGNMENT
+      </div>
+
 
     </div>
 
 
 
-    <div class="metricCard">
 
-      <h3>Sleep</h3>
+    <div class="hudGrid">
 
-      <p>
-        ${day.sleep} / ${METRICS.sleep.target}h
-      </p>
 
-      <div class="progressBar">
 
-        <div 
-        class="progressFill"
-        style="width:${progress.sleep}%">
+      <div class="metricCard">
+
+        <h3>SLEEP</h3>
+
+        <p>
+          ${day.sleep}h
+        </p>
+
+        <div class="progressBar">
+          <div 
+          class="progressFill"
+          style="width:${progress.sleep}%">
+          </div>
         </div>
 
+        <span>
+          ${progress.sleep}%
+        </span>
+
       </div>
 
-      <span>
-        ${progress.sleep}%
-      </span>
-
-    </div>
 
 
 
-    <div class="metricCard">
 
-      <h3>Steps</h3>
+      <div class="metricCard">
 
-      <p>
-        ${day.steps} / ${METRICS.steps.target}
-      </p>
+        <h3>STEPS</h3>
 
-      <div class="progressBar">
+        <p>
+          ${day.steps}
+        </p>
 
-        <div 
-        class="progressFill"
-        style="width:${progress.steps}%">
+        <div class="progressBar">
+          <div 
+          class="progressFill"
+          style="width:${progress.steps}%">
+          </div>
         </div>
 
+        <span>
+          ${progress.steps}%
+        </span>
+
       </div>
 
-      <span>
-        ${progress.steps}%
-      </span>
-
-    </div>
 
 
 
-    <div class="metricCard">
 
-      <h3>Training</h3>
+      <div class="metricCard">
 
-      <p>
-        ${day.training} / ${METRICS.training.target}
-      </p>
+        <h3>TRAINING</h3>
 
-      <div class="progressBar">
+        <p>
+          ${day.training}
+        </p>
 
-        <div 
-        class="progressFill"
-        style="width:${progress.training}%">
+        <div class="progressBar">
+          <div 
+          class="progressFill"
+          style="width:${progress.training}%">
+          </div>
         </div>
 
+        <span>
+          ${progress.training}%
+        </span>
+
       </div>
 
-      <span>
-        ${progress.training}%
-      </span>
-
-    </div>
 
 
 
-    <div class="metricCard">
 
-      <h3>Water</h3>
+      <div class="metricCard">
 
-      <p>
-        ${day.water} / ${METRICS.water.target}L
-      </p>
+        <h3>WATER</h3>
 
-      <div class="progressBar">
+        <p>
+          ${day.water}L
+        </p>
 
-        <div 
-        class="progressFill"
-        style="width:${progress.water}%">
+        <div class="progressBar">
+          <div 
+          class="progressFill"
+          style="width:${progress.water}%">
+          </div>
         </div>
 
+        <span>
+          ${progress.water}%
+        </span>
+
       </div>
 
-      <span>
-        ${progress.water}%
-      </span>
+
 
     </div>
+
 
   `;
 
 }
-
 
 
 

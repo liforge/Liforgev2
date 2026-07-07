@@ -237,6 +237,8 @@ function calcScore(
   );
 
 }
+
+
 function getMetricProgress(){
 
   const day = getTodayState();
@@ -295,6 +297,9 @@ function getMetricProgress(){
   };
 
 }
+
+
+
 function renderDashboard(){
 
   const dashboard =

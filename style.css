@@ -497,4 +497,43 @@ background:white;
 
 }
 
+/* =====================
+   HUD v0.9.6
+===================== */
+.coreScore{
+  padding:40px 20px;
+  text-align:center;
+  border-radius:24px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(15px);
+}
+
+
+.energyLabel{
+  font-size:12px;
+  letter-spacing:4px;
+  opacity:.6;
+}
+
+
+.energyValue{
+  font-size:72px;
+  font-weight:700;
+  margin:10px 0;
+}
+
+
+.energyStatus{
+  font-size:13px;
+  letter-spacing:2px;
+  opacity:.7;
+}
+
+
+.hudGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 

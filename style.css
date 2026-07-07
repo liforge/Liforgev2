@@ -187,29 +187,6 @@ align-items:center;
 
 
 
-.heroPlaceholder{
-
-width:140px;
-
-height:140px;
-
-border-radius:20px;
-
-border:1px dashed rgba(255,255,255,.2);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:12px;
-
-opacity:.6;
-
-}
-
-
 
 
 

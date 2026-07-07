@@ -183,26 +183,38 @@ function calcScore(
 
 
 
+
 // =====================
 // UPDATE TODAY
 // =====================
 
 function save(){
 
-  const sleep =
-    Number(document.getElementById("sleep").value || 0);
+  const sleepInput =
+    document.getElementById("sleep").value;
 
+  const stepsInput =
+    document.getElementById("steps").value;
+
+  const trainingInput =
+    document.getElementById("training").value;
+
+  const waterInput =
+    document.getElementById("water").value;
+
+
+
+  const sleep =
+    Number(sleepInput || 0);
 
   const steps =
-    Number(document.getElementById("steps").value || 0);
-
+    Number(stepsInput || 0);
 
   const training =
-    Number(document.getElementById("training").value || 0);
-
+    Number(trainingInput || 0);
 
   const water =
-    Number(document.getElementById("water").value || 0);
+    Number(waterInput || 0);
 
 
 
@@ -224,33 +236,76 @@ function save(){
 
 
 
-  const updatedDay = {
-
-    date: today,
-
-    sleep,
-    steps,
-    training,
-    water,
-
-    score:calcScore(
-      sleep,
-      steps,
-      training,
-      water
-    )
-
-  };
+  let day;
 
 
 
   if(todayIndex !== -1){
 
-    data[todayIndex] = updatedDay;
+    day = data[todayIndex];
 
   }else{
 
-    data.unshift(updatedDay);
+    day = {
+
+      date:today,
+
+      sleep:0,
+      steps:0,
+      training:0,
+      water:0
+
+    };
+
+  }
+
+
+
+  // SLEEP - ustawienie wartości dnia
+  if(sleepInput !== ""){
+    day.sleep = sleep;
+  }
+
+
+
+  // STEPS - dodawanie
+  if(stepsInput !== ""){
+    day.steps += steps;
+  }
+
+
+
+  // TRAINING - licznik
+  if(trainingInput !== ""){
+    day.training += training;
+  }
+
+
+
+  // WATER - dodawanie
+  if(waterInput !== ""){
+    day.water += water;
+  }
+
+
+
+  day.score =
+    calcScore(
+      day.sleep,
+      day.steps,
+      day.training,
+      day.water
+    );
+
+
+
+  if(todayIndex !== -1){
+
+    data[todayIndex] = day;
+
+  }else{
+
+    data.unshift(day);
 
   }
 
@@ -266,13 +321,13 @@ function save(){
   document.getElementById("water").value="";
 
 
+
   renderHistory();
 
 
   showToast("DAY UPDATED");
 
 }
-
 
 // =====================
 // HISTORY

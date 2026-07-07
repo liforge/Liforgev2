@@ -305,6 +305,8 @@ function renderDashboard(){
 
   const dashboard =
     document.getElementById("dashboard");
+
+
   if(!dashboard){
     return;
   }
@@ -320,34 +322,114 @@ function renderDashboard(){
 
   dashboard.innerHTML = `
 
-    <h2>${day.score}%</h2>
+    <div class="scoreCard">
 
-    <div>Direction Alignment</div>
+      <h1>${day.score}%</h1>
 
-    <br>
+      <div>
+        Direction Alignment
+      </div>
 
-    <div>
-      Sleep:
-      ${day.sleep}/${METRICS.sleep.target}h
-      (${progress.sleep}%)
     </div>
 
-    <div>
-      Steps:
-      ${day.steps}/${METRICS.steps.target}
-      (${progress.steps}%)
+
+
+    <div class="metricCard">
+
+      <h3>Sleep</h3>
+
+      <p>
+        ${day.sleep} / ${METRICS.sleep.target}h
+      </p>
+
+      <div class="progressBar">
+
+        <div 
+        class="progressFill"
+        style="width:${progress.sleep}%">
+        </div>
+
+      </div>
+
+      <span>
+        ${progress.sleep}%
+      </span>
+
     </div>
 
-    <div>
-      Training:
-      ${day.training}/${METRICS.training.target}
-      (${progress.training}%)
+
+
+    <div class="metricCard">
+
+      <h3>Steps</h3>
+
+      <p>
+        ${day.steps} / ${METRICS.steps.target}
+      </p>
+
+      <div class="progressBar">
+
+        <div 
+        class="progressFill"
+        style="width:${progress.steps}%">
+        </div>
+
+      </div>
+
+      <span>
+        ${progress.steps}%
+      </span>
+
     </div>
 
-    <div>
-      Water:
-      ${day.water}/${METRICS.water.target}L
-      (${progress.water}%)
+
+
+    <div class="metricCard">
+
+      <h3>Training</h3>
+
+      <p>
+        ${day.training} / ${METRICS.training.target}
+      </p>
+
+      <div class="progressBar">
+
+        <div 
+        class="progressFill"
+        style="width:${progress.training}%">
+        </div>
+
+      </div>
+
+      <span>
+        ${progress.training}%
+      </span>
+
+    </div>
+
+
+
+    <div class="metricCard">
+
+      <h3>Water</h3>
+
+      <p>
+        ${day.water} / ${METRICS.water.target}L
+      </p>
+
+      <div class="progressBar">
+
+        <div 
+        class="progressFill"
+        style="width:${progress.water}%">
+        </div>
+
+      </div>
+
+      <span>
+        ${progress.water}%
+      </span>
+
     </div>
 
   `;

@@ -122,6 +122,41 @@ function getData(){
   ) || null;
 
   }
+  function getDashboardData(){
+
+  const day = getTodayState();
+
+
+  if(!day){
+
+    return {
+
+      sleep:0,
+      steps:0,
+      training:0,
+      water:0,
+      score:0
+
+    };
+
+  }
+
+
+  return {
+
+    sleep:day.sleep,
+
+    steps:day.steps,
+
+    training:day.training,
+
+    water:day.water,
+
+    score:day.score
+
+  };
+
+  }
 
 }
 

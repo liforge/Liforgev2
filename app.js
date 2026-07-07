@@ -134,6 +134,9 @@ function getTodayState(){
 function getDashboardData(){
 
   const day = getTodayState();
+  if(!dashboard){
+    return;
+  }
 
 
   if(!day){

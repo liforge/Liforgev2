@@ -67,6 +67,7 @@ function saveMetrics(){
     "metrics",
     JSON.stringify(METRICS)
   );
+  render(dashboard);
 
 
   showToast("DIRECTION UPDATED");

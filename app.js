@@ -315,11 +315,14 @@ function save(){
 
 
 
-  document.getElementById("sleep").value="";
-  document.getElementById("steps").value="";
-  document.getElementById("training").value="";
-  document.getElementById("water").value="";
+  
+document.getElementById("sleep").value = day.sleep;
 
+document.getElementById("steps").value = "";
+
+document.getElementById("training").value = "";
+
+document.getElementById("water").value = "";
 
 
   renderHistory();

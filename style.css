@@ -514,5 +514,18 @@ background:white;
 
 }
 
+.metricCard{
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:rgba(15,16,20,.18);
+
+  backdrop-filter:blur(10px);
+
+  border:1px solid rgba(255,255,255,.08);
+
+}
 
 

@@ -302,6 +302,9 @@ function renderDashboard(){
 
   const dashboard =
     document.getElementById("dashboard");
+  if(!dashboard){
+    return;
+  }
 
 
   const day =

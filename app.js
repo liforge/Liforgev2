@@ -106,6 +106,22 @@ function getData(){
     return [];
 
   }
+  function getTodayState(){
+
+  const data = getData();
+
+
+  const today =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+
+  return data.find(
+    d => d.date === today
+  ) || null;
+
+  }
 
 }
 

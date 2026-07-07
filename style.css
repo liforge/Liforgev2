@@ -477,3 +477,67 @@ background:white;
   transform:translateX(-50%) translateY(0);
 
 }
+/* =====================
+   DASHBOARD SYSTEM
+===================== */
+
+
+#dashboard{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+
+
+/* MAIN SCORE */
+
+.scoreCard{
+
+  padding:25px;
+
+  border-radius:20px;
+
+  text-align:center;
+
+}
+
+
+
+/* METRIC CARDS */
+
+.metricCard{
+
+  padding:18px;
+
+  border-radius:18px;
+
+}
+
+
+
+/* PROGRESS BAR */
+
+.progressBar{
+
+  width:100%;
+
+  height:10px;
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+}
+
+
+
+/* PROGRESS VALUE */
+
+.progressFill{
+
+  height:100%;
+
+  border-radius:10px;
+
+}

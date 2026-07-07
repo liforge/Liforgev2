@@ -516,28 +516,3 @@ background:white;
 
 
 
-/* PROGRESS BAR */
-
-.progressBar{
-
-  width:100%;
-
-  height:10px;
-
-  border-radius:10px;
-
-  overflow:hidden;
-
-}
-
-
-
-/* PROGRESS VALUE */
-
-.progressFill{
-
-  height:100%;
-
-  border-radius:10px;
-
-}

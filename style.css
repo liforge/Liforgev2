@@ -654,8 +654,8 @@ background:white;
 .metricBarRow{
   display:flex;
   align-items:center;
-  gap:12px;
-  margin-top:8px;
+  gap:18px;
+  margin-top:10px;
 }
 
 
@@ -669,9 +669,9 @@ background:white;
 
 
 .metricStatus{
-  margin-top:8px;
-  font-size:11px;
+  margin-top:10px;
+  font-size:10px;
   letter-spacing:3px;
-  opacity:.35;
+  opacity:.25;
   text-align:right;
 }

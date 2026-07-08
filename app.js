@@ -386,126 +386,125 @@ function renderDashboard(){
 
 
 
-    <div class="hudGrid">
+  <div class="metricsList">
 
 
+  <div class="metricCard">
 
-      
-<div class="metricCard sleepCard">
-
-  <div class="metricHeader">
-    <span class="metricTitle">
-      SLEEP
-    </span>
-
-    <span class="metricData">
-      ${day.sleep}h
-    </span>
-  </div>
-
-
-  <div class="metricBarRow">
-
-    <div class="metricBar">
-      <div 
-        class="progressFill"
-        style="width:${progress.sleep}%">
-      </div>
+    <div class="metricHeader">
+      <span class="metricTitle">SLEEP</span>
+      <span class="metricData">${day.sleep}h</span>
     </div>
 
-    <span class="metricPercent">
-      ${progress.sleep}%
-    </span>
+    <div class="metricBarRow">
+
+      <div class="metricBar">
+        <div class="progressFill"
+        style="width:${progress.sleep}%">
+        </div>
+      </div>
+
+      <span class="metricPercent">
+        ${progress.sleep}%
+      </span>
+
+    </div>
+
+    <div class="metricStatus">
+      BALANCED
+    </div>
 
   </div>
 
 
-  <div class="metricStatus">
-    BALANCED
+
+  <div class="metricCard">
+
+    <div class="metricHeader">
+      <span class="metricTitle">STEPS</span>
+      <span class="metricData">${day.steps}</span>
+    </div>
+
+    <div class="metricBarRow">
+
+      <div class="metricBar">
+        <div class="progressFill"
+        style="width:${progress.steps}%">
+        </div>
+      </div>
+
+      <span class="metricPercent">
+        ${progress.steps}%
+      </span>
+
+    </div>
+
+    <div class="metricStatus">
+      BUILDING
+    </div>
+
   </div>
+
+
+
+  <div class="metricCard">
+
+    <div class="metricHeader">
+      <span class="metricTitle">TRAINING</span>
+      <span class="metricData">${day.training}</span>
+    </div>
+
+    <div class="metricBarRow">
+
+      <div class="metricBar">
+        <div class="progressFill"
+        style="width:${progress.training}%">
+        </div>
+      </div>
+
+      <span class="metricPercent">
+        ${progress.training}%
+      </span>
+
+    </div>
+
+    <div class="metricStatus">
+      ACTIVE
+    </div>
+
+  </div>
+
+
+
+  <div class="metricCard">
+
+    <div class="metricHeader">
+      <span class="metricTitle">WATER</span>
+      <span class="metricData">${day.water}L</span>
+    </div>
+
+    <div class="metricBarRow">
+
+      <div class="metricBar">
+        <div class="progressFill"
+        style="width:${progress.water}%">
+        </div>
+      </div>
+
+      <span class="metricPercent">
+        ${progress.water}%
+      </span>
+
+    </div>
+
+    <div class="metricStatus">
+      HYDRATED
+    </div>
+
+  </div>
+
 
 </div>
-
-  
-
-
-        <h3>STEPS</h3>
-        <p>
-          ${day.steps}
-        </p>
-
-        <div class="progressBar">
-          <div 
-          class="progressFill"
-          style="width:${progress.steps}%">
-          </div>
-        </div>
-
-        <span>
-          ${progress.steps}%
-        </span>
-
-      </div>
-
-
-
-
-
-      <div class="metricCard">
-
-        <h3>TRAINING</h3>
-
-        <p>
-          ${day.training}
-        </p>
-
-        <div class="progressBar">
-          <div 
-          class="progressFill"
-          style="width:${progress.training}%">
-          </div>
-        </div>
-
-        <span>
-          ${progress.training}%
-        </span>
-
-      </div>
-
-
-
-
-
-      <div class="metricCard">
-
-        <h3>WATER</h3>
-
-        <p>
-          ${day.water}L
-        </p>
-
-        <div class="progressBar">
-          <div 
-          class="progressFill"
-          style="width:${progress.water}%">
-          </div>
-        </div>
-
-        <span>
-          ${progress.water}%
-        </span>
-
-      </div>
-
-
-
-    </div>
-
-
-  `;
-
-}
-
 
 
 // =====================

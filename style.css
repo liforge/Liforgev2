@@ -545,11 +545,11 @@ background:white;
 
 .energyValue{
 
-  width:150px;
+  width:170px;
 
-  height:150px;
+  height:170px;
 
-  margin:15px auto;
+  margin:20px auto;
 
   display:flex;
 
@@ -563,12 +563,15 @@ background:white;
 
   font-weight:700;
 
-  border:1px solid rgba(255,255,255,.25);
+  position:relative;
 
   background:rgba(255,255,255,.03);
 
+  border:8px solid rgba(255,255,255,.15);
+
   box-shadow:
-  0 0 30px rgba(255,255,255,.08);
+  0 0 20px rgba(255,255,255,.15),
+  inset 0 0 20px rgba(255,255,255,.08);
 
 }
 
@@ -769,6 +772,52 @@ background:white;
   100%{
     box-shadow:
     0 0 15px rgba(255,255,255,.05);
+  }
+
+}
+.energyValue::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-8px;
+
+  border-radius:50%;
+
+  border:3px solid rgba(255,255,255,.35);
+
+  animation:coreRing 4s ease-in-out infinite;
+
+}
+
+
+@keyframes coreRing{
+
+  0%{
+
+    opacity:.4;
+
+    transform:scale(1);
+
+  }
+
+
+  50%{
+
+    opacity:1;
+
+    transform:scale(1.04);
+
+  }
+
+
+  100%{
+
+    opacity:.4;
+
+    transform:scale(1);
+
   }
 
 }

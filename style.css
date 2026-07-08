@@ -567,3 +567,11 @@ background:white;
   text-transform:uppercase;
 
 }
+#app{
+  opacity:0;
+  transition:opacity .8s ease;
+}
+
+#app.active{
+  opacity:1;
+}

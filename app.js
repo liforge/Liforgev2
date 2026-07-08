@@ -1,5 +1,11 @@
 // =====================
-// METRICS SYSTEM
+// LIFORGE APP
+// METRICS + STORAGE SYSTEM
+// =====================
+
+
+// =====================
+// METRICS CONFIG
 // =====================
 
 let METRICS = loadMetrics();
@@ -8,10 +14,25 @@ let METRICS = loadMetrics();
 function getDefaultMetrics(){
 
   return {
-    sleep:{ target:7, max:1 },
-    steps:{ target:8000, max:1 },
-    training:{ target:2, max:1 },
-    water:{ target:2.5, max:1 }
+    sleep:{
+      target:7,
+      max:1
+    },
+
+    steps:{
+      target:8000,
+      max:1
+    },
+
+    training:{
+      target:2,
+      max:1
+    },
+
+    water:{
+      target:2.5,
+      max:1
+    }
   };
 
 }
@@ -22,9 +43,14 @@ function loadMetrics(){
 
   try{
 
-    const m = localStorage.getItem("metrics");
+    const saved =
+      localStorage.getItem("metrics");
 
-    return m ? JSON.parse(m) : getDefaultMetrics();
+
+    return saved
+      ? JSON.parse(saved)
+      : getDefaultMetrics();
+
 
   }catch(e){
 
@@ -41,22 +67,41 @@ function saveMetrics(){
   METRICS = {
 
     sleep:{
-      target:Number(document.getElementById("set_sleep").value) || 7,
+      target:
+      Number(
+        document.getElementById("set_sleep").value
+      ) || 7,
+
       max:1
     },
+
 
     steps:{
-      target:Number(document.getElementById("set_steps").value) || 8000,
+      target:
+      Number(
+        document.getElementById("set_steps").value
+      ) || 8000,
+
       max:1
     },
+
 
     training:{
-      target:Number(document.getElementById("set_training").value) || 2,
+      target:
+      Number(
+        document.getElementById("set_training").value
+      ) || 2,
+
       max:1
     },
 
+
     water:{
-      target:Number(document.getElementById("set_water").value) || 2.5,
+      target:
+      Number(
+        document.getElementById("set_water").value
+      ) || 2.5,
+
       max:1
     }
 
@@ -67,17 +112,21 @@ function saveMetrics(){
     "metrics",
     JSON.stringify(METRICS)
   );
+
+
   renderDashboard();
 
-
-  showToast("DIRECTION UPDATED");
+  showToast(
+    "DIRECTION UPDATED"
+  );
 
 }
 
 
 
+
 // =====================
-// APP START
+// SYSTEM START
 // =====================
 
 
@@ -86,27 +135,38 @@ function enterSystem(){
   const intro =
     document.getElementById("intro");
 
+
   const app =
     document.getElementById("app");
 
 
-  intro.classList.add("fadeOut");
+
+  intro.classList.add(
+    "fadeOut"
+  );
+
 
 
   setTimeout(()=>{
 
 
-    intro.style.display="none";
+    intro.style.display =
+      "none";
 
 
-    app.style.display="block";
+    app.style.display =
+      "block";
+
 
 
     setTimeout(()=>{
 
-      app.classList.add("active");
+      app.classList.add(
+        "active"
+      );
 
     },50);
+
 
 
     renderDashboard();
@@ -115,12 +175,15 @@ function enterSystem(){
   },250);
 
 
-
 }
+
+
+
 
 // =====================
 // DATA STORAGE
 // =====================
+
 
 function getData(){
 
@@ -129,6 +192,7 @@ function getData(){
     return JSON.parse(
       localStorage.getItem("liforge")
     ) || [];
+
 
   }catch(e){
 
@@ -140,9 +204,22 @@ function getData(){
 
 
 
+function saveData(data){
+
+  localStorage.setItem(
+    "liforge",
+    JSON.stringify(data)
+  );
+
+}
+
+
+
 function getTodayState(){
 
-  const data = getData();
+  const data =
+    getData();
+
 
 
   const today =
@@ -151,8 +228,10 @@ function getTodayState(){
     .split("T")[0];
 
 
+
   return data.find(
-    d => d.date === today
+    item =>
+    item.date === today
   ) || null;
 
 }
@@ -161,7 +240,9 @@ function getTodayState(){
 
 function getDashboardData(){
 
-  const day = getTodayState();
+  const day =
+    getTodayState();
+
 
 
   if(!day){
@@ -177,6 +258,7 @@ function getDashboardData(){
     };
 
   }
+
 
 
   return {
@@ -197,20 +279,11 @@ function getDashboardData(){
 
 
 
-function saveData(data){
-
-  localStorage.setItem(
-    "liforge",
-    JSON.stringify(data)
-  );
-
-}
-
-
 
 // =====================
 // SCORE ENGINE
 // =====================
+
 
 function calcScore(
   sleep,
@@ -219,13 +292,28 @@ function calcScore(
   water
 ){
 
-  const m = METRICS || getDefaultMetrics();
+
+  const m =
+    METRICS ||
+    getDefaultMetrics();
 
 
-  sleep = sleep || 0;
-  steps = steps || 0;
-  training = training || 0;
-  water = water || 0;
+
+  sleep =
+    sleep || 0;
+
+
+  steps =
+    steps || 0;
+
+
+  training =
+    training || 0;
+
+
+  water =
+    water || 0;
+
 
 
   return Math.round(
@@ -237,39 +325,50 @@ function calcScore(
         m.sleep.max
       )
 
+
       +
+
 
       Math.min(
         steps / m.steps.target,
         m.steps.max
       )
 
+
       +
+
 
       Math.min(
         training / m.training.target,
         m.training.max
       )
 
+
       +
+
 
       Math.min(
         water / m.water.target,
         m.water.max
       )
 
+
     )
 
-    /4*100
+    / 4 * 100
 
   );
 
 }
 
 
+
+
 function getMetricProgress(){
 
-  const day = getTodayState();
+  const day =
+    getTodayState();
+
 
 
   if(!day){
@@ -286,38 +385,54 @@ function getMetricProgress(){
   }
 
 
-  const m = METRICS || getDefaultMetrics();
+
+  const m =
+    METRICS ||
+    getDefaultMetrics();
+
 
 
   return {
 
-    sleep: Math.min(
+    sleep:
+    Math.min(
       Math.round(
-        (day.sleep / m.sleep.target) * 100
+        day.sleep /
+        m.sleep.target *
+        100
       ),
       100
     ),
 
 
-    steps: Math.min(
+    steps:
+    Math.min(
       Math.round(
-        (day.steps / m.steps.target) * 100
+        day.steps /
+        m.steps.target *
+        100
       ),
       100
     ),
 
 
-    training: Math.min(
+    training:
+    Math.min(
       Math.round(
-        (day.training / m.training.target) * 100
+        day.training /
+        m.training.target *
+        100
       ),
       100
     ),
 
 
-    water: Math.min(
+    water:
+    Math.min(
       Math.round(
-        (day.water / m.water.target) * 100
+        day.water /
+        m.water.target *
+        100
       ),
       100
     )
@@ -325,8 +440,9 @@ function getMetricProgress(){
   };
 
 }
-
-
+// =====================
+// DASHBOARD RENDER
+// =====================
 
 
 function renderDashboard(){
@@ -340,8 +456,10 @@ function renderDashboard(){
   }
 
 
+
   const day =
     getDashboardData();
+
 
 
   const progress =
@@ -349,39 +467,47 @@ function renderDashboard(){
 
 
 
+
   dashboard.innerHTML = `
+
+
   <div class="brand">
 
-  <div class="brandTitle">
-    LIFORGE
-  </div>
-
-  <div class="brandSubtitle">
-    Forge Yourself
-  </div>
-
-</div>
-
-
-    <div class="coreScore">
-
-
-      <div class="energyLabel">
-        ENERGY SCORE
-      </div>
-
-
-      <div class="energyValue">
-        ${day.score}%
-      </div>
-
-
-      <div class="energyStatus">
-        CURRENT ALIGNMENT
-      </div>
-
-
+    <div class="brandTitle">
+      LIFORGE
     </div>
+
+
+    <div class="brandSubtitle">
+      Forge Yourself
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="coreScore">
+
+
+    <div class="energyLabel">
+      ENERGY SCORE
+    </div>
+
+
+    <div class="energyValue">
+      ${day.score}%
+    </div>
+
+
+    <div class="energyStatus">
+      CURRENT ALIGNMENT
+    </div>
+
+
+  </div>
+
 
 
 
@@ -389,155 +515,191 @@ function renderDashboard(){
   <div class="metricsList">
 
 
-  <div class="metricCard">
 
-    <div class="metricHeader">
-      <span class="metricTitle">SLEEP</span>
-      <span class="metricData">${day.sleep}h</span>
-    </div>
+    ${createMetric(
+      "SLEEP",
+      day.sleep + "h",
+      progress.sleep,
+      "BALANCED"
+    )}
 
-    <div class="metricBarRow">
 
-      <div class="metricBar">
-        <div class="progressFill"
-        style="width:${progress.sleep}%">
-        </div>
-      </div>
 
-      <span class="metricPercent">
-        ${progress.sleep}%
-      </span>
+    ${createMetric(
+      "STEPS",
+      day.steps,
+      progress.steps,
+      "BUILDING"
+    )}
 
-    </div>
 
-    <div class="metricStatus">
-      BALANCED
-    </div>
+
+    ${createMetric(
+      "TRAINING",
+      day.training,
+      progress.training,
+      "ACTIVE"
+    )}
+
+
+
+    ${createMetric(
+      "WATER",
+      day.water + "L",
+      progress.water,
+      "HYDRATED"
+    )}
+
+
 
   </div>
 
 
 
-  <div class="metricCard">
+  `;
 
-    <div class="metricHeader">
-      <span class="metricTitle">STEPS</span>
-      <span class="metricData">${day.steps}</span>
-    </div>
+}
 
-    <div class="metricBarRow">
 
-      <div class="metricBar">
-        <div class="progressFill"
-        style="width:${progress.steps}%">
-        </div>
-      </div>
 
-      <span class="metricPercent">
-        ${progress.steps}%
-      </span>
 
-    </div>
 
-    <div class="metricStatus">
-      BUILDING
-    </div>
+// =====================
+// SINGLE METRIC CARD
+// =====================
+
+
+function createMetric(
+  title,
+  value,
+  percent,
+  status
+){
+
+
+return `
+
+
+<div class="metricCard">
+
+
+  <div class="metricHeader">
+
+
+    <span class="metricTitle">
+      ${title}
+    </span>
+
+
+
+    <span class="metricData">
+      ${value}
+    </span>
+
 
   </div>
 
 
 
-  <div class="metricCard">
 
-    <div class="metricHeader">
-      <span class="metricTitle">TRAINING</span>
-      <span class="metricData">${day.training}</span>
-    </div>
 
-    <div class="metricBarRow">
+  <div class="metricBarRow">
 
-      <div class="metricBar">
-        <div class="progressFill"
-        style="width:${progress.training}%">
-        </div>
+
+    <div class="metricBar">
+
+
+      <div 
+      class="progressFill"
+      style="width:${percent}%">
       </div>
 
-      <span class="metricPercent">
-        ${progress.training}%
-      </span>
 
     </div>
 
-    <div class="metricStatus">
-      ACTIVE
-    </div>
+
+
+    <span class="metricPercent">
+      ${percent}%
+    </span>
+
 
   </div>
 
 
 
-  <div class="metricCard">
 
-    <div class="metricHeader">
-      <span class="metricTitle">WATER</span>
-      <span class="metricData">${day.water}L</span>
-    </div>
 
-    <div class="metricBarRow">
+  <div class="metricStatus">
 
-      <div class="metricBar">
-        <div class="progressFill"
-        style="width:${progress.water}%">
-        </div>
-      </div>
-
-      <span class="metricPercent">
-        ${progress.water}%
-      </span>
-
-    </div>
-
-    <div class="metricStatus">
-      HYDRATED
-    </div>
+    ${status}
 
   </div>
+
 
 
 </div>
+
+
+`;
+
+}
+
+
 
 
 // =====================
 // UPDATE TODAY
 // =====================
 
+
 function save(){
+
 
   const sleepInput =
     document.getElementById("sleep").value;
 
+
+
   const stepsInput =
     document.getElementById("steps").value;
 
+
+
   const trainingInput =
     document.getElementById("training").value;
+
+
 
   const waterInput =
     document.getElementById("water").value;
 
 
 
+
   const sleep =
-    Number(sleepInput || 0);
+    Number(
+      sleepInput || 0
+    );
+
 
   const steps =
-    Number(stepsInput || 0);
+    Number(
+      stepsInput || 0
+    );
+
 
   const training =
-    Number(trainingInput || 0);
+    Number(
+      trainingInput || 0
+    );
+
 
   const water =
-    Number(waterInput || 0);
+    Number(
+      waterInput || 0
+    );
+
 
 
 
@@ -548,14 +710,20 @@ function save(){
 
 
 
-  const data = getData();
+
+  const data =
+    getData();
+
 
 
 
   const todayIndex =
     data.findIndex(
-      d => d.date === today
+      item =>
+      item.date === today
     );
+
+
 
 
 
@@ -563,52 +731,78 @@ function save(){
 
 
 
+
   if(todayIndex !== -1){
 
-    day = data[todayIndex];
+
+    day =
+      data[todayIndex];
+
 
   }else{
 
+
     day = {
+
 
       date:today,
 
       sleep:0,
+
       steps:0,
+
       training:0,
+
       water:0
+
 
     };
 
+
   }
 
 
 
-  // SLEEP - ustawienie wartości dnia
+
+
   if(sleepInput !== ""){
-    day.sleep = sleep;
+
+    day.sleep =
+      sleep;
+
   }
 
 
 
-  // STEPS - dodawanie
+
   if(stepsInput !== ""){
-    day.steps += steps;
+
+    day.steps +=
+      steps;
+
   }
 
 
 
-  // TRAINING - licznik
+
   if(trainingInput !== ""){
-    day.training += training;
+
+    day.training +=
+      training;
+
   }
 
 
 
-  // WATER - dodawanie
+
   if(waterInput !== ""){
-    day.water += water;
+
+    day.water +=
+      water;
+
   }
+
+
 
 
 
@@ -622,30 +816,50 @@ function save(){
 
 
 
+
+
   if(todayIndex !== -1){
 
-    data[todayIndex] = day;
+    data[todayIndex] =
+      day;
+
 
   }else{
 
-    data.unshift(day);
+
+    data.unshift(
+      day
+    );
+
 
   }
 
 
 
-  saveData(data);
+
+  saveData(
+    data
+  );
 
 
 
-  
-document.getElementById("sleep").value = day.sleep;
 
-document.getElementById("steps").value = "";
+  document.getElementById("sleep").value =
+    day.sleep;
 
-document.getElementById("training").value = "";
 
-document.getElementById("water").value = "";
+  document.getElementById("steps").value =
+    "";
+
+
+  document.getElementById("training").value =
+    "";
+
+
+  document.getElementById("water").value =
+    "";
+
+
 
 
   renderHistory();
@@ -653,27 +867,46 @@ document.getElementById("water").value = "";
   renderDashboard();
 
 
-  showToast("DAY UPDATED");
+
+  showToast(
+    "DAY UPDATED"
+  );
+
 
 }
+// =====================
+// HISTORY SYSTEM
+// =====================
 
-// =====================
-// HISTORY
-// =====================
 
 function renderHistory(){
 
-  const h=document.getElementById("history");
+  const history =
+    document.getElementById("history");
 
-  const data=getData();
+
+  if(!history){
+    return;
+  }
 
 
-  h.innerHTML="";
+
+  const data =
+    getData();
+
+
+
+  history.innerHTML =
+    "";
+
 
 
   if(!data.length){
 
-    h.innerHTML="<div>No data yet</div>";
+
+    history.innerHTML =
+      "<div>No data yet</div>";
+
 
     return;
 
@@ -681,94 +914,159 @@ function renderHistory(){
 
 
 
-  data.slice(0,10)
-  .forEach(d=>{
 
-    h.innerHTML += `
+  data
+  .slice(0,10)
+  .forEach(day=>{
+
+
+    history.innerHTML += `
+
 
     <div class="historyItem">
 
-      <div>
-      ${d.date}
-      • ${d.sleep}h
-      • ${d.steps}
-      • ${d.training}h
-      • ${d.water}L
-      </div>
 
       <div>
-      ${d.score}%
+
+        ${day.date}
+
+        • ${day.sleep}h
+
+        • ${day.steps}
+
+        • ${day.training}
+
+        • ${day.water}L
+
+
       </div>
+
+
+
+      <div>
+
+        ${day.score}%
+
+      </div>
+
+
 
     </div>
 
+
     `;
+
 
   });
 
+
 }
+
+
 
 
 
 function showHistory(){
 
+
   renderHistory();
+
+
 
   document
   .getElementById("historyView")
-  .style.display="flex";
+  .style.display =
+  "flex";
+
 
 }
+
+
 
 
 
 function hideHistory(){
 
+
   document
   .getElementById("historyView")
-  .style.display="none";
+  .style.display =
+  "none";
+
 
 }
 
 
 
+
+
+
 // =====================
-// SETTINGS WINDOW
+// SETTINGS
 // =====================
+
 
 function showSettings(){
 
+
   document
   .getElementById("settingsView")
-  .style.display="flex";
+  .style.display =
+  "flex";
+
 
 }
+
+
 
 
 
 function hideSettings(){
 
+
   document
   .getElementById("settingsView")
-  .style.display="none";
+  .style.display =
+  "none";
+
 
 }
 
 
 
+
+
+
+
 // =====================
-// RESET
+// RESET DATA
 // =====================
+
 
 function clearHistory(){
 
-  localStorage.removeItem("liforge");
+
+  localStorage.removeItem(
+    "liforge"
+  );
+
 
   renderHistory();
 
-  showToast("DATA CLEARED");
+
+  renderDashboard();
+
+
+
+  showToast(
+    "DATA CLEARED"
+  );
+
 
 }
+
+
+
 
 
 
@@ -776,54 +1074,103 @@ function clearHistory(){
 // TOAST SYSTEM
 // =====================
 
+
 function showToast(message){
+
 
   const toast =
     document.getElementById("toast");
 
 
-  toast.innerText=message;
+
+  if(!toast){
+    return;
+  }
 
 
-  toast.classList.add("show");
+
+
+  toast.innerText =
+    message;
+
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+
 
 
   setTimeout(()=>{
 
-    toast.classList.remove("show");
+
+    toast.classList.remove(
+      "show"
+    );
+
 
   },2500);
+
+
 
 }
 
 
 
+
+
+
+
 // =====================
-// PWA SERVICE WORKER
+// SERVICE WORKER / PWA
 // =====================
 
-if("serviceWorker" in navigator){
 
-  window.addEventListener("load",()=>{
+if(
+  "serviceWorker"
+  in navigator
+){
 
-    navigator.serviceWorker
-    .register("/Liforgev2/service-worker.js")
 
-    .then(()=>{
+window.addEventListener(
+"load",
+()=>{
 
-      console.log("LIFORGE PWA ready");
 
-    })
+  navigator.serviceWorker
 
-    .catch(err=>{
+  .register(
+    "/Liforgev2/service-worker.js"
+  )
 
-      console.log(
-        "Service Worker error:",
-        err
-      );
 
-    });
+  .then(()=>{
+
+
+    console.log(
+      "LIFORGE PWA ready"
+    );
+
+
+  })
+
+
+  .catch(error=>{
+
+
+    console.log(
+      "Service Worker error:",
+      error
+    );
+
 
   });
+
+
+
+});
+
 
 }

@@ -680,3 +680,9 @@ background:white;
   opacity:.25;
   text-align:right;
 }
+
+.sleepCard{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}

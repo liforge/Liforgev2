@@ -641,6 +641,7 @@ background:white;
 
 
 .metricHeader{
+  width:100%;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -655,10 +656,11 @@ background:white;
 
 
 .metricBarRow{
+  width:100%;
   display:flex;
   align-items:center;
   gap:10px;
-  margin-top:6px;
+  margin-top:12px;
 }
 
 
@@ -685,4 +687,8 @@ background:white;
   display:flex;
   flex-direction:column;
   gap:10px;
+}
+
+.sleepCard{
+  display:block;
 }

@@ -323,6 +323,17 @@ function renderDashboard(){
 
 
   dashboard.innerHTML = `
+  <div class="brand">
+
+  <div class="brandTitle">
+    LIFORGE
+  </div>
+
+  <div class="brandSubtitle">
+    Forge Yourself
+  </div>
+
+</div>
 
 
     <div class="coreScore">

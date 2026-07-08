@@ -391,12 +391,18 @@ function renderDashboard(){
 
 
       
-<div class="metricCard">
+<div class="metricCard sleepCard">
 
   <div class="metricHeader">
-    <span class="metricTitle">SLEEP</span>
-    <span class="metricData">${day.sleep}h</span>
+    <span class="metricTitle">
+      SLEEP
+    </span>
+
+    <span class="metricData">
+      ${day.sleep}h
+    </span>
   </div>
+
 
   <div class="metricBarRow">
 
@@ -413,15 +419,17 @@ function renderDashboard(){
 
   </div>
 
+
   <div class="metricStatus">
     BALANCED
   </div>
 
 </div>
 
+  
+
 
         <h3>STEPS</h3>
-
         <p>
           ${day.steps}
         </p>

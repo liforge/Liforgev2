@@ -632,11 +632,14 @@ background:white;
 
 
 .metricBar{
+  flex:1;
   height:4px;
   background:rgba(255,255,255,.12);
   border-radius:10px;
   overflow:hidden;
 }
+
+
 .metricHeader{
   display:flex;
   justify-content:space-between;

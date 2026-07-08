@@ -142,9 +142,9 @@ z-index:3;
 
 display:flex;
 
-justify-content:center;
+justify-content:flex-start;
 
-padding:40px 12px;
+padding:40px 12px 40px 30px;
 
 }
 

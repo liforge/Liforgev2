@@ -567,10 +567,25 @@ background:white;
   text-transform:uppercase;
 
 }
+/* =====================
+   SYSTEM BOOT ANIMATION
+===================== */
+
+#intro{
+  transition:opacity .8s ease;
+}
+
+
+#intro.fadeOut{
+  opacity:0;
+}
+
+
 #app{
   opacity:0;
   transition:opacity .8s ease;
 }
+
 
 #app.active{
   opacity:1;

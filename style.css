@@ -595,3 +595,24 @@ background:white;
   grid-template-columns:1fr 1fr;
   gap:12px;
 }
+.inputGrid .statCard{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+
+.inputGrid input{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  color:white;
+  padding:12px;
+}
+
+
+.inputGrid input::placeholder{
+  color:rgba(255,255,255,.45);
+  letter-spacing:1px;
+}

@@ -654,8 +654,8 @@ background:white;
 .metricBarRow{
   display:flex;
   align-items:center;
-  gap:18px;
-  margin-top:10px;
+  gap:10px;
+  margin-top:6px;
 }
 
 
@@ -665,6 +665,8 @@ background:white;
   font-size:12px;
   letter-spacing:2px;
   opacity:.45;
+  min-width:38px;
+  text-align:right;
 }
 
 

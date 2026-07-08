@@ -507,18 +507,34 @@ background:white;
 /* =====================
    HUD v0.9.6
 ===================== */
-.coreScore{
-  padding:25px 20px;
-  width:100%;
-  max-width:420px;
-  margin:0 auto;
-  text-align:center;
-  border-radius:24px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(15px);
-}
 
+.coreScore{
+
+  padding:30px 20px;
+
+  width:100%;
+
+  max-width:420px;
+
+  margin:0 auto;
+
+  text-align:center;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.1);
+
+  backdrop-filter:blur(15px);
+
+  position:relative;
+
+  overflow:hidden;
+
+  animation:corePulse 4s ease-in-out infinite;
+
+}
 
 .energyLabel{
   font-size:12px;
@@ -528,9 +544,32 @@ background:white;
 
 
 .energyValue{
-  font-size:56px;
+
+  width:150px;
+
+  height:150px;
+
+  margin:15px auto;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:50%;
+
+  font-size:48px;
+
   font-weight:700;
-  margin:8px 0;
+
+  border:1px solid rgba(255,255,255,.25);
+
+  background:rgba(255,255,255,.03);
+
+  box-shadow:
+  0 0 30px rgba(255,255,255,.08);
+
 }
 
 
@@ -713,4 +752,23 @@ background:white;
 .metricsList .metricHeader{
   justify-content:flex-start;
   gap:20px;
+}
+
+@keyframes corePulse{
+
+  0%{
+    box-shadow:
+    0 0 15px rgba(255,255,255,.05);
+  }
+
+  50%{
+    box-shadow:
+    0 0 35px rgba(255,255,255,.15);
+  }
+
+  100%{
+    box-shadow:
+    0 0 15px rgba(255,255,255,.05);
+  }
+
 }

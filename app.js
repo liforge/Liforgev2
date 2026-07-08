@@ -390,25 +390,29 @@ function renderDashboard(){
 
 
 
-      <div class="metricTitle">
-  SLEEP
+      <div class="metricHeader">
+  <span class="metricTitle">SLEEP</span>
+  <span class="metricData">${day.sleep}h</span>
 </div>
 
-<div class="metricValue">
-  ${progress.sleep}%
-</div>
+<div class="metricBarRow">
 
-<div class="metricBar">
-  <div 
-  class="progressFill"
-  style="width:${progress.sleep}%">
+  <div class="metricBar">
+    <div 
+      class="progressFill"
+      style="width:${progress.sleep}%">
+    </div>
   </div>
+
+  <span class="metricPercent">
+    ${progress.sleep}%
+  </span>
+
 </div>
 
-<p>
-  ${day.sleep}h
-</p>
-
+<div class="metricStatus">
+  BALANCED
+</div>
 
 
 

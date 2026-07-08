@@ -522,11 +522,11 @@ background:white;
 
   border-radius:24px;
 
-  background:rgba(255,255,255,.04);
+  background:transparent;
 
-  border:1px solid rgba(255,255,255,.1);
+  border:none;
 
-  backdrop-filter:blur(15px);
+  backdrop-filter:none;
 
   position:relative;
 

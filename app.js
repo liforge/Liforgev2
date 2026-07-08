@@ -112,7 +112,7 @@ function enterSystem(){
     renderDashboard();
 
 
-  },800);
+  },250);
 
 
 

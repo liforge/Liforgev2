@@ -83,11 +83,38 @@ function saveMetrics(){
 
 function enterSystem(){
 
-  document.getElementById("intro").style.display="none";
+  const intro =
+    document.getElementById("intro");
 
-  document.getElementById("app").style.display="block";
+  const app =
+    document.getElementById("app");
 
-  renderDashboard();
+
+  intro.classList.add("fadeOut");
+
+
+  setTimeout(()=>{
+
+
+    intro.style.display="none";
+
+
+    app.style.display="block";
+
+
+    setTimeout(()=>{
+
+      app.classList.add("active");
+
+    },50);
+
+
+    renderDashboard();
+
+
+  },800);
+
+
 
 }
 

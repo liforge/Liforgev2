@@ -637,3 +637,44 @@ background:white;
   border-radius:10px;
   overflow:hidden;
 }
+.metricHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+
+.metricData{
+  font-size:12px;
+  letter-spacing:2px;
+  opacity:.45;
+}
+
+
+.metricBarRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:8px;
+}
+
+
+.metricBar{
+  flex:1;
+}
+
+
+.metricPercent{
+  font-size:12px;
+  letter-spacing:2px;
+  opacity:.45;
+}
+
+
+.metricStatus{
+  margin-top:8px;
+  font-size:11px;
+  letter-spacing:3px;
+  opacity:.35;
+  text-align:right;
+}

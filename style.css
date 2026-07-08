@@ -463,6 +463,7 @@ background:white;
   display:flex;
   flex-direction:column;
   gap:15px;
+  width:100%;
 }
 .metricsList{
   width:100%;
@@ -697,4 +698,16 @@ background:white;
 
 .sleepCard{
   display:block;
+}
+.metricsList{
+  width:100%;
+}
+
+.metricsList .metricCard{
+  text-align:left;
+}
+
+.metricsList .metricHeader{
+  justify-content:flex-start;
+  gap:20px;
 }

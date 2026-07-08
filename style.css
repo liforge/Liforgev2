@@ -464,6 +464,10 @@ background:white;
   flex-direction:column;
   gap:15px;
 }
+.metricsList{
+  width:100%;
+  text-align:left;
+}
 
 
 
@@ -494,6 +498,8 @@ background:white;
   border:none;
 
   backdrop-filter:none;
+
+   text-align:left;
 
 }
 

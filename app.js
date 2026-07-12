@@ -1221,6 +1221,7 @@ update.style.display="none";
 if(page==="core"){
 
 hero.style.display="block";
+  renderDashboard();
 
 }
 

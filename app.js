@@ -1204,3 +1204,31 @@ document
 
 
 }
+
+function showPage(page){
+
+const hero =
+document.querySelector(".hero");
+
+const update =
+document.getElementById("updatePage");
+
+
+hero.style.display="none";
+update.style.display="none";
+
+
+if(page==="core"){
+
+hero.style.display="block";
+
+}
+
+
+if(page==="update"){
+
+update.style.display="block";
+
+}
+
+}

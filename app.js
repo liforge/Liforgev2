@@ -1213,13 +1213,11 @@ document.querySelector(".hero");
 const update =
 document.getElementById("updatePage");
 
-  const history =
-document.getElementById("historyPage");
 
 
 hero.style.display="none";
 update.style.display="none";
-  history.style.display="none";
+
 
 
 if(page==="core"){
@@ -1236,12 +1234,6 @@ update.style.display="block";
 
 }
 
-if(page==="history"){
 
-history.style.display="block";
-
-renderHistory();
-
-}
   
 }

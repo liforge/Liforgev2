@@ -1236,11 +1236,12 @@ update.style.display="block";
 
 }
 
-}
 if(page==="history"){
 
 history.style.display="block";
 
 renderHistory();
 
+}
+  
 }

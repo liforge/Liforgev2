@@ -1190,3 +1190,18 @@ document
 
 
 }
+function showCore(){
+
+
+document
+.getElementById("updatePage")
+.style.display="none";
+
+
+
+document
+.getElementById("dashboard")
+.style.display="block";
+
+
+}

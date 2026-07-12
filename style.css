@@ -893,3 +893,12 @@ font-weight:600;
 opacity:.85;
 
 }
+
+.page{
+display:none;
+}
+
+
+.page.active{
+display:block;
+}

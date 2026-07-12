@@ -1177,6 +1177,13 @@ window.addEventListener(
 
 function showUpdate(){
 
+
+document
+.getElementById("dashboard")
+.style.display="none";
+
+
+
 document
 .getElementById("updatePage")
 .style.display="block";

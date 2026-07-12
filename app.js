@@ -1174,3 +1174,12 @@ window.addEventListener(
 
 
 }
+
+function showUpdate(){
+
+document
+.getElementById("updatePage")
+.style.display="block";
+
+
+}

@@ -882,7 +882,7 @@ function save(){
 function renderHistory(){
 
   const history =
-    document.getElementById("history");
+document.getElementById("historyList");
 
 
   if(!history){

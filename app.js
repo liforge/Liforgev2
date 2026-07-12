@@ -1174,12 +1174,11 @@ window.addEventListener(
 
 
 }
-
 function showUpdate(){
 
 
 document
-.getElementById("dashboard")
+.querySelector(".hero")
 .style.display="none";
 
 
@@ -1200,7 +1199,7 @@ document
 
 
 document
-.getElementById("dashboard")
+.querySelector(".hero")
 .style.display="block";
 
 

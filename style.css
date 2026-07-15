@@ -978,6 +978,8 @@ height:24px;
 display:block;
 
 position:relative;
+   
+   transform:rotate(90deg);
 
 }
 

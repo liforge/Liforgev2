@@ -962,45 +962,6 @@ document.getElementById("historyList");
 
 }
 
-
-
-
-
-function showHistory(){
-
-
-  renderHistory();
-
-
-
-  document
-  .getElementById("historyView")
-  .style.display =
-  "flex";
-
-
-}
-
-
-
-
-
-function hideHistory(){
-
-
-  document
-  .getElementById("historyView")
-  .style.display =
-  "none";
-
-
-}
-
-
-
-
-
-
 // =====================
 // SETTINGS
 // =====================

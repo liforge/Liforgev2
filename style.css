@@ -945,3 +945,18 @@ border:none;
 font-size:28px;
 
 }
+
+
+/* =====================
+   REMOVE MOBILE TAP EFFECT
+===================== */
+
+button{
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+
+button:focus{
+  outline: none;
+}

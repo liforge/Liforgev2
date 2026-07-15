@@ -982,21 +982,13 @@ drop-shadow(0 0 8px rgba(216,184,76,.8));
 
 
 /* =====================
-   UPDATE TRIANGLE ICON
+   UPDATE SVG ICON
 ===================== */
 
-.triangleIcon{
+.updateIcon{
 
 width:28px;
 height:28px;
-
-fill:none;
-
-stroke:#35d9ff;
-
-stroke-width:8;
-
-stroke-linejoin:round;
 
 filter:
 drop-shadow(0 0 8px rgba(53,217,255,.8));

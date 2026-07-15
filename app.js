@@ -1176,12 +1176,15 @@ document.getElementById("updatePage");
 
   const history =
 document.getElementById("historyPage");
-
+  
+const settings =
+document.getElementById("settingsPage");
 
 
 hero.style.display="none";
 update.style.display="none";
   history.style.display="none";
+  settings.style.display="none";
 
 
 
@@ -1206,5 +1209,10 @@ history.style.display="block";
 renderHistory();
 
 }
+  if(page==="settings"){
+
+settings.style.display="block";
+
+  }
   
 }

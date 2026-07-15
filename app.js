@@ -1167,6 +1167,11 @@ document
 }
 
 function showPage(page){
+  const navButtons = document.querySelectorAll(".bottomNav button");
+
+navButtons.forEach(btn => {
+  btn.classList.remove("active");
+});
 
 const hero =
 document.querySelector(".hero");
@@ -1212,6 +1217,14 @@ renderHistory();
   if(page==="settings"){
 
 settings.style.display="block";
+    const active =
+document.getElementById("nav-" + page);
+
+if(active){
+
+active.classList.add("active");
+
+}
 
   }
   

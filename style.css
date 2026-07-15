@@ -972,35 +972,65 @@ transform:scale(.96);
 
 .hexIcon{
 
-width:24px;
-height:21px;
+width:28px;
+height:24px;
 
 display:block;
 
-border:2px solid #d8b84c;
-
-clip-path:polygon(
-50% 0%,
-100% 25%,
-100% 75%,
-50% 100%,
-0% 75%,
-0% 25%
-);
-
-filter:
-drop-shadow(0 0 8px rgba(216,184,76,.7));
-
-transition:.4s ease;
+position:relative;
 
 }
 
 
-.navCore:hover .hexIcon{
+.hexIcon::before{
 
-transform:scale(1.1);
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:#d8b84c;
+
+clip-path:polygon(
+25% 0%,
+75% 0%,
+100% 50%,
+75% 100%,
+25% 100%,
+0% 50%
+);
+
+
+}
+
+
+.hexIcon::after{
+
+content:"";
+
+position:absolute;
+
+inset:3px;
+
+background:#000;
+
+clip-path:polygon(
+25% 0%,
+75% 0%,
+100% 50%,
+75% 100%,
+25% 100%,
+0% 50%
+);
+
+
+}
+
+
+.navCore .hexIcon{
 
 filter:
-drop-shadow(0 0 14px rgba(216,184,76,.9));
+drop-shadow(0 0 8px rgba(216,184,76,.7));
 
 }

@@ -967,73 +967,16 @@ transform:scale(.96);
 }
 
 /* =====================
-   CORE HEX ICON
+   CORE SVG ICON
 ===================== */
 
-.hexIcon{
+.coreIcon{
 
 width:28px;
-height:24px;
-
-display:block;
-
-position:relative;
-   
-   transform:rotate(90deg);
-
-}
-
-
-.hexIcon::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:#d8b84c;
-
-clip-path:polygon(
-25% 0%,
-75% 0%,
-100% 50%,
-75% 100%,
-25% 100%,
-0% 50%
-);
-
-
-}
-
-
-.hexIcon::after{
-
-content:"";
-
-position:absolute;
-
-inset:3px;
-
-background:#000;
-
-clip-path:polygon(
-25% 0%,
-75% 0%,
-100% 50%,
-75% 100%,
-25% 100%,
-0% 50%
-);
-
-
-}
-
-
-.navCore .hexIcon{
+height:28px;
 
 filter:
-drop-shadow(0 0 8px rgba(216,184,76,.7));
+drop-shadow(0 0 8px rgba(216,184,76,.8));
 
 }
 

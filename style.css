@@ -1036,3 +1036,64 @@ filter:
 drop-shadow(0 0 8px rgba(216,184,76,.7));
 
 }
+
+/* =====================
+   UPDATE TRIANGLE ICON
+===================== */
+
+.triangleIcon{
+
+width:28px;
+height:24px;
+
+display:block;
+
+position:relative;
+
+}
+
+
+.triangleIcon::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:#35d9ff;
+
+clip-path:polygon(
+50% 0%,
+100% 100%,
+0% 100%
+);
+
+}
+
+
+.triangleIcon::after{
+
+content:"";
+
+position:absolute;
+
+inset:3px;
+
+background:#000;
+
+clip-path:polygon(
+50% 0%,
+100% 100%,
+0% 100%
+);
+
+}
+
+
+.navUpdate .triangleIcon{
+
+filter:
+drop-shadow(0 0 8px rgba(53,217,255,.8));
+
+}

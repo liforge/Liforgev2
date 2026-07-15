@@ -994,3 +994,17 @@ filter:
 drop-shadow(0 0 8px rgba(53,217,255,.8));
 
 }
+
+
+/* ===================
+      HISTORY ICON
+============*/
+.historyIcon{
+
+width:28px;
+height:28px;
+
+filter:
+drop-shadow(0 0 6px rgba(255,255,255,.4));
+
+}

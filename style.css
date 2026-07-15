@@ -1008,3 +1008,12 @@ filter:
 drop-shadow(0 0 7px rgba(255,255,255,.45));
 
 }
+.directionIcon{
+
+width:28px;
+height:28px;
+
+filter:
+drop-shadow(0 0 7px rgba(255,255,255,.45));
+
+}

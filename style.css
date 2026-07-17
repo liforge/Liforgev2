@@ -1144,3 +1144,11 @@ height:50px;
 background:red;
 
 }
+
+.historyHeader div:not(:first-child){
+
+background:red;
+
+height:50px;
+
+}

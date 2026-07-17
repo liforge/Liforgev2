@@ -878,87 +878,73 @@ function save(){
 // HISTORY SYSTEM
 // =====================
 
-
 function renderHistory(){
 
-  const history =
+const history =
 document.getElementById("historyList");
 
+if(!history){
+return;
+}
 
-  if(!history){
-    return;
-  }
+const data =
+getData();
 
+history.innerHTML = "";
 
+if(!data.length){
 
-  const data =
-    getData();
+history.innerHTML =
+"<div>No data yet</div>";
 
+return;
 
-
-  history.innerHTML =
-    "";
-
-
-
-  if(!data.length){
-
-
-    history.innerHTML =
-      "<div>No data yet</div>";
+}
 
 
-    return;
+// Nagłówek tabeli
 
-  }
+history.innerHTML = `
 
+<div class="historyHeader">
 
+<div>DAY</div>
+<div>◔</div>
+<div>👣</div>
+<div>♢</div>
+<div>⚒</div>
+<div>◈</div>
 
+</div>
 
-  data
-  .slice(0,10)
-  .forEach(day=>{
-
-
-    history.innerHTML += `
-
-
-    <div class="historyItem">
-
-
-      <div>
-
-        ${day.date}
-
-        • ${day.sleep}h
-
-        • ${day.steps}
-
-        • ${day.training}
-
-        • ${day.water}L
+`;
 
 
-      </div>
+data
+.slice(0,7)
+.forEach((day,index)=>{
 
+history.innerHTML += `
 
+<div class="historyItem">
 
-      <div>
+<div>${day.date}</div>
 
-        ${day.score}%
+<div>${day.sleep}h</div>
 
-      </div>
+<div>${day.steps}</div>
 
+<div>${day.water}L</div>
 
+<div>${day.training}</div>
 
-    </div>
+<div>${day.score}%</div>
 
+</div>
 
-    `;
+`;
 
-
-  });
-
+});
 
 }
 

@@ -1068,3 +1068,36 @@ border-bottom:1px solid rgba(255,255,255,.12);
 font-size:13px;
 
 }
+.historyHeader,
+.historyItem{
+
+display:grid;
+
+grid-template-columns:
+70px repeat(5,1fr);
+
+align-items:center;
+
+text-align:center;
+
+}
+
+
+.historyHeader{
+
+font-size:12px;
+
+letter-spacing:2px;
+
+opacity:.5;
+
+padding-bottom:12px;
+
+}
+
+
+.historyItem{
+
+padding:12px 0;
+
+}

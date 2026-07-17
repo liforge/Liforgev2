@@ -1017,3 +1017,39 @@ filter:
 drop-shadow(0 0 7px rgba(255,255,255,.45));
 
 }
+
+.historyHeader,
+.historyItem{
+
+display:grid;
+grid-template-columns:70px 50px 70px 55px 55px 60px;
+
+align-items:center;
+
+gap:8px;
+
+padding:10px 0;
+
+}
+
+.historyHeader{
+
+font-size:12px;
+
+letter-spacing:2px;
+
+opacity:.45;
+
+border-bottom:1px solid rgba(255,255,255,.12);
+
+margin-bottom:8px;
+
+}
+
+.historyItem{
+
+font-size:13px;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+}

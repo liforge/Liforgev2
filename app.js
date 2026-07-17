@@ -928,7 +928,11 @@ history.innerHTML += `
 
 <div class="historyItem">
 
-<div>${day.date}</div>
+<div>
+
+${index === 0 ? "TODAY" : "DAY " + (data.length - index)}
+
+</div>
 
 <div>${day.sleep}h</div>
 

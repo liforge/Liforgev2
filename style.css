@@ -1060,3 +1060,12 @@ font-size:12px;
 font-weight:600;
 
 }
+.historyItem{
+
+padding:14px 0;
+
+border-bottom:1px solid rgba(255,255,255,.12);
+
+font-size:13px;
+
+}

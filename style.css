@@ -1101,3 +1101,24 @@ padding-bottom:12px;
 padding:12px 0;
 
 }
+.historyHeader div,
+.historyItem div{
+
+overflow:hidden;
+
+white-space:nowrap;
+
+}
+
+
+.dayNumber{
+
+text-align:left;
+
+font-size:11px;
+
+letter-spacing:1px;
+
+opacity:.7;
+
+}

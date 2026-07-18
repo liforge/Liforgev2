@@ -1145,10 +1145,55 @@ background:red;
 
 }
 
-.historyHeader div:not(:first-child){
+/* =====================
+   HISTORY COLUMN TEST
+===================== */
 
-background:red;
+.historyHeader div:nth-child(2),
+.historyItem div:nth-child(2){
 
-height:50px;
+position:relative;
+
+}
+
+
+.historyHeader div:nth-child(2)::before{
+
+content:"";
+
+position:absolute;
+
+left:-5px;
+
+top:28px;
+
+width:1px;
+
+height:20px;
+
+background:rgba(255,255,255,.35);
+
+transform:rotate(-35deg);
+
+transform-origin:top;
+
+}
+
+
+.historyHeader div:nth-child(2)::after{
+
+content:"";
+
+position:absolute;
+
+left:-17px;
+
+top:45px;
+
+width:1px;
+
+height:300px;
+
+background:rgba(255,255,255,.18);
 
 }

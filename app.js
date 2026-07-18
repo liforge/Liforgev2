@@ -882,7 +882,51 @@ renderDashboard();
 
 function renderMomentum(){
 
-  // tutaj zbudujemy wykres
+  const chart =
+  document.getElementById("momentumChart");
+
+
+  if(!chart){
+    return;
+  }
+
+
+  chart.innerHTML = `
+
+  <svg
+  id="momentumSvg"
+  viewBox="0 0 100 100"
+  preserveAspectRatio="none">
+
+
+  <polyline
+
+  points="
+  5,70
+  20,50
+  35,60
+  50,35
+  65,45
+  80,25
+  95,40
+  "
+
+  fill="none"
+
+  stroke="#00aaff"
+
+  stroke-width="1.8"
+
+  stroke-linecap="round"
+
+  stroke-linejoin="round"
+
+  />
+
+
+  </svg>
+
+  `;
 
 }
 // =====================

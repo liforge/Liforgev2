@@ -862,9 +862,11 @@ function save(){
 
 
 
-  renderHistory();
+  renderMomentum();
 
-  renderDashboard();
+renderHistory();
+
+renderDashboard();
 
 
 
@@ -872,6 +874,15 @@ function save(){
     "DAY UPDATED"
   );
 
+
+}
+// =====================
+// MOMENTUM SYSTEM
+// =====================
+
+function renderMomentum(){
+
+  // tutaj zbudujemy wykres
 
 }
 // =====================
@@ -1200,6 +1211,7 @@ update.style.display="block";
 if(page==="history"){
 
 history.style.display="block";
+  renderMomentum();
 
 renderHistory();
 

@@ -926,7 +926,7 @@ data
 
 history.innerHTML += `
 
-<div class="historyItem">
+<div class="${index === 0 ? "historyToday" : "historyItem"}">
 
 <div class="dayNumber">
 

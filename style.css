@@ -1197,3 +1197,21 @@ height:300px;
 background:rgba(255,255,255,.18);
 
 }
+
+.historyHeader div:nth-child(2)::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+width:3px;
+
+height:100px;
+
+background:red;
+
+}

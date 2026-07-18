@@ -1127,23 +1127,6 @@ transform-origin:top;
 }
 
 
-.historyHeader div:not(:first-child)::after{
-
-content:"";
-
-position:absolute;
-
-left:50%;
-
-top:28px;
-
-width:1px;
-
-height:50px;
-
-background:red;
-
-}
 
 /* =====================
    HISTORY COLUMN TEST

@@ -1192,6 +1192,15 @@ background:rgba(255,255,255,.18);
 
 .historyToday{
 
+display:grid;
+
+grid-template-columns:
+70px repeat(5,1fr);
+
+align-items:center;
+
+text-align:center;
+
 padding:20px 10px;
 
 margin-bottom:12px;

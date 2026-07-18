@@ -1220,6 +1220,7 @@ font-size:15px;
 ===================== */
 
 .momentumCard{
+   position:relative;
 
 height:120px;
 
@@ -1260,5 +1261,12 @@ opacity:.45;
 margin-top:10px;
 
 text-align:center;
+
+}
+#momentumChart{
+
+height:70px;
+
+margin-top:5px;
 
 }

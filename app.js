@@ -940,23 +940,45 @@ function renderBuilding(){
 
   chart.innerHTML = `
 
-    <svg
-      id="buildingSvg"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none">
+<svg
+id="buildingSvg"
+viewBox="0 0 100 100"
+preserveAspectRatio="none">
 
-      <polyline
-        points="${points}"
-        fill="none"
-        stroke="#00aaff"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
 
-    </svg>
+<line x1="0" y1="75" x2="100" y2="75"
+stroke="#333"
+stroke-width="0.3"/>
 
-  `;
+<line x1="0" y1="50" x2="100" y2="50"
+stroke="#333"
+stroke-width="0.3"/>
+
+<line x1="0" y1="25" x2="100" y2="25"
+stroke="#333"
+stroke-width="0.3"/>
+
+
+<polyline
+
+points="${points}"
+
+fill="none"
+
+stroke="#00aaff"
+
+stroke-width="1.8"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"
+
+/>
+
+
+</svg>
+
+`;
 
 
 }

@@ -984,6 +984,28 @@ stroke-linejoin="round"
 />
 
 
+<circle
+cx="${5 + (values.length - 1) * 15}"
+cy="${95 - values[values.length - 1]}"
+r="2.5"
+fill="#00aaff"
+/>
+
+
+<text
+x="${5 + (values.length - 1) * 15 + 4}"
+y="${95 - values[values.length - 1] - 4}"
+fill="#ffffff"
+font-size="4">
+
+TODAY ${values[values.length - 1]}%
+
+</text>
+
+
+</svg>
+
+
 </svg>
 
 `;

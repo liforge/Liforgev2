@@ -876,73 +876,65 @@ renderDashboard();
 
 
 }
+
+
 // =====================
-// MOMENTUM SYSTEM
+// BUILDING SYSTEM
 // =====================
-function getMomentumValues(){
+
+function getBuildingValues(){
 
   const data = getData();
 
-
   return data
-  .slice(0,7)
-  .reverse()
-  .map(day => day.score);
+    .slice(0,7)
+    .reverse()
+    .map(day => day.score);
 
 }
 
-
-
-function renderMomentum(){
+function renderBuilding(){
 
   const chart =
-  document.getElementById("momentumChart");
-
+    document.getElementById("momentumChart");
 
   if(!chart){
     return;
   }
-const values = getMomentumValues();
 
-const points = values
-.map((value, index) => {
+  const values = getBuildingValues();
 
-  const x = 5 + index * 15;
-  const y = 95 - value;
+  const points = values
+    .map((value, index) => {
 
-  return `${x},${y}`;
+      const x = 5 + index * 15;
+      const y = 95 - value;
 
-})
-.join(" ");
+      return `${x},${y}`;
+
+    })
+    .join(" ");
 
   chart.innerHTML = `
 
-  <svg
-  id="momentumSvg"
-  viewBox="0 0 100 100"
-  preserveAspectRatio="none">
+    <svg
+      id="buildingSvg"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none">
 
+      <polyline
+        points="${points}"
+        fill="none"
+        stroke="#00aaff"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
 
-  <polyline
-
-points="${points}"
-
-  fill="none"
-
-  stroke="#00aaff"
-
-  stroke-width="1.8"
-
-  stroke-linecap="round"
-
-  stroke-linejoin="round"
-
-  />
-
-
-  </svg>
+    </svg>
 
   `;
+
 
 }
 // =====================
@@ -981,8 +973,8 @@ history.innerHTML = `
 
 <div>DAY</div>
 <div>◔</div>
-<div>👣</div>
-<div>♢</div>
+<div>🦿</div>
+<div>💦</div>
 <div>⚒</div>
 <div>◈</div>
 

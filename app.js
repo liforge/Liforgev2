@@ -1009,7 +1009,41 @@ TODAY ${values[values.length - 1]}%
 </svg>
 
 `;
+const days =
+document.getElementById("buildingDays");
 
+
+if(days){
+
+  days.innerHTML = "";
+
+  values.forEach((value,index)=>{
+
+    let label;
+
+
+    if(index === values.length - 1){
+
+      label = "TODAY";
+
+    }else{
+
+      label = "DAY " + (index + 1);
+
+    }
+
+
+    days.innerHTML += `
+
+    <span>
+    ${label}
+    </span>
+
+    `;
+
+  });
+
+}
 
 }
 // =====================

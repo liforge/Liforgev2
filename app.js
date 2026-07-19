@@ -889,7 +889,18 @@ function renderMomentum(){
   if(!chart){
     return;
   }
+const values = [30, 55, 45, 70, 60, 85, 65];
 
+const points = values
+.map((value, index) => {
+
+  const x = 5 + index * 15;
+  const y = 95 - value;
+
+  return `${x},${y}`;
+
+})
+.join(" ");
 
   chart.innerHTML = `
 
@@ -901,15 +912,7 @@ function renderMomentum(){
 
   <polyline
 
-  points="
-  5,70
-  20,50
-  35,60
-  50,35
-  65,45
-  80,25
-  95,40
-  "
+points="${points}"
 
   fill="none"
 

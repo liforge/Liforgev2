@@ -862,12 +862,11 @@ function save(){
 
 
 
-  renderMomentum();
+  renderBuilding();
 
 renderHistory();
 
 renderDashboard();
-
 
 
   showToast(
@@ -1263,7 +1262,8 @@ update.style.display="block";
 if(page==="history"){
 
 history.style.display="block";
-  renderMomentum();
+
+  renderBuilding();
 
 renderHistory();
 

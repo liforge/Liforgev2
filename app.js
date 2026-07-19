@@ -888,16 +888,7 @@ function getBuildingValues(){
     .reverse();
 
 
-  // zawsze 7 dni
-  while(data.length < 7){
-
-    data.unshift({
-      score:0
-    });
-
-  }
-
-
+  
   let building = 0;
 
 

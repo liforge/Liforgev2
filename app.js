@@ -1006,8 +1006,6 @@ TODAY ${values[values.length - 1]}%
 </svg>
 
 
-</svg>
-
 `;
 const days =
 document.getElementById("buildingDays");

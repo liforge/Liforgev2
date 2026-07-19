@@ -879,6 +879,19 @@ renderDashboard();
 // =====================
 // MOMENTUM SYSTEM
 // =====================
+function getMomentumValues(){
+
+  const data = getData();
+
+
+  return data
+  .slice(0,7)
+  .reverse()
+  .map(day => day.score);
+
+}
+
+
 
 function renderMomentum(){
 
@@ -889,7 +902,7 @@ function renderMomentum(){
   if(!chart){
     return;
   }
-const values = [30, 55, 45, 70, 60, 85, 65];
+const values = getMomentumValues();
 
 const points = values
 .map((value, index) => {

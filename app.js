@@ -1079,11 +1079,11 @@ history.innerHTML = `
 <div class="historyHeader">
 
 <div>DAY</div>
-<div>◔</div>
+<div>🌙</div>
 <div>🦿</div>
 <div>💦</div>
-<div>⚒</div>
-<div>◈</div>
+<div>🔥</div>
+<div>⚡️</div>
 
 </div>
 

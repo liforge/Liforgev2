@@ -883,12 +883,36 @@ renderDashboard();
 
 function getBuildingValues(){
 
-  const data = getData();
-
-  return data
+  const data = getData()
     .slice(0,7)
-    .reverse()
-    .map(day => day.score);
+    .reverse();
+
+
+  // zawsze 7 dni
+  while(data.length < 7){
+
+    data.unshift({
+      score:0
+    });
+
+  }
+
+
+  let building = 0;
+
+
+  return data.map(day => {
+
+    const gain =
+      (day.score / 100) * 14;
+
+
+    building += gain;
+
+
+    return Math.round(building);
+
+  });
 
 }
 

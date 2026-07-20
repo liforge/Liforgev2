@@ -942,6 +942,26 @@ id="buildingSvg"
 viewBox="0 0 100 100"
 preserveAspectRatio="none">
 
+<defs>
+
+<filter id="glow">
+
+<feGaussianBlur
+stdDeviation="1.2"
+result="blur"/>
+
+<feMerge>
+
+<feMergeNode in="blur"/>
+
+<feMergeNode in="SourceGraphic"/>
+
+</feMerge>
+
+</filter>
+
+</defs>
+
 
 <line x1="0" y1="0" x2="100" y2="0"
 stroke="#333"
@@ -972,7 +992,8 @@ fill="none"
 
 stroke="#00aaff"
 
-stroke-width="1.8"
+stroke-width="1.2"
+filter="url(#glow)"
 
 stroke-linecap="round"
 

@@ -928,6 +928,17 @@ function renderBuilding(){
 
     })
     .join(" ");
+
+  const pathData = values
+.map((value, index) => {
+
+  const x = 5 + index * 15;
+  const y = 95 - value;
+
+  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+
+})
+.join(" ");
   const lastX = 5 + (values.length - 1) * 15;
 const lastY = 95 - values[values.length - 1];
 

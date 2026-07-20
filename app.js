@@ -997,7 +997,7 @@ filter="url(#glow)"
 
 stroke-linecap="round"
 
-stroke-linejoin="round"
+stroke-linejoin="miter"
 
 />
 

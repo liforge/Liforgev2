@@ -928,6 +928,12 @@ function renderBuilding(){
 
     })
     .join(" ");
+  const lastX = 5 + (values.length - 1) * 15;
+const lastY = 95 - values[values.length - 1];
+
+const textX = lastX > 60
+  ? lastX - 28
+  : lastX + 4;
 
   chart.innerHTML = `
 
@@ -976,16 +982,16 @@ stroke-linejoin="round"
 
 
 <circle
-cx="${5 + (values.length - 1) * 15}"
-cy="${95 - values[values.length - 1]}"
+cx="${lastX}"
+cy="${lastY}"
 r="2.5"
 fill="#00aaff"
 />
 
 
 <text
-x="${5 + (values.length - 1) * 15 + 4}"
-y="${95 - values[values.length - 1] - 4}"
+x="${textX}"
+y="${lastY - 4}"
 fill="#ffffff"
 font-size="4">
 

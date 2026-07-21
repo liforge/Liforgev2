@@ -892,18 +892,18 @@ function getBuildingValues(){
   let building = 0;
 
 
-  return data.map(day => {
+  const result = data.map(day => {
 
-    const gain =
-      (day.score / 100) * 14;
+  const gain =
+    (day.score / 100) * 14;
 
+  building += gain;
 
-    building += gain;
+  return Math.round(building);
 
+});
 
-    return Math.round(building);
-
-  });
+return [0, ...result];
 
 }
 

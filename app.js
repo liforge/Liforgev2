@@ -1017,7 +1017,7 @@ filter="url(#glow)"
 <circle
 cx="${lastX}"
 cy="${lastY}"
-r="2.5"
+r="6"
 fill="#00aaff"
 />
 

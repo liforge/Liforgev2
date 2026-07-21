@@ -1015,16 +1015,17 @@ filter="url(#glow)"
 <circle
 cx="${lastX}"
 cy="${lastY}"
-r="3"
+r="2.5"
 fill="#00aaff"
+vector-effect="non-scaling-stroke"
 />
-
 
 <text
 x="${textX}"
 y="${lastY - 4}"
 fill="#ffffff"
-font-size="4">
+font-size="4"
+vector-effect="non-scaling-stroke">
 
 ${values[values.length - 1]}%
 

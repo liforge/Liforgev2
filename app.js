@@ -995,20 +995,21 @@ stroke="#333"
 stroke-width="0.3"/>
 
 
-<polyline
+<path
 
-points="${points}"
+d="${pathData}"
 
 fill="none"
 
 stroke="#00aaff"
 
-stroke-width="1.2"
-filter="url(#glow)"
+stroke-width="1.8"
 
 stroke-linecap="round"
 
-stroke-linejoin="miter"
+stroke-linejoin="round"
+
+filter="url(#glow)"
 
 />
 

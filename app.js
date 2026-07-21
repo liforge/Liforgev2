@@ -879,34 +879,7 @@ renderDashboard();
 
 // =====================
 // BUILDING SYSTEM
-// =====================
-
-function getBuildingValues(){
-
-  const data = getData()
-    .slice(0,7)
-    .reverse();
-
-
-  
-  let building = 0;
-
-
-  const result = data.map(day => {
-
-  const gain =
-    (day.score / 100) * 14;
-
-  building += gain;
-
-  return Math.round(building);
-
-});
-
-return [0, ...result];
-
-}
-
+// 
 function renderBuilding(){
 
   const chart =
@@ -916,47 +889,40 @@ function renderBuilding(){
     return;
   }
 
+
   const values = getBuildingValues();
 
-  const points = values
-.map((value,index)=>{
-
-  const x = 10 + index * 20;
-  const y = 100 - (value / 100) * 100;
-
-  return `${x},${y}`;
-
-})
-.join(" ");
 
 
+  const pathData = values
+  .map((value,index)=>{
 
-const pathData = values
-.map((value,index)=>{
+    const x = 10 + index * 20;
+    const y = 100 - (value / 100) * 100;
 
-  const x = 10 + index * 20;
-  const y = 100 - (value / 100) * 100;
+    return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 
-  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-
-})
-.join(" ");
+  })
+  .join(" ");
 
 
 
-const lastX = 10 + (values.length - 1) * 20;
+  const lastX = 10 + (values.length - 1) * 20;
 
-const lastY =
-100 - (values[values.length - 1] / 100) * 100;
+  const lastY =
+  100 - (values[values.length - 1] / 100) * 100;
 
 
 
-const textX =
-lastX > 90
-? lastX - 20
-: lastX + 4;
+  const textX =
+  lastX > 90
+  ? lastX - 20
+  : lastX + 4;
+
+
 
   chart.innerHTML = `
+
 <div class="chartGuides">
   <div></div>
   <div></div>
@@ -965,10 +931,12 @@ lastX > 90
   <div></div>
 </div>
 
+
 <svg
 id="buildingSvg"
 viewBox="0 0 140 100"
 preserveAspectRatio="none">
+
 
 <defs>
 
@@ -992,7 +960,6 @@ result="blur"/>
 
 
 
-
 <path
 
 d="${pathData}"
@@ -1010,17 +977,13 @@ stroke-linejoin="round"
 filter="url(#glow)"
 
 />
-<div class="chartDot"
-style="
-left:${lastX / 140 * 100}%;
-top:${lastY}%;
-"></div>
+
 
 <text
 x="${textX}"
 y="${lastY - 4}"
 fill="#ffffff"
-font-size="4"
+font-size="4">
 
 ${values[values.length - 1]}%
 
@@ -1030,7 +993,17 @@ ${values[values.length - 1]}%
 </svg>
 
 
+<div class="chartDot"
+style="
+left:${lastX / 140 * 100}%;
+top:${lastY}%;
+"></div>
+
+
 `;
+
+
+
 const days =
 document.getElementById("buildingDays");
 

@@ -951,7 +951,7 @@ const textX = lastX > 60
 <svg
 id="buildingSvg"
 viewBox="0 0 100 100"
-preserveAspectRatio="none">
+preserveAspectRatio="xMidYMid meet"
 
 <defs>
 

@@ -922,7 +922,7 @@ function renderBuilding(){
     .map((value, index) => {
 
       const x = 5 + index * 21;
-      const y = 95 - (value / 100) * 90;
+      const y = 100 - (value / 100) * 100;
 
       return `${x},${y}`;
 
@@ -933,14 +933,14 @@ function renderBuilding(){
 .map((value, index) => {
 
   const x = 5 + index * 21;
-  const y = 95 - (value / 100) * 90;
+  const y = 100 - (value / 100) * 100;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 
 })
 .join(" ");
   const lastX = 5 + (values.length - 1) * 21;
-const lastY = 95 - (values[values.length - 1] / 100) * 90;
+const lastY = 100 - (values[values.length - 1] / 100) * 100;
 
 const textX = lastX > 60
   ? lastX - 28
@@ -958,7 +958,7 @@ const textX = lastX > 60
 <svg
 id="buildingSvg"
 viewBox="0 0 140 100"
-preserveAspectRatio="xMidYMid meet"
+preserveAspectRatio="xMidYMid meet">
 
 <defs>
 

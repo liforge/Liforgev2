@@ -880,6 +880,28 @@ renderDashboard();
 // =====================
 // BUILDING SYSTEM
 // 
+function getBuildingValues(){
+
+  const data = getData()
+    .slice(0,7)
+    .reverse();
+
+  let building = 0;
+
+  const result = data.map(day => {
+
+    const gain = (day.score / 100) * 14;
+
+    building += gain;
+
+    return Math.round(building);
+
+  });
+
+  return [0, ...result];
+
+}
+
 function renderBuilding(){
 
   const chart =
@@ -993,7 +1015,7 @@ ${values[values.length - 1]}%
 </svg>
 
 
-
+`;
 
 
 const days =

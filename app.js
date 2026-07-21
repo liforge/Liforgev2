@@ -993,14 +993,6 @@ ${values[values.length - 1]}%
 </svg>
 
 
-<div class="chartDot"
-style="
-left:${lastX / 140 * 100}%;
-top:${lastY}%;
-"></div>
-
-
-`;
 
 
 

@@ -919,32 +919,42 @@ function renderBuilding(){
   const values = getBuildingValues();
 
   const points = values
-    .map((value, index) => {
+.map((value,index)=>{
 
-      const x = 5 + (index - 1) * 30;
-      const y = 100 - (value / 100) * 100;
+  const x = 10 + index * 20;
+  const y = 100 - (value / 100) * 100;
 
-      return `${x},${y}`;
+  return `${x},${y}`;
 
-    })
-    .join(" ");
+})
+.join(" ");
 
-  const pathData = values
-.map((value, index) => {
 
-  const x = 5 + (index - 1) * 30;
+
+const pathData = values
+.map((value,index)=>{
+
+  const x = 10 + index * 20;
   const y = 100 - (value / 100) * 100;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 
 })
 .join(" ");
-  const lastX = 5 + (values.length - 1) * 21;
-const lastY = 100 - (values[values.length - 1] / 100) * 100;
 
-const textX = lastX > 60
-  ? lastX - 28
-  : lastX + 4;
+
+
+const lastX = 10 + (values.length - 1) * 20;
+
+const lastY =
+100 - (values[values.length - 1] / 100) * 100;
+
+
+
+const textX =
+lastX > 90
+? lastX - 20
+: lastX + 4;
 
   chart.innerHTML = `
 <div class="chartGuides">

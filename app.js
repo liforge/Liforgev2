@@ -922,7 +922,7 @@ function renderBuilding(){
     .map((value, index) => {
 
       const x = 5 + index * 21;
-      const y = 95 - (value / 98) * 90;
+      const y = 95 - (value / 100) * 90;
 
       return `${x},${y}`;
 
@@ -933,14 +933,14 @@ function renderBuilding(){
 .map((value, index) => {
 
   const x = 5 + index * 21;
-  const y = 95 - (value / 98) * 90;
+  const y = 95 - (value / 100) * 90;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 
 })
 .join(" ");
   const lastX = 5 + (values.length - 1) * 21;
-const lastY = 95 - (values[values.length - 1] / 98) * 90;
+const lastY = 95 - (values[values.length - 1] / 100) * 90;
 
 const textX = lastX > 60
   ? lastX - 28
@@ -1005,7 +1005,7 @@ filter="url(#glow)"
 <circle
 cx="${lastX}"
 cy="${lastY}"
-r="6"
+r="3"
 fill="#00aaff"
 />
 

@@ -922,7 +922,7 @@ function renderBuilding(){
     .map((value, index) => {
 
       const x = 5 + index * 15;
-      const y = 95 - value;
+      const y = 95 - (value / 98) * 90;
 
       return `${x},${y}`;
 
@@ -933,7 +933,7 @@ function renderBuilding(){
 .map((value, index) => {
 
   const x = 5 + index * 15;
-  const y = 95 - value;
+  const y = 95 - (value / 98) * 90;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 

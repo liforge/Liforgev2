@@ -921,7 +921,7 @@ function renderBuilding(){
   const points = values
     .map((value, index) => {
 
-      const x = 5 + index * 21;
+      const x = 5 + (index - 1) * 30;
       const y = 100 - (value / 100) * 100;
 
       return `${x},${y}`;
@@ -932,7 +932,7 @@ function renderBuilding(){
   const pathData = values
 .map((value, index) => {
 
-  const x = 5 + index * 21;
+  const x = 5 + (index - 1) * 30;
   const y = 100 - (value / 100) * 100;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;

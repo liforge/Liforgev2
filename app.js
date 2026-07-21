@@ -974,23 +974,23 @@ result="blur"/>
 </defs>
 
 
-<line x1="0" y1="0" x2="100" y2="0"
+<line x1="5" y1="0" x2="95" y2="0"
 stroke="#333"
 stroke-width="0.3"/>
 
-<line x1="0" y1="25" x2="100" y2="25"
+<line x1="5" y1="25" x2="95" y2="25"
 stroke="#333"
 stroke-width="0.3"/>
 
-<line x1="0" y1="50" x2="100" y2="50"
+<line x1="5" y1="50" x2="95" y2="50"
 stroke="#333"
 stroke-width="0.3"/>
 
-<line x1="0" y1="75" x2="100" y2="75"
+<line x1="5" y1="75" x2="95" y2="75"
 stroke="#333"
 stroke-width="0.3"/>
 
-<line x1="0" y1="100" x2="100" y2="100"
+<line x1="5" y1="100" x2="95" y2="100"
 stroke="#333"
 stroke-width="0.3"/>
 

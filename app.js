@@ -968,7 +968,7 @@ lastX > 90
 <svg
 id="buildingSvg"
 viewBox="0 0 140 100"
-preserveAspectRatio="xMidYMid meet">
+preserveAspectRatio="none">
 
 <defs>
 

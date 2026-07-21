@@ -947,6 +947,13 @@ const textX = lastX > 60
   : lastX + 4;
 
   chart.innerHTML = `
+<div class="chartGuides">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
 
 <svg
 id="buildingSvg"

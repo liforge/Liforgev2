@@ -921,7 +921,7 @@ function renderBuilding(){
   const points = values
     .map((value, index) => {
 
-      const x = 5 + index * 15;
+      const x = 5 + index * 21;
       const y = 95 - (value / 98) * 90;
 
       return `${x},${y}`;
@@ -932,7 +932,7 @@ function renderBuilding(){
   const pathData = values
 .map((value, index) => {
 
-  const x = 5 + index * 15;
+  const x = 5 + index * 21;
   const y = 95 - (value / 98) * 90;
 
   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
@@ -950,7 +950,7 @@ const textX = lastX > 60
 
 <svg
 id="buildingSvg"
-viewBox="0 0 100 100"
+viewBox="0 0 140 100"
 preserveAspectRatio="xMidYMid meet"
 
 <defs>

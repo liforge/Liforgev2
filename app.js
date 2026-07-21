@@ -1010,14 +1010,11 @@ stroke-linejoin="round"
 filter="url(#glow)"
 
 />
-
-
-<circle
-cx="${lastX}"
-cy="${lastY}"
-r="3"
-fill="#00aaff"
-/>
+<div class="chartDot"
+style="
+left:${lastX / 140 * 100}%;
+top:${lastY}%;
+"></div>
 
 <text
 x="${textX}"

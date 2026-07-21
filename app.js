@@ -939,8 +939,8 @@ function renderBuilding(){
 
 })
 .join(" ");
-  const lastX = 5 + (values.length - 1) * 15;
-const lastY = 95 - values[values.length - 1];
+  const lastX = 5 + (values.length - 1) * 21;
+const lastY = 95 - (values[values.length - 1] / 98) * 90;
 
 const textX = lastX > 60
   ? lastX - 28

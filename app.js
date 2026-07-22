@@ -904,7 +904,7 @@ for(let i = 0; i < 7; i++){
 
     columns: columns,
 
-    startX:0,
+    startX:left,
     startY:100,
 
     left:10,

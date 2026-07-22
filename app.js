@@ -988,10 +988,6 @@ function renderBuilding(){
 
 
 
-  const chartWidth = layout.width;
-const chartHeight = layout.height;
-
-
 let pathData = "";
 
 values.forEach((value,index)=>{

@@ -887,7 +887,7 @@ renderDashboard();
 function createBuildingLayout(chartWidth){
 
   const left = 10;
-const right = 130;
+const right = chartWidth - 10;
 
 const columns = [];
 

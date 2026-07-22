@@ -887,6 +887,9 @@ function createBuildingLayout(){
 
   return {
 
+    startX:0,
+    startY:100
+
     left:10,
 
     right:130,

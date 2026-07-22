@@ -939,30 +939,29 @@ const step = chartWidth / (values.length - 1);
 
 let started = false;
 
-const pathData = values
-.map((value,index)=>{
+let pathData = "";
+
+values.forEach((value,index)=>{
 
   if(value === null){
-    return "";
+    return;
   }
 
   const x = 10 + index * 20;
   const y = 100 - (value / 100) * 100;
 
 
-  if(!started){
+  if(pathData === ""){
 
-  started = true;
+    pathData = `M 0 100 L ${x} ${y}`;
 
-  return `M 10 100 L ${x} ${y}`;
+  }else{
 
-}
+    pathData += ` L ${x} ${y}`;
 
+  }
 
-  return `L ${x} ${y}`;
-
-})
-.join(" ");
+});
 
 
 

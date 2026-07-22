@@ -916,23 +916,28 @@ function renderBuilding(){
 
 
 
-  const pathData = values
-  .map((value,index)=>{
+  const chartWidth = 140;
+const chartHeight = 100;
 
-    const x = 10 + index * 20;
-    const y = 100 - (value / 100) * 100;
+const step = chartWidth / (values.length - 1);
 
-    return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+const pathData = values
+.map((value,index)=>{
 
-  })
-  .join(" ");
+  const x = index * step;
+  const y = chartHeight - (value / 100) * chartHeight;
+
+  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+
+})
+.join(" ");
 
 
 
-  const lastX = 10 + (values.length - 1) * 20;
+  const lastX = (values.length - 1) * step;
 
-  const lastY =
-  100 - (values[values.length - 1] / 100) * 100;
+const lastY =
+chartHeight - (values[values.length - 1] / 100) * chartHeight;
 
 
 

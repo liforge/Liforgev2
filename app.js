@@ -947,7 +947,7 @@ const pathData = values
   const x = 10 + index * 20;
   const y = 100 - (value / 100) * 100;
 
-  return `${x} ${y}`;
+  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
 
 })
 .join(" ");

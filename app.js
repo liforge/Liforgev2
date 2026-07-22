@@ -999,8 +999,10 @@ values.forEach((value,index)=>{
     return;
   }
 
-  const x = 10 + index * 20;
-  const y = 100 - (value / 100) * 100;
+  const point = getBuildingPoint(value,index);
+
+const x = point.x;
+const y = point.y;
 
 
   if(pathData === ""){

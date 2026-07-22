@@ -915,7 +915,6 @@ function getBuildingValues(){
 
   return week;
 
-}
 
 }
 

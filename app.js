@@ -985,8 +985,8 @@ function renderBuilding(){
 
 
 
-  const chartWidth = 140;
-const chartHeight = 100;
+  const chartWidth = layout.width;
+const chartHeight = layout.height;
 
 const step = chartWidth / (values.length - 1);
 

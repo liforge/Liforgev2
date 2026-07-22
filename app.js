@@ -952,11 +952,11 @@ const pathData = values
 
   if(!started){
 
-    started = true;
+  started = true;
 
-    return `M ${x} ${y}`;
+  return `M 10 100 L ${x} ${y}`;
 
-  }
+}
 
 
   return `L ${x} ${y}`;

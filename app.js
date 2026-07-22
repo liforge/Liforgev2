@@ -886,15 +886,18 @@ renderDashboard();
 
 function createBuildingLayout(){
 
-  const columns = [];
+  const left = 10;
+const right = 130;
 
-const gap = (130 - 10) / 6;
+const columns = [];
+
+const gap = (right - left) / 6;
 
 for(let i = 0; i < 7; i++){
 
   columns.push(
-    10 + i * gap
-  );
+  left + i * gap
+);
 
 }
   return {

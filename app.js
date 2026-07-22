@@ -1051,6 +1051,26 @@ filter="url(#glow)"
 
 />
 
+${values.map((value,index)=>{
+
+  if(value === null){
+    return "";
+  }
+
+  const x = 10 + index * 20;
+  const y = 100 - (value / 100) * 100;
+
+  return `
+  <circle
+    cx="${x}"
+    cy="${y}"
+    r="2"
+    fill="#00aaff"
+  />
+  `;
+
+}).join("")}
+
 
 <text
 x="${textX}"

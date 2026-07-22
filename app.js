@@ -1033,6 +1033,8 @@ if(days){
 
   values.forEach((value,index)=>{
 
+  if(index === 0) return;
+
     let label;
 
 

@@ -934,7 +934,7 @@ for(let i = 0; i < 7; i++){
 
 function getBuildingPoint(value,index){
 
-  const layout = createBuildingLayout();
+  const layout = createBuildingLayout(chartWidth);
 
   const x = layout.columns[index];
 

@@ -1047,7 +1047,7 @@ y="${lastY - 4}"
 fill="#ffffff"
 font-size="4">
 
-${values[values.length - 1]}%
+${values[todayIndex]}%
 
 </text>
 

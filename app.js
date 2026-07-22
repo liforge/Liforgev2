@@ -880,6 +880,36 @@ renderDashboard();
 // =====================
 // BUILDING SYSTEM
 // 
+
+
+
+function createBuildingLayout(){
+
+  return {
+
+    left:10,
+
+    right:130,
+
+    top:0,
+
+    bottom:100,
+
+    columns:[
+      10,
+      30,
+      50,
+      70,
+      90,
+      110,
+      130
+    ]
+
+  };
+
+}
+
+
 function getBuildingValues(){
 
   const data = getData()
@@ -929,6 +959,8 @@ function renderBuilding(){
 
 
   const values = getBuildingValues();
+
+  const layout = createBuildingLayout();
 
 
 

@@ -1033,11 +1033,16 @@ for(let i = values.length - 1; i >= 0; i--){
 }
 
 
-const lastX = 10 + todayIndex * 20;
+const todayPoint =
+  getBuildingPoint(
+    values[todayIndex],
+    todayIndex
+  );
 
 
-const lastY =
-100 - (values[todayIndex] / 100) * 100;
+const lastX = todayPoint.x;
+
+const lastY = todayPoint.y;
 
 
 

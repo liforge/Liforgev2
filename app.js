@@ -895,6 +895,8 @@ function createBuildingLayout(){
 
     bottom:100,
 
+    height:100
+
     columns:[
       10,
       30,
@@ -909,6 +911,24 @@ function createBuildingLayout(){
 
 }
 
+function getBuildingPoint(value,index){
+
+  const layout = createBuildingLayout();
+
+  const x = layout.columns[index];
+
+  const y =
+    layout.bottom -
+    (value / 100) *
+    layout.height;
+
+
+  return {
+    x:x,
+    y:y
+  };
+
+}
 
 function getBuildingValues(){
 

@@ -895,7 +895,7 @@ function createBuildingLayout(){
 
     bottom:100,
 
-    height:100
+    height:100,
 
     columns:[
       10,

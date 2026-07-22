@@ -937,6 +937,8 @@ const chartHeight = 100;
 
 const step = chartWidth / (values.length - 1);
 
+let started = false;
+
 const pathData = values
 .map((value,index)=>{
 
@@ -947,7 +949,17 @@ const pathData = values
   const x = 10 + index * 20;
   const y = 100 - (value / 100) * 100;
 
-  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+
+  if(!started){
+
+    started = true;
+
+    return `M ${x} ${y}`;
+
+  }
+
+
+  return `L ${x} ${y}`;
 
 })
 .join(" ");

@@ -1008,7 +1008,7 @@ const y = point.y;
 
   if(pathData === ""){
 
-    pathData = `M 0 100 L ${x} ${y}`;
+    pathData = `M ${layout.startX} ${layout.startY} L ${x} ${y}`;
 
   }else{
 

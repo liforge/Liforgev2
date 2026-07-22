@@ -997,7 +997,7 @@ function renderBuilding(){
   if(!chart){
     return;
   }
-
+    const chartWidth = chart.clientWidth;
 
   const values = getBuildingValues();
 

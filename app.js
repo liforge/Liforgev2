@@ -954,10 +954,25 @@ const pathData = values
 
 
 
-  const lastX = (values.length - 1) * step;
+  let todayIndex = values.length - 1;
+
+for(let i = values.length - 1; i >= 0; i--){
+
+  if(values[i] !== null){
+
+    todayIndex = i;
+    break;
+
+  }
+
+}
+
+
+const lastX = 10 + todayIndex * 20;
+
 
 const lastY =
-chartHeight - (values[values.length - 1] / 100) * chartHeight;
+100 - (values[todayIndex] / 100) * 100;
 
 
 
@@ -1051,24 +1066,21 @@ if(days){
 
   days.innerHTML = "";
 
-  values.slice(1).forEach((value,index)=>{
+  values.forEach((value,index)=>{
 
   if(index === 0) return;
 
     let label;
 
 
-    if(index === values.length - 1){
+    let label = "DAY " + (index + 1);
 
-      label = "TODAY";
 
-    }else{
+if(index === todayIndex){
 
-      label = index === values.length - 2 
-? "TODAY"
-: "DAY " + (index + 1);
+  label = "TODAY";
 
-    }
+}
 
 
     days.innerHTML += `

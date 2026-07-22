@@ -1111,8 +1111,10 @@ ${values.map((value,index)=>{
     return "";
   }
 
-  const x = layout.columns[index];
-  const y = 100 - (value / 100) * 100;
+  const point = getBuildingPoint(value,index);
+
+const x = point.x;
+const y = point.y;
 
   return `
   <circle

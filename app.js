@@ -884,7 +884,7 @@ renderDashboard();
 
 
 
-function createBuildingLayout(){
+function createBuildingLayout(chartWidth){
 
   const left = 10;
 const right = 130;

@@ -899,7 +899,7 @@ for(let i = 0; i < 7; i++){
 }
   return {
 
-    columns: columns
+    columns: columns,
 
     startX:0,
     startY:100,

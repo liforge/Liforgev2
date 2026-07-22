@@ -1031,7 +1031,7 @@ if(days){
 
   days.innerHTML = "";
 
-  values.forEach((value,index)=>{
+  values.slice(1).forEach((value,index)=>{
 
   if(index === 0) return;
 
@@ -1044,7 +1044,9 @@ if(days){
 
     }else{
 
-      label = "DAY " + (index + 1);
+      label = index === values.length - 2 
+? "TODAY"
+: "DAY " + (index + 1);
 
     }
 

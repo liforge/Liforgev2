@@ -886,19 +886,36 @@ function getBuildingValues(){
     .slice(0,7)
     .reverse();
 
+
+  const week = [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ];
+
+
   let building = 0;
 
-  const result = data.map(day => {
 
-    const gain = (day.score / 100) * 14;
+  data.forEach((day,index)=>{
+
+    const gain =
+      (day.score / 100) * 14;
 
     building += gain;
 
-    return Math.round(building);
+    week[index] = Math.round(building);
 
   });
 
-  return [0, ...result];
+
+  return week;
+
+}
 
 }
 
@@ -924,10 +941,14 @@ const step = chartWidth / (values.length - 1);
 const pathData = values
 .map((value,index)=>{
 
-  const x = index * step;
-  const y = chartHeight - (value / 100) * chartHeight;
+  if(value === null){
+    return "";
+  }
 
-  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+  const x = 10 + index * 20;
+  const y = 100 - (value / 100) * 100;
+
+  return `${x} ${y}`;
 
 })
 .join(" ");

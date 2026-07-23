@@ -1292,7 +1292,11 @@ width:100%;
 #momentumChart{
   position:relative;
 }
-
+#momentumChart svg{
+  position:absolute;
+  left:0;
+  top:0;
+}
 .chartGuides{
   position:absolute;
   inset:0;

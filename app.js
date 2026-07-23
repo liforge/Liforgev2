@@ -899,7 +899,7 @@ function createBuildingLayout(chartWidth){
   return {
     columns: columns,
 
-    startX:left,
+    startX:0,
     startY:100,
 
     left:left,

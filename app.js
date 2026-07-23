@@ -907,15 +907,16 @@ for(let i = 0; i < 7; i++){
     startX:left,
     startY:100,
 
-    left:10,
+    left:left,
+right:right,
 
-    right:130,
+width:right - left,
 
     top:0,
 
     bottom:100,
 
-    width:140,
+  
     height:100,
 
 

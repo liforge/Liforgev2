@@ -946,8 +946,7 @@ function getBuildingPoint(layout, value, index){
 function getBuildingValues(){
 
   const data = getData()
-    .slice(0,7)
-    .reverse();
+  .slice(0,7);
 
 
   const week = [

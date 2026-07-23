@@ -992,6 +992,7 @@ function renderBuilding(){
     const chartWidth = chart.clientWidth;
 
   const values = getBuildingValues();
+  alert(JSON.stringify(values));
 
   const layout = createBuildingLayout(chartWidth);
 

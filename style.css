@@ -1252,27 +1252,16 @@ margin-bottom:10px;
 
 
 .momentumDays{
-
 position:absolute;
-
 bottom:10px;
-
-left:15px;
-
-right:15px;
-
+left:0;
+right:0;
 display:grid;
-
 grid-template-columns:repeat(7,1fr);
-
 text-align:center;
-
 font-size:9px;
-
 letter-spacing:1px;
-
 opacity:.45;
-
 }
 
 

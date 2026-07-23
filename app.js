@@ -919,7 +919,7 @@ function getBuildingPoint(layout, value, index){
 
 
 
-  const x = layout.columns[index + 1];
+  const x = layout.columns[index - 1];
 
   const y =
     layout.bottom -

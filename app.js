@@ -1064,7 +1064,7 @@ const lastY = todayPoint.y;
 <svg
 id="buildingSvg"
 viewBox="0 0 ${layout.width} 100"
-preserveAspectRatio="xMidYMid meet"
+preserveAspectRatio="xMidYMid meet">
 
 
 <defs>

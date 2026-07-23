@@ -878,56 +878,39 @@ renderDashboard();
 
 
 // =====================
-// BUILDING SYSTEM
-// 
-
-
-
-
+// BUILDING 
 function createBuildingLayout(chartWidth){
 
   const left = 0;
-const right = chartWidth;
+  const right = chartWidth;
 
-const columns = [
-  left,
-  left + gap,
-  left + gap * 2,
-  left + gap * 3,
-  left + gap * 4,
-  left + gap * 5,
-  right
-];
+  const gap = (right - left) / 6;
 
-const gap = (right - left) / 6;
+  const columns = [
+    left,
+    left + gap,
+    left + gap * 2,
+    left + gap * 3,
+    left + gap * 4,
+    left + gap * 5,
+    right
+  ];
 
-for(let i = 0; i < 7; i++){
-
-  columns.push(
-  left + i * gap
-);
-
-}
   return {
-
     columns: columns,
 
     startX:left,
     startY:100,
 
     left:left,
-right:right,
+    right:right,
 
-width:right - left,
+    width:right-left,
 
     top:0,
-
     bottom:100,
 
-  
-    height:100,
-
-
+    height:100
   };
 
 }

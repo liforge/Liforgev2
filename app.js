@@ -923,9 +923,9 @@ for(let i = 0; i < 7; i++){
 
 }
 
-function getBuildingPoint(value,index){
+function getBuildingPoint(layout, value, index){
 
-  const layout = createBuildingLayout();
+
 
   const x = layout.columns[index];
 
@@ -1004,7 +1004,7 @@ values.forEach((value,index)=>{
     return;
   }
 
-  const point = getBuildingPoint(value,index);
+  const point = getBuildingPoint(layout, value, index);
 
 const x = point.x;
 const y = point.y;
@@ -1040,6 +1040,7 @@ for(let i = values.length - 1; i >= 0; i--){
 
 const todayPoint =
   getBuildingPoint(
+    layout,
     values[todayIndex],
     todayIndex
   );
@@ -1121,7 +1122,7 @@ ${values.map((value,index)=>{
     return "";
   }
 
-  const point = getBuildingPoint(value,index);
+  const point = getBuildingPoint(layout, value, index);
 
 const x = point.x;
 const y = point.y;

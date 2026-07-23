@@ -889,7 +889,15 @@ function createBuildingLayout(chartWidth){
   const left = 0;
 const right = chartWidth;
 
-const columns = [];
+const columns = [
+  left,
+  left + gap,
+  left + gap * 2,
+  left + gap * 3,
+  left + gap * 4,
+  left + gap * 5,
+  right
+];
 
 const gap = (right - left) / 6;
 

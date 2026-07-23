@@ -988,10 +988,29 @@ function renderBuilding(){
 
 
 let pathData = "";
-  pathData = "M 0 100 L 50 50";
+  
+values.forEach((value,index)=>{
 
-//===//tutaj usunąłem aleś xd
+  if(value === null){
+    return;
+  }
 
+  const point = getBuildingPoint(layout, value, index);
+
+  const x = point.x;
+  const y = point.y;
+
+  if(pathData === ""){
+
+    pathData = `M 0 100 L ${x} ${y}`;
+
+  }else{
+
+    pathData += ` L ${x} ${y}`;
+
+  }
+
+});
 
   let todayIndex = values.length - 1;
 

@@ -61,47 +61,33 @@ function loadMetrics(){
 }
 
 
+// --- helper: safe DOM getter ---
+function getEl(id){
+  return document.getElementById(id) || null;
+}
+
 
 function saveMetrics(){
 
   METRICS = {
 
     sleep:{
-      target:
-      Number(
-        document.getElementById("set_sleep").value
-      ) || 7,
-
+      target: Number(getEl("set_sleep")?.value) || 7,
       max:1
     },
-
 
     steps:{
-      target:
-      Number(
-        document.getElementById("set_steps").value
-      ) || 8000,
-
+      target: Number(getEl("set_steps")?.value) || 8000,
       max:1
     },
-
 
     training:{
-      target:
-      Number(
-        document.getElementById("set_training").value
-      ) || 2,
-
+      target: Number(getEl("set_training")?.value) || 2,
       max:1
     },
 
-
     water:{
-      target:
-      Number(
-        document.getElementById("set_water").value
-      ) || 2.5,
-
+      target: Number(getEl("set_water")?.value) || 2.5,
       max:1
     }
 
@@ -121,7 +107,6 @@ function saveMetrics(){
   );
 
 }
-
 
 
 
@@ -178,8 +163,6 @@ function enterSystem(){
 }
 
 
-
-
 // =====================
 // DATA STORAGE
 // =====================
@@ -203,7 +186,6 @@ function getData(){
 }
 
 
-
 function saveData(data){
 
   localStorage.setItem(
@@ -212,7 +194,6 @@ function saveData(data){
   );
 
 }
-
 
 
 function getTodayState(){
@@ -235,7 +216,6 @@ function getTodayState(){
   ) || null;
 
 }
-
 
 
 function getDashboardData(){
@@ -279,7 +259,6 @@ function getDashboardData(){
 
 
 
-
 // =====================
 // SCORE ENGINE
 // =====================
@@ -296,7 +275,6 @@ function calcScore(
   const m =
     METRICS ||
     getDefaultMetrics();
-
 
 
   sleep =
@@ -363,7 +341,6 @@ function calcScore(
 
 
 
-
 function getMetricProgress(){
 
   const day =
@@ -389,7 +366,6 @@ function getMetricProgress(){
   const m =
     METRICS ||
     getDefaultMetrics();
-
 
 
   return {
@@ -562,8 +538,6 @@ function renderDashboard(){
 
 
 
-
-
 // =====================
 // SINGLE METRIC CARD
 // =====================
@@ -578,6 +552,7 @@ function createMetric(
 
 
 return `
+
 
 
 <div class="metricCard">
@@ -646,8 +621,6 @@ return `
 }
 
 
-
-
 // =====================
 // UPDATE TODAY
 // =====================
@@ -656,25 +629,15 @@ return `
 function save(){
 
 
-  const sleepInput =
-    document.getElementById("sleep").value;
+  const sleepEl = getEl("sleep");
+  const stepsEl = getEl("steps");
+  const trainingEl = getEl("training");
+  const waterEl = getEl("water");
 
-
-
-  const stepsInput =
-    document.getElementById("steps").value;
-
-
-
-  const trainingInput =
-    document.getElementById("training").value;
-
-
-
-  const waterInput =
-    document.getElementById("water").value;
-
-
+  const sleepInput = sleepEl?.value ?? "";
+  const stepsInput = stepsEl?.value ?? "";
+  const trainingInput = trainingEl?.value ?? "";
+  const waterInput = waterEl?.value ?? "";
 
 
   const sleep =
@@ -702,7 +665,6 @@ function save(){
 
 
 
-
   const today =
     new Date()
     .toISOString()
@@ -710,10 +672,8 @@ function save(){
 
 
 
-
   const data =
     getData();
-
 
 
 
@@ -726,9 +686,7 @@ function save(){
 
 
 
-
   let day;
-
 
 
 
@@ -764,14 +722,12 @@ function save(){
 
 
 
-
   if(sleepInput !== ""){
 
     day.sleep =
       sleep;
 
   }
-
 
 
 
@@ -784,14 +740,12 @@ function save(){
 
 
 
-
   if(trainingInput !== ""){
 
     day.training +=
       training;
 
   }
-
 
 
 
@@ -805,7 +759,6 @@ function save(){
 
 
 
-
   day.score =
     calcScore(
       day.sleep,
@@ -813,7 +766,6 @@ function save(){
       day.training,
       day.water
     );
-
 
 
 
@@ -836,29 +788,16 @@ function save(){
 
 
 
-
   saveData(
     data
   );
 
 
 
-
-  document.getElementById("sleep").value =
-    day.sleep;
-
-
-  document.getElementById("steps").value =
-    "";
-
-
-  document.getElementById("training").value =
-    "";
-
-
-  document.getElementById("water").value =
-    "";
-
+  if(sleepEl) sleepEl.value = day.sleep;
+  if(stepsEl) stepsEl.value = "";
+  if(trainingEl) trainingEl.value = "";
+  if(waterEl) waterEl.value = "";
 
 
 
@@ -877,6 +816,7 @@ renderDashboard();
 }
 
 
+
 // =====================
 // BUILDING 
 function createBuildingLayout(chartWidth){
@@ -884,14 +824,16 @@ function createBuildingLayout(chartWidth){
   const left = 0;
   const right = chartWidth;
 
-  const gap = chartWidth / 8;
+  const columnsCount = 7;
+  // distribute points so first is at 0 and last at chartWidth
+  const gap = columnsCount > 1 ? chartWidth / (columnsCount - 1) : chartWidth;
 
 const columns = [];
 
-for(let i = 0; i < 7; i++){
+for(let i = 0; i < columnsCount; i++){
 
   columns.push(
-    gap + i * gap
+    i * gap
   );
 
 }
@@ -1003,7 +945,8 @@ values.forEach((value,index)=>{
 
   if(pathData === ""){
 
-    pathData = `M 0 100 L ${x} ${y}`;
+    // start path at the first actual point (avoid connecting from bottom-left)
+    pathData = `M ${x} ${y}`;
 
   }else{
 
@@ -1025,6 +968,7 @@ for(let i = values.length - 1; i >= 0; i--){
   }
 
 }
+
 
 
 const todayPoint =
@@ -1084,6 +1028,7 @@ result="blur"/>
 </filter>
 
 </defs>
+
 
 
 
@@ -1278,7 +1223,6 @@ function showSettings(){
 
 
 
-
 function hideSettings(){
 
 
@@ -1289,7 +1233,6 @@ function hideSettings(){
 
 
 }
-
 
 
 
@@ -1327,7 +1270,6 @@ function clearHistory(){
 
 
 
-
 // =====================
 // TOAST SYSTEM
 // =====================
@@ -1338,6 +1280,7 @@ function showToast(message){
 
   const toast =
     document.getElementById("toast");
+
 
 
 
@@ -1360,7 +1303,6 @@ function showToast(message){
 
 
 
-
   setTimeout(()=>{
 
 
@@ -1372,10 +1314,7 @@ function showToast(message){
   },2500);
 
 
-
 }
-
-
 
 
 
@@ -1428,6 +1367,7 @@ window.addEventListener(
 
 
 
+
 });
 
 
@@ -1456,9 +1396,11 @@ document
 
 
 
+
 document
 .querySelector(".hero")
 .style.display="block";
+
 
 
 }

@@ -463,7 +463,6 @@ function renderDashboard(){
 
 
 
-
   <div class="coreScore">
 
 
@@ -483,7 +482,6 @@ function renderDashboard(){
 
 
   </div>
-
 
 
 
@@ -531,7 +529,6 @@ function renderDashboard(){
   </div>
 
 
-
   `;
 
 }
@@ -577,7 +574,6 @@ return `
 
 
 
-
   <div class="metricBarRow">
 
 
@@ -600,7 +596,6 @@ return `
 
 
   </div>
-
 
 
 
@@ -825,7 +820,7 @@ function createBuildingLayout(chartWidth){
   const right = chartWidth;
 
   const columnsCount = 7;
-  // distribute points so first is at 0 and last at chartWidth
+  // distribute points evenly: 0, gap, 2*gap, ... (columnsCount-1)*gap
   const gap = columnsCount > 1 ? chartWidth / (columnsCount - 1) : chartWidth;
 
 const columns = [];
@@ -1097,11 +1092,20 @@ document.getElementById("buildingDays");
 if(days){
 
   days.innerHTML = "";
+  
+  // Create a container for day labels with proper grid alignment
+  const daysContainer = document.createElement("div");
+  daysContainer.style.cssText = `
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    width: 100%;
+    text-align: center;
+  `;
 
   values.forEach((value,index)=>{
 
   
-
 
     let label = "DAY " + (index + 1);
 
@@ -1112,16 +1116,19 @@ if(index === todayIndex){
 
 }
 
-
-    days.innerHTML += `
-
-    <span>
-    ${label}
-    </span>
-
+    const daySpan = document.createElement("span");
+    daySpan.textContent = label;
+    daySpan.style.cssText = `
+      font-size: 11px;
+      opacity: 0.6;
+      letter-spacing: 1px;
     `;
+    
+    daysContainer.appendChild(daySpan);
 
   });
+  
+  days.appendChild(daysContainer);
 
 }
 
@@ -1237,8 +1244,6 @@ function hideSettings(){
 
 
 
-
-
 // =====================
 // RESET DATA
 // =====================
@@ -1265,7 +1270,6 @@ function clearHistory(){
 
 
 }
-
 
 
 
@@ -1319,7 +1323,6 @@ function showToast(message){
 
 
 
-
 // =====================
 // SERVICE WORKER / PWA
 // =====================
@@ -1364,7 +1367,6 @@ window.addEventListener(
 
 
   });
-
 
 
 

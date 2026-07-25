@@ -884,14 +884,14 @@ function createBuildingLayout(chartWidth){
   const left = 0;
   const right = chartWidth;
 
-  const gap = chartWidth / 7;
+  const gap = chartWidth / 8;
 
 const columns = [];
 
 for(let i = 0; i < 7; i++){
 
   columns.push(
-    (i + 0.5) * gap
+    gap + i * gap
   );
 
 }

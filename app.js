@@ -1079,8 +1079,9 @@ ${values.map((value,index)=>{
   <circle
     cx="${point.x}"
     cy="${point.y}"
-    r="2"
-    fill="#00aaff"
+    r="2.5"
+filter="url(#glow)"
+    fill="#ffffff"
   />
   `;
 

@@ -938,7 +938,7 @@ function renderBuilding(){
 
 
 
-  let pathData = "";
+  let pathData = "M 0 100 ";
 
   values.forEach((value,index)=>{
 

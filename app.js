@@ -813,18 +813,25 @@ renderDashboard();
 
 
 // =====================
-// BUILDING 
+// BUILDING =======
+
 function createBuildingLayout(chartWidth){
 
-const gap = chartWidth / columnsCount;
+  const left = 0;
+  const right = chartWidth;
 
-for(let i = 0; i < columnsCount; i++){
+  const columnsCount = 7;
+  const gap = chartWidth / columnsCount;
 
-  columns.push(
-    gap / 2 + i * gap
-  );
+  const columns = [];
 
-}
+  for(let i = 0; i < columnsCount; i++){
+
+    columns.push(
+      gap / 2 + i * gap
+    );
+
+  }
 
   return {
     columns: columns,

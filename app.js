@@ -923,7 +923,20 @@ function renderBuilding(){
 
   const layout = createBuildingLayout(chartWidth);
 
+  
+values.forEach((value,index)=>{
 
+  let label = "DAY " + (index + 1);
+
+  if(index === todayIndex){
+    label = "TODAY";
+  }
+
+  days.innerHTML += `
+    <span>${label}</span>
+  `;
+
+});
 
 let pathData = "";
   
@@ -1093,15 +1106,7 @@ if(days){
 
   days.innerHTML = "";
   
-  // Create a container for day labels with proper grid alignment
-  const daysContainer = document.createElement("div");
-  daysContainer.style.cssText = `
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0;
-    width: 100%;
-    text-align: center;
-  `;
+  
 
   values.forEach((value,index)=>{
 
@@ -1116,21 +1121,7 @@ if(index === todayIndex){
 
 }
 
-    const daySpan = document.createElement("span");
-    daySpan.textContent = label;
-    daySpan.style.cssText = `
-      font-size: 11px;
-      opacity: 0.6;
-      letter-spacing: 1px;
-    `;
-    
-    daysContainer.appendChild(daySpan);
 
-  });
-  
-  days.appendChild(daysContainer);
-
-}
 
 }
 // =====================

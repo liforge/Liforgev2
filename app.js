@@ -1007,7 +1007,7 @@ preserveAspectRatio="none">
 <filter id="glow">
 
 <feGaussianBlur
-stdDeviation="2"
+stdDeviation="6"
 result="blur"/>
 
 <feMerge>

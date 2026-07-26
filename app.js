@@ -816,23 +816,15 @@ renderDashboard();
 // BUILDING 
 function createBuildingLayout(chartWidth){
 
-  const left = 0;
-  const right = chartWidth;
-
-  const columnsCount = 7;
-  // distribute points evenly: 0, gap, 2*gap, ... (columnsCount-1)*gap
-  const gap = columnsCount > 1 ? chartWidth / (columnsCount - 1) : chartWidth;
-
-const columns = [];
+const gap = chartWidth / columnsCount;
 
 for(let i = 0; i < columnsCount; i++){
 
   columns.push(
-    i * gap
+    gap / 2 + i * gap
   );
 
 }
-
 
   return {
     columns: columns,

@@ -1007,7 +1007,7 @@ preserveAspectRatio="none">
 <filter id="glow">
 
 <feGaussianBlur
-stdDeviation="1.2"
+stdDeviation="2"
 result="blur"/>
 
 <feMerge>
@@ -1030,7 +1030,7 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#00aaff"
+stroke="#35d9ff"
 
 stroke-width="1.8"
 

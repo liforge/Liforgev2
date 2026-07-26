@@ -908,7 +908,6 @@ function getBuildingValues(){
 
 
 }
-
 function renderBuilding(){
 
   const chart =
@@ -917,86 +916,73 @@ function renderBuilding(){
   if(!chart){
     return;
   }
-    const chartWidth = chart.clientWidth;
+
+  const chartWidth = chart.clientWidth;
 
   const values = getBuildingValues();
 
   const layout = createBuildingLayout(chartWidth);
 
-  
-values.forEach((value,index)=>{
-
-  let label = "DAY " + (index + 1);
-
-  if(index === todayIndex){
-    label = "TODAY";
-  }
-
-  days.innerHTML += `
-    <span>${label}</span>
-  `;
-
-});
-
-let pathData = "";
-  
-values.forEach((value,index)=>{
-
-  if(value === null){
-    return;
-  }
-
-  const point = getBuildingPoint(layout, value, index);
-
-  const x = point.x;
-  const y = point.y;
-
-  if(pathData === ""){
-
-    // start path at the first actual point (avoid connecting from bottom-left)
-    pathData = `M ${x} ${y}`;
-
-  }else{
-
-    pathData += ` L ${x} ${y}`;
-
-  }
-
-});
 
   let todayIndex = values.length - 1;
 
-for(let i = values.length - 1; i >= 0; i--){
+  for(let i = values.length - 1; i >= 0; i--){
 
-  if(values[i] !== null){
+    if(values[i] !== null){
 
-    todayIndex = i;
-    break;
+      todayIndex = i;
+      break;
+
+    }
 
   }
 
-}
+
+
+  let pathData = "";
+
+  values.forEach((value,index)=>{
+
+    if(value === null){
+      return;
+    }
+
+    const point = getBuildingPoint(layout, value, index);
+
+    const x = point.x;
+    const y = point.y;
+
+
+    if(pathData === ""){
+
+      pathData = `M ${x} ${y}`;
+
+    }else{
+
+      pathData += ` L ${x} ${y}`;
+
+    }
+
+  });
 
 
 
-const todayPoint =
-  getBuildingPoint(
-    layout,
-    values[todayIndex],
-    todayIndex
-  );
+  const todayPoint =
+    getBuildingPoint(
+      layout,
+      values[todayIndex],
+      todayIndex
+    );
 
 
-const lastX = todayPoint.x;
-
-const lastY = todayPoint.y;
-
+  const lastX = todayPoint.x;
+  const lastY = todayPoint.y;
 
 
   const textX =
-  lastX > 90
-  ? lastX - 20
-  : lastX + 4;
+    lastX > 90
+    ? lastX - 20
+    : lastX + 4;
 
 
 
@@ -1039,7 +1025,6 @@ result="blur"/>
 
 
 
-
 <path
 
 d="${pathData}"
@@ -1058,44 +1043,59 @@ filter="url(#glow)"
 
 />
 
+
+
 ${values.map((value,index)=>{
 
   if(value === null){
     return "";
   }
 
-  const point = getBuildingPoint(layout, value, index);
 
-const x = point.x;
-const y = point.y;
+  const point =
+    getBuildingPoint(
+      layout,
+      value,
+      index
+    );
+
 
   return `
   <circle
-    cx="${x}"
-    cy="${y}"
+    cx="${point.x}"
+    cy="${point.y}"
     r="2"
     fill="#00aaff"
   />
   `;
 
+
 }).join("")}
 
 
+
 <text
+
 x="${textX}"
+
 y="${lastY - 4}"
+
 fill="#ffffff"
-font-size="4">
+
+font-size="4"
+
+>
 
 ${values[todayIndex]}%
 
 </text>
 
 
+
 </svg>
 
-
 `;
+
 
 
 const days =
@@ -1105,25 +1105,38 @@ document.getElementById("buildingDays");
 if(days){
 
   days.innerHTML = "";
-  
-  
+
 
   values.forEach((value,index)=>{
 
-  
 
     let label = "DAY " + (index + 1);
 
 
-if(index === todayIndex){
+    if(index === todayIndex){
 
-  label = "TODAY";
+      label = "TODAY";
+
+    }
+
+
+    days.innerHTML += `
+
+    <span>
+    ${label}
+    </span>
+
+    `;
+
+
+  });
+
 
 }
 
 
-
 }
+
 // =====================
 // HISTORY SYSTEM
 // =====================

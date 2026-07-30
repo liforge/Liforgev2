@@ -1289,6 +1289,7 @@ width:100%;
 
 #momentumChart{
   position:relative;
+   margin-top:25px;
 }
 
 .chartGuides{

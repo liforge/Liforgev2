@@ -1045,7 +1045,7 @@ stroke-width="10"
 
 opacity="0.35"
 
-transform="translate(0 7)"
+transform="translate(0 12)"
 
 />
 <path

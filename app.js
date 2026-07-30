@@ -1020,7 +1020,6 @@ result="blur"/>
 
 </filter>
 
-</defs>
 
 <linearGradient id="lineGlow" x1="0" y1="0" x2="0" y2="1">
 
@@ -1031,6 +1030,9 @@ result="blur"/>
 <stop offset="100%" stop-color="#00aaff" stop-opacity="0"/>
 
 </linearGradient>
+
+
+</defs>
 
 <path
 

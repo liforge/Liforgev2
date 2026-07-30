@@ -1033,6 +1033,26 @@ result="blur"/>
 
 
 </defs>
+
+<path
+
+d="${pathData}"
+
+fill="none"
+
+stroke="#00aaff"
+
+stroke-width="8"
+
+opacity="0.18"
+
+filter="url(#glow)"
+
+transform="translate(0 5)"
+
+/>
+
+
 <path
 
 d="${pathData}"

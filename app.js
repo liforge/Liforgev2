@@ -1022,23 +1022,15 @@ result="blur"/>
 
 </defs>
 
-<path
+<linearGradient id="lineGlow" x1="0" y1="0" x2="0" y2="1">
 
-d="${pathData}"
+<stop offset="0%" stop-color="#00eaff" stop-opacity="0.35"/>
 
-fill="none"
+<stop offset="40%" stop-color="#00aaff" stop-opacity="0.15"/>
 
-stroke="#00aaff"
+<stop offset="100%" stop-color="#00aaff" stop-opacity="0"/>
 
-stroke-width="8"
-
-opacity="0.15"
-
-filter="url(#glow)"
-
-transform="translate(0 3)"
-
- />
+</linearGradient>
 
 <path
 

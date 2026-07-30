@@ -1033,7 +1033,21 @@ result="blur"/>
 
 
 </defs>
+<path
 
+d="${pathData}"
+
+fill="none"
+
+stroke="url(#lineGlow)"
+
+stroke-width="10"
+
+opacity="0.35"
+
+transform="translate(0 7)"
+
+/>
 <path
 
 d="${pathData}"
@@ -1048,7 +1062,6 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
-filter="url(#glow)"
 
 />
 

@@ -1041,11 +1041,11 @@ fill="none"
 
 stroke="url(#lineGlow)"
 
-stroke-width="10"
+stroke-width="5"
 
-opacity="0.35"
+opacity="0.25"
 
-transform="translate(0 12)"
+transform="translate(0 7)"
 
 />
 <path

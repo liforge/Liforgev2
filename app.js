@@ -1059,21 +1059,6 @@ d="${pathData}"
 
 fill="none"
 
-stroke="url(#lineGlow)"
-
-stroke-width="5"
-
-opacity="0.25"
-
-transform="translate(0 7)"
-
-/>
-<path
-
-d="${pathData}"
-
-fill="none"
-
 stroke="#b8f3ff"
 
 stroke-width="1.2"

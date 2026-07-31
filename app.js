@@ -1077,7 +1077,7 @@ stop-opacity="0"/>
 d="${areaData}"
 
 fill="url(#areaGradient)"
-opacity="0.45"
+opacity="0.9"
 
 />
 

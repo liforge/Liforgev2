@@ -938,31 +938,37 @@ function renderBuilding(){
 
 
 
-  let pathData = "M 0 100 ";
+  let pathData = "";
+let areaData = "";
 
   values.forEach((value,index)=>{
 
-    if(value === null){
-      return;
-    }
+  if(value === null){
+    return;
+  }
 
-    const point = getBuildingPoint(layout, value, index);
+  const point = getBuildingPoint(layout, value, index);
 
-    const x = point.x;
-    const y = point.y;
+  const x = point.x;
+  const y = point.y;
 
+  if(pathData === ""){
 
-    if(pathData === ""){
+    pathData = `M ${x} ${y}`;
+    areaData = `M ${x} ${y}`;
 
-      pathData = `M ${x} ${y}`;
+  }else{
 
-    }else{
+    pathData += ` L ${x} ${y}`;
+    areaData += ` L ${x} ${y}`;
 
-      pathData += ` L ${x} ${y}`;
+  }
 
-    }
+});
 
-  });
+  const lastColumn = layout.columns[values.length - 1];
+
+areaData += ` L ${lastColumn} 100 L 0 100 Z`;
 
 
 
@@ -1037,6 +1043,32 @@ y2="1">
 <stop offset="100%" stop-color="#0b3f66" stop-opacity="0"/>
 
 </linearGradient>
+
+
+<linearGradient
+id="areaGradient"
+x1="0"
+y1="0"
+x2="0"
+y2="1">
+
+<stop
+offset="0%"
+stop-color="#3ecbff"
+stop-opacity="0.35"/>
+
+<stop
+offset="45%"
+stop-color="#1b86ff"
+stop-opacity="0.12"/>
+
+<stop
+offset="100%"
+stop-color="#1b86ff"
+stop-opacity="0"/>
+
+</linearGradient>
+
 </defs>
 
 <path
@@ -1049,6 +1081,13 @@ opacity="0.9"
 
 />
 
+<path
+
+d="${areaData}"
+
+fill="url(#areaGradient)"
+
+/>
 
 <path
 

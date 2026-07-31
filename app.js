@@ -1042,7 +1042,16 @@ result="blur"/>
 
 </filter>
 
+<mask id="lineMask">
 
+<path
+d="${pathData}"
+fill="none"
+stroke="black"
+stroke-width="1.3"
+/>
+
+</mask>
 
 
 <linearGradient
@@ -1085,7 +1094,7 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
-opacity="0"
+opacity="0.85"
 
 />
 

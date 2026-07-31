@@ -1085,7 +1085,7 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
-opacity="0.8"
+opacity="0"
 
 />
 

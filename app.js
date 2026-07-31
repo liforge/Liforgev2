@@ -1111,15 +1111,31 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#ecfcff"
+stroke="#9fe8ff"
 
-stroke-width="1.6"
+stroke-width="2.8"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-filter="url(#lineGlow)"
+opacity="0.55"
+
+/>
+
+<path
+
+d="${pathData}"
+
+fill="none"
+
+stroke="081018"
+
+stroke-width="0.8"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"
 
 
 />

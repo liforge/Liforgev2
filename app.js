@@ -1045,22 +1045,6 @@ result="blur"/>
 
 
 
-<linearGradient id="areaGradient"
-
-x1="0"
-y1="0"
-x2="0"
-y2="1">
-
-<stop offset="0%" stop-color="#3bbcff" stop-opacity="0.45"/>
-
-<stop offset="40%" stop-color="#1d8fff" stop-opacity="0.18"/>
-
-<stop offset="100%" stop-color="#0b3f66" stop-opacity="0"/>
-
-</linearGradient>
-
-
 <linearGradient
 id="areaGradient"
 x1="0"
@@ -1087,23 +1071,16 @@ stop-opacity="0"/>
 
 </defs>
 
-<path
-
-d="${pathData} L ${layout.columns[values.length-1]} 100 L 0 100 Z"
-
-fill="url(#areaGradient)"
-
-opacity="0.9"
-
-/>
 
 <path
 
 d="${areaData}"
 
 fill="url(#areaGradient)"
+opacity="0.45"
 
 />
+
 
 <path
 
@@ -1113,30 +1090,15 @@ fill="none"
 
 stroke="#9fe8ff"
 
-stroke-width="2.8"
+stroke-width="1.3"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-opacity="0.55"
+filter="url(#lineGlow)"
 
-/>
-
-<path
-
-d="${pathData}"
-
-fill="none"
-
-stroke="081018"
-
-stroke-width="0.8"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"
-
+opacity="0.85"
 
 />
 

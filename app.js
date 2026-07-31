@@ -1062,11 +1062,11 @@ x2="0"
 y2="1">
 
 
-<stop offset="0%" stop-color="#3bbcff" stop-opacity="0.65"/>
+<stop offset="0%" stop-color="#00b7ff" stop-opacity="0.55"/>
 
-<stop offset="40%" stop-color="#1d8fff" stop-opacity="0.30"/>
+<stop offset="40%" stop-color="#006dff" stop-opacity="0.25"/>
 
-<stop offset="100%" stop-color="#0b3f66" stop-opacity="0.05"/>
+<stop offset="100%" stop-color="#003b80" stop-opacity="0"/>
 </linearGradient>
 
 </defs>

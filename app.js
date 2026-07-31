@@ -1080,23 +1080,6 @@ fill="url(#areaGradient)"
 opacity="0.9"
 
 />
-<path
-
-d="${pathData}"
-
-fill="none"
-
-stroke="#9fe8ff"
-
-stroke-width="3"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"
-
-opacity="0.85"
-
-/>
 
 <path
 

@@ -1047,7 +1047,7 @@ result="blur"/>
 <path
 d="${pathData}"
 fill="none"
-stroke="black"
+stroke="white"
 stroke-width="1.3"
 />
 
@@ -1089,7 +1089,7 @@ fill="none"
 
 stroke="#9fe8ff"
 
-stroke-width="1.3"
+stroke-width="3"
 
 stroke-linecap="round"
 
@@ -1098,6 +1098,8 @@ stroke-linejoin="round"
 filter="url(#lineGlow)"
 
 opacity="0.85"
+
+mask="url(#lineMask)"
 
 />
 

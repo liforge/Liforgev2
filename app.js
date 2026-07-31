@@ -1026,6 +1026,22 @@ result="blur"/>
 
 </filter>
 
+<filter id="lineGlow">
+
+<feGaussianBlur
+stdDeviation="1.4"
+result="blur"/>
+
+<feMerge>
+
+<feMergeNode in="blur"/>
+
+<feMergeNode in="SourceGraphic"/>
+
+</feMerge>
+
+</filter>
+
 
 
 
@@ -1095,13 +1111,15 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#b8f3ff"
+stroke="#ecfcff"
 
-stroke-width="1.2"
+stroke-width="1.6"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
+
+filter="url(#lineGlow)"
 
 
 />

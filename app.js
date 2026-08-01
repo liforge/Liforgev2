@@ -906,6 +906,65 @@ function getBuildingValues(){
   return week;
 
 
+  function createTubeOutline(points, width){
+
+  const top = [];
+  const bottom = [];
+
+  for(let i = 0; i < points.length; i++){
+
+    let prev = points[i - 1] || points[i];
+    let next = points[i + 1] || points[i];
+
+    let dx = next.x - prev.x;
+    let dy = next.y - prev.y;
+
+    let length = Math.sqrt(dx * dx + dy * dy);
+
+    let nx = -dy / length;
+    let ny = dx / length;
+
+    top.push({
+      x: points[i].x + nx * width,
+      y: points[i].y + ny * width
+    });
+
+    bottom.push({
+      x: points[i].x - nx * width,
+      y: points[i].y - ny * width
+    });
+
+  }
+
+
+  let path = "";
+
+  top.forEach((p,i)=>{
+
+    if(i === 0){
+      path += `M ${p.x} ${p.y}`;
+    }else{
+      path += ` L ${p.x} ${p.y}`;
+    }
+
+  });
+
+
+  for(let i = bottom.length - 1; i >= 0; i--){
+
+    path += ` L ${bottom[i].x} ${bottom[i].y}`;
+
+  }
+
+
+  path += " Z";
+
+
+  return path;
+
+  }
+
+
 }
 function renderBuilding(){
 
@@ -940,6 +999,7 @@ function renderBuilding(){
 
   let pathData = "";
 let areaData = "";
+  let linePoints = [];
 
   values.forEach((value,index)=>{
 
@@ -948,7 +1008,7 @@ let areaData = "";
   }
 
   const point = getBuildingPoint(layout, value, index);
-
+linePoints.push(point);
   const x = point.x;
   const y = point.y;
 
@@ -965,6 +1025,13 @@ let areaData = "";
   }
 
 });
+
+
+
+  const tubePath = createTubeOutline(
+  linePoints,
+  1.5
+);
 
   const lastColumn = layout.columns[values.length - 1];
 
@@ -1105,15 +1172,14 @@ transform="translate(0 -1)"
 
 />
 
-<!-- DOLNA LINIA -->
-
+<!-- nowa linia--!>
 <path
 
-d="${pathData}"
+d="${tubePath}"
 
 fill="none"
 
-stroke="#7fdfff"
+stroke="#9fe8ff"
 
 stroke-width="0.8"
 
@@ -1121,7 +1187,9 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
-transform="translate(0 1)"
+filter="url(#lineGlow)"
+
+opacity="0.85"
 
 />
 

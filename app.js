@@ -1010,6 +1010,34 @@ preserveAspectRatio="none">
 
 <defs>
 
+<mask id="lineMask">
+
+  <rect
+    x="0"
+    y="0"
+    width="${layout.width}"
+    height="100"
+    fill="white"
+  />
+
+  <path
+
+    d="${pathData}"
+
+    fill="none"
+
+    stroke="black"
+
+    stroke-width="2.2"
+
+    stroke-linecap="round"
+
+    stroke-linejoin="round"
+
+  />
+
+</mask>
+
 <filter id="glow">
 
 <feGaussianBlur
@@ -1082,29 +1110,9 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#9fe8ff"
+stroke="#8fe8ff"
 
 stroke-width="3.2"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"
-
-opacity="0.55"
-
-/>
-
-<!-- MIDDLE -->
-
-<path
-
-d="${pathData}"
-
-fill="none"
-
-stroke="#081018"
-
-stroke-width="2.2"
 
 stroke-linecap="round"
 
@@ -1122,11 +1130,13 @@ fill="none"
 
 stroke="#ecfcff"
 
-stroke-width="0.9"
+stroke-width="1.0"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
+
+mask="url(#lineMask)"
 
 />
 

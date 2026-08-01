@@ -1095,13 +1095,13 @@ fill="none"
 
 stroke="#bff8ff"
 
-stroke-width="1"
+stroke-width="0.8"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-transform="translate(0 -0.45)"
+transform="translate(0 -1)"
 
 />
 
@@ -1115,13 +1115,13 @@ fill="none"
 
 stroke="#7fdfff"
 
-stroke-width="1"
+stroke-width="0.8"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-transform="translate(0 0.45)"
+transform="translate(0 1)"
 
 />
 

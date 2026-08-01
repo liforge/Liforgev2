@@ -1057,9 +1057,6 @@ result="blur"/>
 </filter>
 
 
-</mask>
-
-
 <linearGradient
 id="areaGradient"
 x1="0"

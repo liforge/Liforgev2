@@ -965,7 +965,7 @@ function getBuildingValues(){
   }
 
 
-}
+
 function renderBuilding(){
 
   const chart =

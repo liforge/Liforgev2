@@ -1020,21 +1020,7 @@ preserveAspectRatio="none">
     fill="white"
   />
 
-  <path
-
-    d="${pathData}"
-
-    fill="none"
-
-    stroke="black"
-
-    stroke-width="2.2"
-
-    stroke-linecap="round"
-
-    stroke-linejoin="round"
-
-  />
+  
 
 </mask>
 
@@ -1102,7 +1088,7 @@ opacity="0.9"
 />
 
 
-<!-- OUTER -->
+<!-- GÓRNA LINIA -->
 
 <path
 
@@ -1110,19 +1096,19 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#8fe8ff"
+stroke="#bff8ff"
 
-stroke-width="3.2"
+stroke-width="1"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-mask="url(#lineMask)"
+transform="translate(0 -0.45)"
 
 />
 
-<!-- INNER -->
+<!-- DOLNA LINIA -->
 
 <path
 
@@ -1130,14 +1116,15 @@ d="${pathData}"
 
 fill="none"
 
-stroke="#ecfcff"
+stroke="#7fdfff"
 
-stroke-width="1.0"
+stroke-width="1"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
+transform="translate(0 0.45)"
 
 />
 

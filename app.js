@@ -1042,14 +1042,6 @@ result="blur"/>
 
 </filter>
 
-<mask id="lineMask">
-
-<path
-d="${pathData}"
-fill="none"
-stroke="white"
-stroke-width="1.3"
-/>
 
 </mask>
 
@@ -1081,6 +1073,9 @@ opacity="0.9"
 
 />
 
+
+<!-- OUTER -->
+
 <path
 
 d="${pathData}"
@@ -1089,20 +1084,51 @@ fill="none"
 
 stroke="#9fe8ff"
 
-stroke-width="3"
+stroke-width="3.2"
 
 stroke-linecap="round"
 
 stroke-linejoin="round"
 
-filter="url(#lineGlow)"
-
-opacity="0.85"
-
-mask="url(#lineMask)"
+opacity="0.55"
 
 />
 
+<!-- MIDDLE -->
+
+<path
+
+d="${pathData}"
+
+fill="none"
+
+stroke="#081018"
+
+stroke-width="2.2"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"
+
+/>
+
+<!-- INNER -->
+
+<path
+
+d="${pathData}"
+
+fill="none"
+
+stroke="#ecfcff"
+
+stroke-width="0.9"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"
+
+/>
 
 
 ${values.map((value,index)=>{

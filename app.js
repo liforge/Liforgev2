@@ -1118,6 +1118,8 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
+mask="url(#lineMask)"
+
 />
 
 <!-- INNER -->
@@ -1136,7 +1138,6 @@ stroke-linecap="round"
 
 stroke-linejoin="round"
 
-mask="url(#lineMask)"
 
 />
 

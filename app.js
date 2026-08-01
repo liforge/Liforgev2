@@ -904,7 +904,8 @@ function getBuildingValues(){
 
 
   return week;
-
+  
+}
 
   function createTubeOutline(points, width){
 

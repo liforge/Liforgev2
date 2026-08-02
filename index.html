@@ -90,7 +90,7 @@
 <section id="historyPage" class="page">
   <div class="panel">
     <div class="momentumCard">
-      <div class="momentumTitle">BUILDING</div>
+      <div class="momentumTitle">WEEKLY PROGRESS</div>
       <div class="momentumArea">
         <div class="chartLabels">
           <span>100</span>
@@ -108,6 +108,8 @@
     <div class="statLabel">HISTORY</div>
     <div class="historyPeriod">7 DAYS</div>
     <div id="historyList"></div>
+    <button class="viewMoreBtn" id="viewMoreBtn" onclick="loadMoreHistory()">View full history</button>
+    <button class="viewMoreBtn" id="hideHistoryBtn" onclick="hideHistory()">Hide history</button>
     <button class="exportBtn" onclick="exportData()">Export data (.json)</button>
   </div>
 </section>

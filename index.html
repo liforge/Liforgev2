@@ -25,6 +25,9 @@
 
 <meta name="color-scheme" content="dark">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
 </head>
 
@@ -32,561 +35,141 @@
 
 <body>
 
-
-
-<!-- =====================
-     BACKGROUND
-===================== -->
-
-
 <div class="background"></div>
-
-
-
-
-
-<!-- =====================
-     INTRO
-===================== -->
-
+<div id="particles"></div>
 
 <div id="intro">
-
-
-<div class="startPanel" onclick="enterSystem()">
-
-  <div class="startIcon">
-    ◈
+  <div class="startPanel" onclick="enterSystem()">
+    <div class="startIcon">◈</div>
+    <div class="startText">GO INSIDE</div>
   </div>
-
-  <div class="startText">
-    GO INSIDE
-  </div>
-
 </div>
 
-
+<div id="systemLoading">
+  <svg class="hexLoader" viewBox="0 0 100 100">
+    <polygon class="hexBg" points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"/>
+    <polygon class="hexTrack" pathLength="100" points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"/>
+  </svg>
+  <div class="loadingText">LOADING SYSTEM<span class="loadingDots">...</span></div>
 </div>
-
-
-
-
-
-
-
-<!-- =====================
-     APP
-===================== -->
-
 
 <div id="app">
-
-
 <div class="overlay"></div>
-
-
-
-
-
 <div class="container">
-
-
 <div class="inner">
 
-
-
-
-
-<!-- =====================
-     DASHBOARD
-===================== -->
-
-
 <div class="hero">
-
-
-<div id="dashboard">
-
-
-Loading...
-
-
+  <div id="dashboard">Loading...</div>
 </div>
 
-</div>
-
-
-<!-- =====================
-     UPDATE PAGE
-===================== -->
-
-
-<section 
-id="updatePage"
-class="page">
-
-     
-     
-
-<div class="panel">
-
-
-<div class="statLabel">
-
-UPDATE TODAY
-
-</div>
-
-     <div class="inputGrid">
-
-
-<div class="statCard">
-
-<div class="statLabel">
-
-Sleep
-
-</div>
-
-
-<input 
-id="sleep"
-type="number"
-placeholder="Hours">
-
-
-</div>
-
-
-
-
-<div class="statCard">
-
-
-<div class="statLabel">
-
-Steps
-
-</div>
-
-
-<input 
-id="steps"
-type="number"
-placeholder="Steps">
-
-
-</div>
-
-
-
-
-<div class="statCard">
-
-
-<div class="statLabel">
-
-Training
-
-</div>
-
-
-<input 
-id="training"
-type="number"
-placeholder="Sessions">
-
-
-</div>
-
-
-
-
-<div class="statCard">
-
-
-<div class="statLabel">
-
-Water
-
-</div>
-
-
-<input 
-id="water"
-type="number"
-placeholder="Liters">
-
-
-</div>
-
-
-     </div>
-<button onclick="save()">
-
-Update Today
-
-</button>
-
-</div>
-
-
-</section>
-
-
-<!-- =====================
-     HISTORY PANEL
-===================== -->
-
-<section
-id="historyPage"
-class="page">
-
-<div class="panel">
-
-     
-     <div class="momentumCard">
-          <div class="momentumTitle">
-    BUILDING
-          </div>
-
-    <div class="momentumArea">
-
-    <div id="momentumChart">
-
+<section id="updatePage" class="page">
+  <div class="panel">
+    <div class="statLabel">UPDATE TODAY</div>
+    <div class="inputGrid">
+      <div class="statCard">
+        <div class="statLabel">Sleep</div>
+        <input id="sleep" type="number" placeholder="Hours">
+      </div>
+      <div class="statCard">
+        <div class="statLabel">Steps</div>
+        <input id="steps" type="number" placeholder="Steps">
+      </div>
+      <div class="statCard">
+        <div class="statLabel">Training</div>
+        <input id="training" type="number" placeholder="Sessions">
+      </div>
+      <div class="statCard">
+        <div class="statLabel">Water</div>
+        <input id="water" type="number" placeholder="Liters">
+      </div>
     </div>
+    <button onclick="save()">Update Today</button>
+  </div>
+</section>
 
-    <div class="momentumDays" id="buildingDays">
-
+<section id="historyPage" class="page">
+  <div class="panel">
+    <div class="momentumCard">
+      <div class="momentumTitle">BUILDING</div>
+      <div class="momentumArea">
+        <div class="chartLabels">
+          <span>100</span>
+          <span>75</span>
+          <span>50</span>
+          <span>25</span>
+          <span>0</span>
+        </div>
+        <div class="momentumChartWrap">
+          <div id="momentumChart"></div>
+          <div class="momentumDays" id="buildingDays"></div>
+        </div>
+      </div>
     </div>
-
-</div>
-
-     </div>
-
-<div class="statLabel">
-
-HISTORY
-
-</div>
-     
-     <div class="historyPeriod">
-
-7 DAYS
-
-</div>
-
-
-<div id="historyList">
-
-</div>
-
-
-</div>
-
+    <div class="statLabel">HISTORY</div>
+    <div class="historyPeriod">7 DAYS</div>
+    <div id="historyList"></div>
+    <button class="exportBtn" onclick="exportData()">Export data (.json)</button>
+  </div>
 </section>
 
-     <!-- =====================
-     SETTINGS PAGE
-===================== -->
-
-<section
-id="settingsPage"
-class="page">
-
-<div class="panel">
-
-<div class="statLabel">
-
-DIRECTION
-
-</div>
-
-     <div class="statCard">
-
-<div class="statLabel">
-
-Sleep
-
-</div>
-
-
-<input 
-id="set_sleep"
-type="number"
-placeholder="Hours">
-
-
-     </div>
-     
-<div class="statCard">
-
-
-
-<div class="statLabel">
-
-Steps target
-
-</div>
-
-
-
-<input 
-id="set_steps"
-type="number">
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="statCard">
-
-
-
-<div class="statLabel">
-
-Training target
-
-</div>
-
-
-
-<input 
-id="set_training"
-type="number">
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="statCard">
-
-
-
-<div class="statLabel">
-
-Water target
-
-</div>
-
-
-
-<input 
-id="set_water"
-type="number">
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="statCard">
-
-
-
-<button onclick="saveMetrics()">
-
-Save metrics
-
-</button>
-</div>
-
+<section id="settingsPage" class="page">
+  <div class="panel">
+    <div class="statLabel">DIRECTION</div>
+    <div class="statCard">
+      <div class="statLabel">Sleep</div>
+      <input id="set_sleep" type="number" placeholder="Hours">
+    </div>
+    <div class="statCard">
+      <div class="statLabel">Steps target</div>
+      <input id="set_steps" type="number">
+    </div>
+    <div class="statCard">
+      <div class="statLabel">Training target</div>
+      <input id="set_training" type="number">
+    </div>
+    <div class="statCard">
+      <div class="statLabel">Water target</div>
+      <input id="set_water" type="number">
+    </div>
+    <div class="statCard">
+      <button onclick="saveMetrics()">Save metrics</button>
+    </div>
+  </div>
 </section>
-
-<!-- =====================
-     TOAST
-===================== -->
-<!-- =====================
-     BOTTOM NAVIGATION
-===================== -->
-
 
 <nav class="bottomNav">
-
-
-<button onclick="showPage('core')" class="navCore">
-
-<svg class="coreIcon" viewBox="0 0 100 100">
-  
-  <polygon 
-    points="50,8 90,28 90,72 50,92 10,72 10,28"
-    fill="none"
-    stroke="#d8b84c"
-    stroke-width="6"
-    stroke-linejoin="round"
-  />
-
-</svg>
-
-</button>
-
-
-
-<button onclick="showPage('update')" class="navUpdate">
-
-<svg class="updateIcon" viewBox="0 0 100 100">
-
-  <polyline
-    points="15,60 50,25 85,60"
-    fill="none"
-    stroke="#35d9ff"
-    stroke-width="8"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-
-  <line
-    x1="15"
-    y1="78"
-    x2="85"
-    y2="78"
-    stroke="#35d9ff"
-    stroke-width="8"
-    stroke-linecap="round"
-  />
-
-</svg>
-
-</button>
-
-<button onclick="showPage('history')" class="navHistory">
-
-     <svg class="historyIcon" viewBox="0 0 100 100">
-
-  <!-- ramka -->
-  <rect
-    x="8"
-    y="22"
-    width="76"
-    height="70"
-    rx="8"
-    fill="none"
-    stroke="#e6e6e6"
-    stroke-width="6"
-  />
-
-  <!-- trend -->
-  <polyline
-  points="
-  18,62
-  35,52
-  48,57
-  62,40
-  75,48
-  85,32
-  "
-  fill="none"
-  stroke="#e6e6e6"
-  stroke-width="6"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-/>
-
-</svg>
-
-</button>
-
-<button id="nav-settings" onclick="showPage('settings')">
-
-<svg class="directionIcon" viewBox="0 0 100 100">
-
-  <!-- gear -->
-  <path
-    d="
-    M50 10
-    L58 22
-    L72 18
-    L78 32
-    L90 42
-    L78 50
-    L90 58
-    L78 68
-    L72 82
-    L58 78
-    L50 90
-    L42 78
-    L28 82
-    L22 68
-    L10 58
-    L22 50
-    L10 42
-    L22 32
-    L28 18
-    L42 22
-    Z
-    "
-    fill="none"
-    stroke="#e6e6e6"
-    stroke-width="5"
-    stroke-linejoin="round"
-  />
-
-  <!-- kompas -->
-  <circle
-    cx="50"
-    cy="50"
-    r="18"
-    fill="none"
-    stroke="#e6e6e6"
-    stroke-width="5"
-  />
-
-  <!-- kierunek -->
-  <path
-    d="
-    M50 34
-    L58 55
-    L50 50
-    L42 55
-    Z
-    "
-    fill="none"
-    stroke="#e6e6e6"
-    stroke-width="5"
-    stroke-linejoin="round"
-  />
-
-
-</svg>
-
-
+  <button id="nav-core" onclick="showPage('core')" class="navCore">
+    <svg class="coreIcon" viewBox="0 0 100 100">
+      <polygon points="50,8 90,28 90,72 50,92 10,72 10,28" fill="none" stroke="#d8b84c" stroke-width="6" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button id="nav-update" onclick="showPage('update')" class="navUpdate">
+    <svg class="updateIcon" viewBox="0 0 100 100">
+      <polyline points="15,60 50,25 85,60" fill="none" stroke="#35d9ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="15" y1="78" x2="85" y2="78" stroke="#35d9ff" stroke-width="8" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button id="nav-history" onclick="showPage('history')" class="navHistory">
+    <svg class="historyIcon" viewBox="0 0 100 100">
+      <rect x="8" y="22" width="76" height="70" rx="8" fill="none" stroke="#e6e6e6" stroke-width="6"/>
+      <polyline points="18,62 35,52 48,57 62,40 75,48 85,32" fill="none" stroke="#e6e6e6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button id="nav-settings" onclick="showPage('settings')">
+    <svg class="directionIcon" viewBox="0 0 100 100">
+      <path d="M50 10 L58 22 L72 18 L78 32 L90 42 L78 50 L90 58 L78 68 L72 82 L58 78 L50 90 L42 78 L28 82 L22 68 L10 58 L22 50 L10 42 L22 32 L28 18 L42 22 Z" fill="none" stroke="#e6e6e6" stroke-width="5" stroke-linejoin="round"/>
+      <circle cx="50" cy="50" r="18" fill="none" stroke="#e6e6e6" stroke-width="5"/>
+      <path d="M50 34 L58 55 L50 50 L42 55 Z" fill="none" stroke="#e6e6e6" stroke-width="5" stroke-linejoin="round"/>
+    </svg>
+  </button>
 </nav>
 <div id="toast"></div>
 
-
-
-
-
-
-<!-- =====================
-     APP SCRIPT
-===================== -->
-
+</div>
+</div>
+</div>
 
 <script src="app.js"></script>
-
-
 
 </body>
 

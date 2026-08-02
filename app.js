@@ -127,6 +127,8 @@ function renderDashboard(){
     <div class="brandSubtitle">Forge Yourself</div>
   </div>
   <div class="coreScore">
+    <div id="dateTimeBlock" class="dateTimeBlock"></div>
+    <div id="dayCompare" class="dayCompare"></div>
     <div class="energyLabel">ENERGY SCORE</div>
     <div class="energyValue">${day.score}<span class="energyPercent">%</span></div>
     <div class="energyStatus">CURRENT ALIGNMENT</div>
@@ -138,6 +140,53 @@ function renderDashboard(){
     ${createMetric("TRAINING", day.training, progress.training, "ACTIVE")}
     ${createMetric("WATER", day.water + "L", progress.water, "HYDRATED")}
   </div>
+  `;
+  renderDateTime();
+  renderDayCompare();
+}
+
+function getDailyGain(day){
+  return (day.score / 100) * 14;
+}
+
+function renderDayCompare(){
+  const el = document.getElementById("dayCompare");
+  if(!el){ return; }
+  const data = getData();
+  if(data.length < 2){
+    el.innerHTML = "";
+    return;
+  }
+  const todayGain = getDailyGain(data[0]);
+  const yesterdayGain = getDailyGain(data[1]);
+  const diff = Math.round(todayGain - yesterdayGain);
+
+  if(diff > 0){
+    el.innerHTML = `<span class="compareUp">▲ ${diff}%</span>`;
+  }else if(diff < 0){
+    el.innerHTML = `<span class="compareDown">▼ ${Math.abs(diff)}%</span>`;
+  }else{
+    el.innerHTML = `<span class="compareStable">STABLE</span>`;
+  }
+}
+
+function renderDateTime(){
+  const el = document.getElementById("dateTimeBlock");
+  if(!el){ return; }
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2,"0");
+  const mm = String(now.getMonth()+1).padStart(2,"0");
+  const yyyy = now.getFullYear();
+  const dateStr = `${dd}.${mm}.${yyyy}`;
+  const hh = String(now.getHours()).padStart(2,"0");
+  const min = String(now.getMinutes()).padStart(2,"0");
+  const timeStr = `${hh}:${min}`;
+  const days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+  const dayName = days[now.getDay()];
+  el.innerHTML = `
+    <div class="dateText">${dateStr}</div>
+    <div class="timeText">${timeStr}</div>
+    <div class="dayNameText">${dayName}</div>
   `;
 }
 
@@ -229,10 +278,19 @@ function getBuildingPoint(layout, value, index){
 }
 
 function getBuildingValues(){
-  const data = getData().slice(0,7);
+  const allData = getData();
   const week = [null,null,null,null,null,null,null];
+  const total = allData.length;
+  if(total === 0){ return week; }
+
+  // Pozycja w obecnym tygodniu budowania: 1..7, resetuje się co 7 dni
+  const weekPosition = ((total - 1) % 7) + 1;
+
+  // Bierzemy tylko dni z aktualnego, jeszcze niezakończonego tygodnia
+  const currentWeekData = allData.slice(0, weekPosition).reverse();
+
   let building = 0;
-  data.forEach((day,index)=>{
+  currentWeekData.forEach((day,index)=>{
     const gain = (day.score / 100) * 14;
     building += gain;
     week[index] = Math.round(building);
@@ -290,38 +348,51 @@ function renderBuilding(){
     else{ pathData += ` L ${x} ${y}`; areaData += ` L ${x} ${y}`; }
   });
 
-  const tubePath = createTubeOutline(linePoints, 1.5);
+  const tubePath = createTubeOutline(linePoints, 0.7);
   const lastColumn = layout.columns[values.length - 1];
   areaData += ` L ${lastColumn} 100 L 0 100 Z`;
 
   const hasData = linePoints.length > 0;
-  const todayPoint = hasData ? getBuildingPoint(layout, values[todayIndex], todayIndex) : {x:0,y:100};
-  const lastX = todayPoint.x;
-  const lastY = todayPoint.y;
-  const textX = lastX > 90 ? lastX - 20 : lastX + 4;
 
   chart.innerHTML = `
   <div class="chartGuides"><div></div><div></div><div></div><div></div><div></div></div>
   <svg id="buildingSvg" viewBox="0 0 ${layout.width} 100" preserveAspectRatio="none">
     <defs>
-      <mask id="lineMask"><rect x="0" y="0" width="${layout.width}" height="100" fill="white"/></mask>
-      <filter id="glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      <filter id="lineGlow"><feGaussianBlur stdDeviation="1.4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="glow"><feGaussianBlur stdDeviation="2.6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="lineGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#00b7ff" stop-opacity="0.55"/>
         <stop offset="40%" stop-color="#006dff" stop-opacity="0.25"/>
         <stop offset="100%" stop-color="#003b80" stop-opacity="0"/>
       </linearGradient>
+      <radialGradient id="pointGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#7fd0ff" stop-opacity="0.95"/>
+        <stop offset="35%" stop-color="#3fa8ea" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#1f7fc8" stop-opacity="0"/>
+      </radialGradient>
     </defs>
     <path d="${areaData}" fill="url(#areaGradient)" opacity="0.9"/>
-    <path d="${pathData}" fill="none" stroke="#bff8ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -1)"/>
-    <path d="${tubePath}" fill="none" stroke="#9fe8ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#lineGlow)" opacity="0.85"/>
+    <path d="${pathData}" fill="none" stroke="#4fb8ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -1)"/>
+    <path d="${tubePath}" fill="none" stroke="#2f9fe8" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#lineGlow)" opacity="0.85"/>
     ${values.map((value,index)=>{
       if(value === null){ return ""; }
       const point = getBuildingPoint(layout, value, index);
-      return `<circle cx="${point.x}" cy="${point.y}" r="2.5" filter="url(#glow)" fill="#ffffff"/>`;
+      const isToday = index === todayIndex;
+      if(isToday){
+        return `
+        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple1" fill="none"/>
+        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple2" fill="none"/>
+        <circle cx="${point.x}" cy="${point.y}" r="7.5" fill="url(#pointGlow)"/>
+        <circle cx="${point.x}" cy="${point.y}" r="3.2" fill="#f2fbff" class="todayCore"/>
+        `;
+      }
+      return `<circle cx="${point.x}" cy="${point.y}" r="6.8" fill="url(#pointGlow)"/><circle cx="${point.x}" cy="${point.y}" r="2.6" fill="#f2fbff"/>`;
     }).join("")}
-    ${hasData ? `<text x="${textX}" y="${lastY - 4}" fill="#ffffff" font-size="4">${values[todayIndex]}%</text>` : ""}
+    ${values.map((value,index)=>{
+      if(value === null){ return ""; }
+      const point = getBuildingPoint(layout, value, index);
+      return `<text x="${point.x}" y="${point.y - 6}" fill="#bfe6ff" font-size="6" text-anchor="middle">${value}</text>`;
+    }).join("")}
   </svg>
   `;
 
@@ -336,6 +407,8 @@ function renderBuilding(){
   }
 }
 
+let historyDisplayLimit = 7;
+
 function renderHistory(){
   const history = document.getElementById("historyList");
   if(!history){ return; }
@@ -343,6 +416,7 @@ function renderHistory(){
   history.innerHTML = "";
   if(!data.length){
     history.innerHTML = "<div>No data yet</div>";
+    updateViewMoreButton(0, 0);
     return;
   }
   history.innerHTML = `
@@ -350,7 +424,7 @@ function renderHistory(){
     <div>DAY</div><div>🌙</div><div>🦿</div><div>💦</div><div>🔥</div><div>⚡️</div>
   </div>
   `;
-  data.slice(0,7).forEach((day,index)=>{
+  data.slice(0, historyDisplayLimit).forEach((day,index)=>{
     history.innerHTML += `
     <div class="${index === 0 ? "historyToday" : "historyItem"}">
       <div class="dayNumber">${index === 0 ? "TODAY" : "DAY " + (data.length - index)}</div>
@@ -359,20 +433,36 @@ function renderHistory(){
       <div>${day.water}L</div>
       <div>${day.training}</div>
       <div>${day.score}%</div>
-      <button class="deleteDay" onclick="deleteDay('${day.date}')" title="Usuń dzień">✕</button>
     </div>
     `;
   });
+  updateViewMoreButton(data.length, historyDisplayLimit);
 }
 
-function deleteDay(date){
-  let data = getData();
-  data = data.filter(item => item.date !== date);
-  saveData(data);
-  renderBuilding();
+function updateViewMoreButton(totalDays, shownDays){
+  const btn = document.getElementById("viewMoreBtn");
+  const hideBtn = document.getElementById("hideHistoryBtn");
+  if(!btn){ return; }
+  if(totalDays > shownDays){
+    btn.style.display = "block";
+    const remaining = totalDays - shownDays;
+    btn.textContent = "View full history (+" + Math.min(remaining, 7) + ")";
+  }else{
+    btn.style.display = "none";
+  }
+  if(hideBtn){
+    hideBtn.style.display = shownDays > 7 ? "block" : "none";
+  }
+}
+
+function loadMoreHistory(){
+  historyDisplayLimit += 7;
   renderHistory();
-  renderDashboard();
-  showToast("DAY REMOVED");
+}
+
+function hideHistory(){
+  historyDisplayLimit = 7;
+  renderHistory();
 }
 
 function exportData(){
@@ -455,6 +545,7 @@ function generateParticles(){
 document.addEventListener("DOMContentLoaded", ()=>{
   showPage("core");
   generateParticles();
+  setInterval(renderDateTime, 30000);
 });
 
 // =====================

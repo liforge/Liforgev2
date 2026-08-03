@@ -25,6 +25,97 @@ function loadMetrics(){
 
 function getEl(id){ return document.getElementById(id) || null; }
 
+// =====================
+// TŁUMACZENIA / i18n
+// =====================
+const translations = {
+  goInside: {en:"GO INSIDE", pl:"WEJDŹ"},
+  loadingSystem: {en:"LOADING SYSTEM", pl:"WCZYTYWANIE SYSTEMU"},
+  energyScoreLabel: {en:"ENERGY SCORE", pl:"WYNIK ENERGII"},
+  currentAlignment: {en:"CURRENT ALIGNMENT", pl:"AKTUALNE DOSTROJENIE"},
+  sleep: {en:"SLEEP", pl:"SEN"},
+  steps: {en:"STEPS", pl:"KROKI"},
+  training: {en:"TRAINING", pl:"TRENING"},
+  water: {en:"WATER", pl:"WODA"},
+  balanced: {en:"BALANCED", pl:"ZRÓWNOWAŻONY"},
+  building: {en:"BUILDING", pl:"BUDOWANIE"},
+  active: {en:"ACTIVE", pl:"AKTYWNY"},
+  hydrated: {en:"HYDRATED", pl:"NAWODNIONY"},
+  updateTodayTitle: {en:"UPDATE TODAY", pl:"AKTUALIZUJ DZIŚ"},
+  updateTodayBtn: {en:"Update Today", pl:"Aktualizuj dziś"},
+  hoursPh: {en:"Hours", pl:"Godziny"},
+  stepsPh: {en:"Steps", pl:"Kroki"},
+  sessionsPh: {en:"Sessions", pl:"Sesje"},
+  litersPh: {en:"Liters", pl:"Litry"},
+  weeklyProgress: {en:"WEEKLY PROGRESS", pl:"PROGRES TYGODNIA"},
+  weeklyProgressInfo: {
+    en:"Weekly Progress shows how you're building your week. Each day can add up to 14% to your weekly progress. Today's gain depends on your Energy Score.",
+    pl:"Progres Tygodnia pokazuje, jak budujesz swój tydzień. Każdy dzień może dodać maksymalnie 14% do tygodniowego progresu. Dzisiejszy przyrost zależy od Twojego Energy Score."
+  },
+  historyTitle: {en:"HISTORY", pl:"HISTORIA"},
+  sevenDays: {en:"7 DAYS", pl:"7 DNI"},
+  viewFullHistory: {en:"View full history", pl:"Pokaż całą historię"},
+  hideHistory: {en:"Hide history", pl:"Zwiń historię"},
+  exportData: {en:"Export data (.json)", pl:"Eksportuj dane (.json)"},
+  noDataYet: {en:"No data yet", pl:"Brak danych"},
+  directionTitle: {en:"DIRECTION", pl:"KIERUNEK"},
+  yourNamePh: {en:"Your name", pl:"Twoje imię"},
+  stepsTarget: {en:"Steps target", pl:"Cel: kroki"},
+  trainingTarget: {en:"Training target", pl:"Cel: trening"},
+  waterTarget: {en:"Water target", pl:"Cel: woda"},
+  saveMetrics: {en:"Save metrics", pl:"Zapisz ustawienia"},
+  languageLabel: {en:"Language", pl:"Język"},
+  directionUpdated: {en:"DIRECTION UPDATED", pl:"ZAKTUALIZOWANO KIERUNEK"},
+  dayUpdated: {en:"DAY UPDATED", pl:"DZIEŃ ZAKTUALIZOWANY"},
+  dataCleared: {en:"DATA CLEARED", pl:"DANE WYCZYSZCZONE"},
+  dataExported: {en:"DATA EXPORTED", pl:"DANE WYEKSPORTOWANE"},
+  today: {en:"TODAY", pl:"DZISIAJ"},
+  dayLabel: {en:"DAY", pl:"DZIEŃ"},
+  welcomeBack: {en:"WELCOME BACK", pl:"WITAJ Z POWROTEM"},
+  stable: {en:"STABLE", pl:"STABILNIE"},
+  score: {en:"SCORE", pl:"WYNIK"},
+  trainShort: {en:"TRAIN", pl:"TREN"},
+  dayStreak: {en:"DAY STREAK", pl:"DNI STREAK"}
+};
+
+let currentLang = "en";
+
+function t(key){
+  const entry = translations[key];
+  if(!entry){ return key; }
+  return entry[currentLang] || entry.en;
+}
+
+function setLanguage(lang){
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+  applyTranslations();
+  updateLanguageButtons();
+}
+
+function updateLanguageButtons(){
+  const btnEn = getEl("langBtnEn");
+  const btnPl = getEl("langBtnPl");
+  if(btnEn){ btnEn.classList.toggle("active", currentLang === "en"); }
+  if(btnPl){ btnPl.classList.toggle("active", currentLang === "pl"); }
+}
+
+function applyTranslations(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    el.textContent = t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
+    el.placeholder = t(el.getAttribute("data-i18n-ph"));
+  });
+  renderDashboard();
+  renderHistory();
+  renderBuilding();
+}
+
+function loadUserName(){
+  return localStorage.getItem("userName") || "";
+}
+
 function saveMetrics(){
   METRICS = {
     sleep:{target: Number(getEl("set_sleep")?.value) || 7, max:1},
@@ -33,8 +124,15 @@ function saveMetrics(){
     water:{target: Number(getEl("set_water")?.value) || 2.5, max:1}
   };
   localStorage.setItem("metrics", JSON.stringify(METRICS));
+
+  const nameInput = getEl("set_name");
+  if(nameInput){
+    const name = nameInput.value.trim();
+    localStorage.setItem("userName", name);
+  }
+
   renderDashboard();
-  showToast("DIRECTION UPDATED");
+  showToast(t("directionUpdated"));
 }
 
 function enterSystem(){
@@ -53,9 +151,23 @@ function enterSystem(){
       app.style.display = "block";
       setTimeout(()=>{ app.classList.add("active"); },50);
       renderDashboard();
+      showWelcomeBanner();
     },1900);
 
   },500);
+}
+
+function showWelcomeBanner(){
+  const name = loadUserName();
+  if(!name){ return; }
+  const el = document.getElementById("welcomeBanner");
+  if(!el){ return; }
+  el.textContent = t("welcomeBack") + " " + name.toUpperCase();
+  el.classList.add("show");
+  setTimeout(()=>{
+    el.classList.remove("show");
+    setTimeout(()=>{ el.textContent = ""; },600);
+  },3000);
 }
 
 function getData(){
@@ -129,16 +241,16 @@ function renderDashboard(){
   <div class="coreScore">
     <div id="dateTimeBlock" class="dateTimeBlock"></div>
     <div id="dayCompare" class="dayCompare"></div>
-    <div class="energyLabel">ENERGY SCORE</div>
+    <div class="energyLabel">${t("energyScoreLabel")}</div>
     <div class="energyValue">${day.score}<span class="energyPercent">%</span></div>
-    <div class="energyStatus">CURRENT ALIGNMENT</div>
-    ${streak > 0 ? `<div class="streakBadge">🔥 ${streak} DAY STREAK</div>` : ""}
+    <div class="energyStatus">${t("currentAlignment")}</div>
+    ${streak > 0 ? `<div class="streakBadge">🔥 ${streak} ${t("dayStreak")}</div>` : ""}
   </div>
   <div class="metricsList">
-    ${createMetric("SLEEP", day.sleep + "h", progress.sleep, "BALANCED")}
-    ${createMetric("STEPS", day.steps, progress.steps, "BUILDING")}
-    ${createMetric("TRAINING", day.training, progress.training, "ACTIVE")}
-    ${createMetric("WATER", day.water + "L", progress.water, "HYDRATED")}
+    ${createMetric(t("sleep"), day.sleep + "h", progress.sleep, t("balanced"))}
+    ${createMetric(t("steps"), day.steps, progress.steps, t("building"))}
+    ${createMetric(t("training"), day.training, progress.training, t("active"))}
+    ${createMetric(t("water"), day.water + "L", progress.water, t("hydrated"))}
   </div>
   `;
   renderDateTime();
@@ -166,7 +278,7 @@ function renderDayCompare(){
   }else if(diff < 0){
     el.innerHTML = `<span class="compareDown">▼ ${Math.abs(diff)}%</span>`;
   }else{
-    el.innerHTML = `<span class="compareStable">STABLE</span>`;
+    el.innerHTML = `<span class="compareStable">${t("stable")}</span>`;
   }
 }
 
@@ -258,7 +370,7 @@ function save(){
   renderBuilding();
   renderHistory();
   renderDashboard();
-  showToast("DAY UPDATED");
+  showToast(t("dayUpdated"));
 }
 
 function createBuildingLayout(chartWidth){
@@ -406,8 +518,8 @@ function renderBuilding(){
   if(days){
     days.innerHTML = "";
     values.forEach((value,index)=>{
-      let label = "DAY " + (index + 1);
-      if(index === todayIndex && hasData){ label = "TODAY"; }
+      let label = t("dayLabel") + " " + (index + 1);
+      if(index === todayIndex && hasData){ label = t("today"); }
       days.innerHTML += `<span>${label}</span>`;
     });
   }
@@ -457,19 +569,19 @@ function renderHistory(){
   const data = getData();
   history.innerHTML = "";
   if(!data.length){
-    history.innerHTML = "<div>No data yet</div>";
+    history.innerHTML = `<div>${t("noDataYet")}</div>`;
     updateViewMoreButton(0, 0);
     return;
   }
   history.innerHTML = `
   <div class="historyHeader">
-    <div></div><div>SLEEP</div><div>STEPS</div><div>WATER</div><div>TRAIN</div><div>SCORE</div>
+    <div></div><div>${t("sleep")}</div><div>${t("steps")}</div><div>${t("water")}</div><div>${t("trainShort")}</div><div>${t("score")}</div>
   </div>
   `;
   data.slice(0, historyDisplayLimit).forEach((day,index)=>{
     history.innerHTML += `
     <div class="${index === 0 ? "historyToday" : "historyItem"}">
-      <div class="dayNumber">${index === 0 ? "TODAY" : "DAY " + (data.length - index)}</div>
+      <div class="dayNumber">${index === 0 ? t("today") : t("dayLabel") + " " + (data.length - index)}</div>
       <div>${day.sleep}h</div>
       <div>${day.steps}</div>
       <div>${day.water}L</div>
@@ -488,7 +600,7 @@ function updateViewMoreButton(totalDays, shownDays){
   if(totalDays > shownDays){
     btn.style.display = "block";
     const remaining = totalDays - shownDays;
-    btn.textContent = "View full history (+" + Math.min(remaining, 7) + ")";
+    btn.textContent = t("viewFullHistory") + " (+" + Math.min(remaining, 7) + ")";
   }else{
     btn.style.display = "none";
   }
@@ -519,15 +631,30 @@ function exportData(){
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast("DATA EXPORTED");
+  showToast(t("dataExported"));
 }
 
 function clearHistory(){
   localStorage.removeItem("liforge");
   renderHistory();
   renderDashboard();
-  showToast("DATA CLEARED");
+  showToast(t("dataCleared"));
 }
+
+function toggleInfoTooltip(event){
+  event.stopPropagation();
+  const tooltip = document.getElementById("infoTooltip");
+  if(!tooltip){ return; }
+  tooltip.classList.toggle("show");
+}
+
+document.addEventListener("click", (e)=>{
+  const tooltip = document.getElementById("infoTooltip");
+  if(!tooltip){ return; }
+  if(!e.target.closest(".infoIcon") && !e.target.closest(".infoTooltip")){
+    tooltip.classList.remove("show");
+  }
+});
 
 function showToast(message){
   const toast = document.getElementById("toast");
@@ -554,7 +681,11 @@ function showPage(page){
   if(page==="core"){ hero.style.display="block"; renderDashboard(); }
   if(page==="update"){ update.style.display="block"; }
   if(page==="history"){ history.style.display="block"; renderBuilding(); renderHistory(); }
-  if(page==="settings"){ settings.style.display="block"; }
+  if(page==="settings"){
+    settings.style.display="block";
+    const nameInput = getEl("set_name");
+    if(nameInput){ nameInput.value = loadUserName(); }
+  }
 
   const active = document.getElementById("nav-" + page);
   if(active){ active.classList.add("active"); }
@@ -585,7 +716,10 @@ function generateParticles(){
 
 // init: pokaż dashboard od razu w kontenerze hero
 document.addEventListener("DOMContentLoaded", ()=>{
+  currentLang = localStorage.getItem("lang") || "en";
   showPage("core");
+  applyTranslations();
+  updateLanguageButtons();
   generateParticles();
   setInterval(renderDateTime, 30000);
 });

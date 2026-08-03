@@ -41,7 +41,7 @@
 <div id="intro">
   <div class="startPanel" onclick="enterSystem()">
     <div class="startIcon">◈</div>
-    <div class="startText">GO INSIDE</div>
+    <div class="startText" data-i18n="goInside">GO INSIDE</div>
   </div>
 </div>
 
@@ -50,7 +50,7 @@
     <polygon class="hexBg" points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"/>
     <polygon class="hexTrack" pathLength="100" points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"/>
   </svg>
-  <div class="loadingText">LOADING SYSTEM<span class="loadingDots">...</span></div>
+  <div class="loadingText"><span data-i18n="loadingSystem">LOADING SYSTEM</span><span class="loadingDots">...</span></div>
 </div>
 
 <div id="app">
@@ -59,38 +59,45 @@
 <div class="inner">
 
 <div class="hero">
+  <div id="welcomeBanner" class="welcomeBanner"></div>
   <div id="dashboard">Loading...</div>
 </div>
 
 <section id="updatePage" class="page">
   <div class="panel">
-    <div class="statLabel">UPDATE TODAY</div>
+    <div class="statLabel" data-i18n="updateTodayTitle">UPDATE TODAY</div>
     <div class="inputGrid">
       <div class="statCard">
-        <div class="statLabel">Sleep</div>
-        <input id="sleep" type="number" placeholder="Hours">
+        <div class="statLabel" data-i18n="sleep">Sleep</div>
+        <input id="sleep" type="number" data-i18n-ph="hoursPh" placeholder="Hours">
       </div>
       <div class="statCard">
-        <div class="statLabel">Steps</div>
-        <input id="steps" type="number" placeholder="Steps">
+        <div class="statLabel" data-i18n="steps">Steps</div>
+        <input id="steps" type="number" data-i18n-ph="stepsPh" placeholder="Steps">
       </div>
       <div class="statCard">
-        <div class="statLabel">Training</div>
-        <input id="training" type="number" placeholder="Sessions">
+        <div class="statLabel" data-i18n="training">Training</div>
+        <input id="training" type="number" data-i18n-ph="sessionsPh" placeholder="Sessions">
       </div>
       <div class="statCard">
-        <div class="statLabel">Water</div>
-        <input id="water" type="number" placeholder="Liters">
+        <div class="statLabel" data-i18n="water">Water</div>
+        <input id="water" type="number" data-i18n-ph="litersPh" placeholder="Liters">
       </div>
     </div>
-    <button onclick="save()">Update Today</button>
+    <button onclick="save()" data-i18n="updateTodayBtn">Update Today</button>
   </div>
 </section>
 
 <section id="historyPage" class="page">
   <div class="panel">
     <div class="momentumCard">
-      <div class="momentumTitle">WEEKLY PROGRESS</div>
+      <div class="momentumTitle">
+        <span data-i18n="weeklyProgress">WEEKLY PROGRESS</span>
+        <span class="infoIcon" onclick="toggleInfoTooltip(event)">ⓘ</span>
+        <div class="infoTooltip" id="infoTooltip" data-i18n="weeklyProgressInfo">
+          Weekly Progress shows how you're building your week. Each day can add up to 14% to your weekly progress. Today's gain depends on your Energy Score.
+        </div>
+      </div>
       <div class="momentumArea">
         <div class="chartLabels">
           <span>100</span>
@@ -105,36 +112,49 @@
         </div>
       </div>
     </div>
-    <div class="statLabel">HISTORY</div>
-    <div class="historyPeriod">7 DAYS</div>
+    <div class="statLabel" data-i18n="historyTitle">HISTORY</div>
+    <div class="historyPeriod" data-i18n="sevenDays">7 DAYS</div>
     <div id="historyList"></div>
     <button class="viewMoreBtn" id="viewMoreBtn" onclick="loadMoreHistory()">View full history</button>
-    <button class="viewMoreBtn" id="hideHistoryBtn" onclick="hideHistory()">Hide history</button>
-    <button class="exportBtn" onclick="exportData()">Export data (.json)</button>
+    <button class="viewMoreBtn" id="hideHistoryBtn" onclick="hideHistory()" data-i18n="hideHistory">Hide history</button>
+    <button class="exportBtn" onclick="exportData()" data-i18n="exportData">Export data (.json)</button>
   </div>
 </section>
 
 <section id="settingsPage" class="page">
   <div class="panel">
-    <div class="statLabel">DIRECTION</div>
+    <div class="statLabel" data-i18n="directionTitle">DIRECTION</div>
+
     <div class="statCard">
-      <div class="statLabel">Sleep</div>
-      <input id="set_sleep" type="number" placeholder="Hours">
+      <div class="statLabel" data-i18n="languageLabel">Language</div>
+      <div class="langSwitch">
+        <button id="langBtnEn" class="langBtn active" onclick="setLanguage('en')">EN</button>
+        <button id="langBtnPl" class="langBtn" onclick="setLanguage('pl')">PL</button>
+      </div>
+    </div>
+
+    <div class="statCard">
+      <div class="statLabel" data-i18n="yourNamePh">Your name</div>
+      <input id="set_name" type="text" data-i18n-ph="yourNamePh" placeholder="Your name" maxlength="20">
     </div>
     <div class="statCard">
-      <div class="statLabel">Steps target</div>
+      <div class="statLabel" data-i18n="sleep">Sleep</div>
+      <input id="set_sleep" type="number" data-i18n-ph="hoursPh" placeholder="Hours">
+    </div>
+    <div class="statCard">
+      <div class="statLabel" data-i18n="stepsTarget">Steps target</div>
       <input id="set_steps" type="number">
     </div>
     <div class="statCard">
-      <div class="statLabel">Training target</div>
+      <div class="statLabel" data-i18n="trainingTarget">Training target</div>
       <input id="set_training" type="number">
     </div>
     <div class="statCard">
-      <div class="statLabel">Water target</div>
+      <div class="statLabel" data-i18n="waterTarget">Water target</div>
       <input id="set_water" type="number">
     </div>
     <div class="statCard">
-      <button onclick="saveMetrics()">Save metrics</button>
+      <button onclick="saveMetrics()" data-i18n="saveMetrics">Save metrics</button>
     </div>
   </div>
 </section>

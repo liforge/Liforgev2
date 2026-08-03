@@ -354,6 +354,28 @@ function renderBuilding(){
 
   const hasData = linePoints.length > 0;
 
+  let pointsMarkup = "";
+  let pointCount = 0;
+  values.forEach((value,index)=>{
+    if(value === null){ return; }
+    const point = getBuildingPoint(layout, value, index);
+    const isToday = index === todayIndex;
+    let inner;
+    if(isToday){
+      inner = `
+        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple1" fill="none"/>
+        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple2" fill="none"/>
+        <circle cx="${point.x}" cy="${point.y}" r="7.5" fill="url(#pointGlow)"/>
+        <circle cx="${point.x}" cy="${point.y}" r="3.2" fill="#f2fbff" class="todayCore"/>
+      `;
+    }else{
+      inner = `<circle cx="${point.x}" cy="${point.y}" r="6.8" fill="url(#pointGlow)"/><circle cx="${point.x}" cy="${point.y}" r="2.6" fill="#f2fbff"/>`;
+    }
+    const label = `<text x="${point.x}" y="${point.y - 6}" fill="#bfe6ff" font-size="6" text-anchor="middle">${value}</text>`;
+    pointsMarkup += `<g class="chartPointGroup">${inner}${label}</g>`;
+    pointCount++;
+  });
+
   chart.innerHTML = `
   <div class="chartGuides"><div></div><div></div><div></div><div></div><div></div></div>
   <svg id="buildingSvg" viewBox="0 0 ${layout.width} 100" preserveAspectRatio="none">
@@ -372,29 +394,13 @@ function renderBuilding(){
       </radialGradient>
     </defs>
     <path d="${areaData}" fill="url(#areaGradient)" opacity="0.9"/>
-    <path d="${pathData}" fill="none" stroke="#4fb8ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -1)"/>
-    <path d="${tubePath}" fill="none" stroke="#2f9fe8" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#lineGlow)" opacity="0.85"/>
-    ${values.map((value,index)=>{
-      if(value === null){ return ""; }
-      const point = getBuildingPoint(layout, value, index);
-      const isToday = index === todayIndex;
-      if(isToday){
-        return `
-        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple1" fill="none"/>
-        <circle cx="${point.x}" cy="${point.y}" r="2.5" class="ripple ripple2" fill="none"/>
-        <circle cx="${point.x}" cy="${point.y}" r="7.5" fill="url(#pointGlow)"/>
-        <circle cx="${point.x}" cy="${point.y}" r="3.2" fill="#f2fbff" class="todayCore"/>
-        `;
-      }
-      return `<circle cx="${point.x}" cy="${point.y}" r="6.8" fill="url(#pointGlow)"/><circle cx="${point.x}" cy="${point.y}" r="2.6" fill="#f2fbff"/>`;
-    }).join("")}
-    ${values.map((value,index)=>{
-      if(value === null){ return ""; }
-      const point = getBuildingPoint(layout, value, index);
-      return `<text x="${point.x}" y="${point.y - 6}" fill="#bfe6ff" font-size="6" text-anchor="middle">${value}</text>`;
-    }).join("")}
+    <path d="${pathData}" class="chartLineCore" fill="none" stroke="#4fb8ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -1)"/>
+    <path d="${tubePath}" class="chartLineGlow" fill="none" stroke="#2f9fe8" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#lineGlow)" opacity="0.85"/>
+    ${pointsMarkup}
   </svg>
   `;
+
+  animateChartReveal(chart, pointCount);
 
   const days = document.getElementById("buildingDays");
   if(days){
@@ -405,6 +411,42 @@ function renderBuilding(){
       days.innerHTML += `<span>${label}</span>`;
     });
   }
+}
+
+function animateChartReveal(chart, pointCount){
+  const svgEl = chart.querySelector("#buildingSvg");
+  if(!svgEl || pointCount === 0){ return; }
+
+  const corePath = svgEl.querySelector(".chartLineCore");
+  const glowPath = svgEl.querySelector(".chartLineGlow");
+  const pointGroups = svgEl.querySelectorAll(".chartPointGroup");
+
+  const stepDuration = 260;
+  const lineDuration = Math.max(500, pointCount * stepDuration);
+
+  [corePath, glowPath].forEach(p=>{
+    if(!p){ return; }
+    const len = p.getTotalLength();
+    p.style.strokeDasharray = len;
+    p.style.strokeDashoffset = len;
+  });
+
+  // force reflow, żeby przejście zadziałało od pełnego offsetu
+  void svgEl.getBoundingClientRect();
+
+  [corePath, glowPath].forEach(p=>{
+    if(!p){ return; }
+    p.style.transition = `stroke-dashoffset ${lineDuration}ms ease-out`;
+    p.style.strokeDashoffset = "0";
+  });
+
+  pointGroups.forEach((g,i)=>{
+    g.style.opacity = "0";
+    g.style.transition = "opacity .35s ease";
+    setTimeout(()=>{
+      g.style.opacity = "1";
+    }, i * stepDuration + 80);
+  });
 }
 
 let historyDisplayLimit = 7;
@@ -421,7 +463,7 @@ function renderHistory(){
   }
   history.innerHTML = `
   <div class="historyHeader">
-    <div>DAY</div><div>🌙</div><div>🦿</div><div>💦</div><div>🔥</div><div>⚡️</div>
+    <div></div><div>SLEEP</div><div>STEPS</div><div>WATER</div><div>TRAIN</div><div>SCORE</div>
   </div>
   `;
   data.slice(0, historyDisplayLimit).forEach((day,index)=>{

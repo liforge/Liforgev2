@@ -40,7 +40,11 @@
 
 <div id="intro">
   <div class="startPanel" onclick="enterSystem()">
-    <div class="startIcon">◈</div>
+    <div class="startIcon">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+        <path d="M12 4 L12 18 M6 12 L12 18 L18 12" stroke="#9fe8ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <div class="startText" data-i18n="goInside">GO INSIDE</div>
   </div>
 </div>
@@ -112,8 +116,7 @@
         </div>
       </div>
     </div>
-    <div class="statLabel" data-i18n="historyTitle">HISTORY</div>
-    <div class="historyPeriod" data-i18n="sevenDays">7 DAYS</div>
+    <div class="historyTitle" data-i18n="historyTitle">HISTORY</div>
     <div id="historyList"></div>
     <button class="viewMoreBtn" id="viewMoreBtn" onclick="loadMoreHistory()">View full history</button>
     <button class="viewMoreBtn" id="hideHistoryBtn" onclick="hideHistory()" data-i18n="hideHistory">Hide history</button>

@@ -71,6 +71,10 @@ const translations = {
   dataExported: {en:"DATA EXPORTED", pl:"DANE WYEKSPORTOWANE"},
   today: {en:"TODAY", pl:"DZISIAJ"},
   dayLabel: {en:"DAY", pl:"DZIEŃ"},
+  dailyTab: {en:"DAILY", pl:"DZIENNIE"},
+  weeklyTab: {en:"WEEKLY", pl:"TYGODNIOWO"},
+  weekLabel: {en:"WEEK", pl:"TYDZIEŃ"},
+  openWeek: {en:"OPEN WEEK", pl:"OTWARTY TYDZIEŃ"},
   welcomeBack: {en:"WELCOME BACK", pl:"WITAJ Z POWROTEM"},
   stable: {en:"STABLE", pl:"STABILNIE"},
   score: {en:"SCORE", pl:"WYNIK"},
@@ -373,10 +377,10 @@ function save(){
   showToast(t("dayUpdated"));
 }
 
-function createBuildingLayout(chartWidth){
+function createBuildingLayout(chartWidth, columnsCount){
   const left = 0;
   const right = chartWidth;
-  const columnsCount = 7;
+  columnsCount = columnsCount || 7;
   const gap = chartWidth / columnsCount;
   const columns = [];
   for(let i = 0; i < columnsCount; i++){ columns.push(gap / 2 + i * gap); }
@@ -410,6 +414,40 @@ function getBuildingValues(){
   return week;
 }
 
+const MAX_WEEKS_DISPLAY = 7;
+
+function getAllWeeks(){
+  // Zwraca tablicę tygodni w porządku chronologicznym (najstarszy pierwszy)
+  // każdy element: {days:[...chronologicznie], finalPercent:Number, isOpen:Boolean}
+  const allData = getData();
+  const chronological = allData.slice().reverse();
+  const weeks = [];
+  for(let i = 0; i < chronological.length; i += 7){
+    const chunk = chronological.slice(i, i + 7);
+    let building = 0;
+    chunk.forEach(day=>{
+      building += (day.score / 100) * 14;
+    });
+    weeks.push({
+      days: chunk,
+      finalPercent: Math.round(building),
+      isOpen: chunk.length < 7
+    });
+  }
+  return weeks;
+}
+
+function getWeeklyValues(){
+  const weeks = getAllWeeks();
+  const slots = [];
+  for(let i = 0; i < MAX_WEEKS_DISPLAY; i++){ slots.push(null); }
+  const visibleWeeks = weeks.slice(0, MAX_WEEKS_DISPLAY);
+  visibleWeeks.forEach((week,i)=>{
+    slots[i] = week.finalPercent;
+  });
+  return slots;
+}
+
 function createTubeOutline(points, width){
   const top = [];
   const bottom = [];
@@ -438,8 +476,11 @@ function renderBuilding(){
   const chart = document.getElementById("momentumChart");
   if(!chart){ return; }
   const chartWidth = chart.clientWidth || 300;
-  const values = getBuildingValues();
-  const layout = createBuildingLayout(chartWidth);
+
+  const isWeekly = currentHistoryView === "weekly";
+  const values = isWeekly ? getWeeklyValues() : getBuildingValues();
+  const columnsCount = isWeekly ? MAX_WEEKS_DISPLAY : 7;
+  const layout = createBuildingLayout(chartWidth, columnsCount);
 
   let todayIndex = values.length - 1;
   for(let i = values.length - 1; i >= 0; i--){
@@ -518,8 +559,14 @@ function renderBuilding(){
   if(days){
     days.innerHTML = "";
     values.forEach((value,index)=>{
-      let label = t("dayLabel") + " " + (index + 1);
-      if(index === todayIndex && hasData){ label = t("today"); }
+      let label;
+      if(isWeekly){
+        label = t("weekLabel") + " " + (index + 1);
+        if(index === todayIndex && hasData){ label = t("openWeek"); }
+      }else{
+        label = t("dayLabel") + " " + (index + 1);
+        if(index === todayIndex && hasData){ label = t("today"); }
+      }
       days.innerHTML += `<span>${label}</span>`;
     });
   }
@@ -562,8 +609,31 @@ function animateChartReveal(chart, pointCount){
 }
 
 let historyDisplayLimit = 7;
+let currentHistoryView = "daily";
+
+function switchHistoryView(mode){
+  if(currentHistoryView === mode){ return; }
+  currentHistoryView = mode;
+
+  const tabDaily = document.getElementById("tabDaily");
+  const tabWeekly = document.getElementById("tabWeekly");
+  if(tabDaily){ tabDaily.classList.toggle("active", mode === "daily"); }
+  if(tabWeekly){ tabWeekly.classList.toggle("active", mode === "weekly"); }
+
+  historyDisplayLimit = 7;
+  renderBuilding();
+  renderHistory();
+}
 
 function renderHistory(){
+  if(currentHistoryView === "weekly"){
+    renderWeeklyHistory();
+  }else{
+    renderDailyHistory();
+  }
+}
+
+function renderDailyHistory(){
   const history = document.getElementById("historyList");
   if(!history){ return; }
   const data = getData();
@@ -617,6 +687,70 @@ function renderHistory(){
   });
 
   updateViewMoreButton(data.length, historyDisplayLimit);
+}
+
+function renderWeeklyHistory(){
+  const history = document.getElementById("historyList");
+  if(!history){ return; }
+  const weeks = getAllWeeks();
+  history.innerHTML = "";
+  if(!weeks.length){
+    history.innerHTML = `<div>${t("noDataYet")}</div>`;
+    updateViewMoreButton(0, 0);
+    return;
+  }
+
+  const circumference = 2 * Math.PI * 16;
+  const reversedWeeks = weeks.slice().reverse();
+
+  reversedWeeks.slice(0, historyDisplayLimit).forEach((week,index)=>{
+    const isOpen = week.isOpen;
+    const percent = Math.max(0, Math.min(100, week.finalPercent));
+    const offset = circumference * (1 - percent / 100);
+    const weekNumber = weeks.length - index;
+    const label = isOpen ? t("openWeek") : t("weekLabel") + " " + weekNumber;
+
+    const dayCount = week.days.length || 1;
+    const avgSleep = (week.days.reduce((sum,d)=>sum + d.sleep, 0) / dayCount).toFixed(1);
+    const totalSteps = week.days.reduce((sum,d)=>sum + d.steps, 0);
+    const avgWater = (week.days.reduce((sum,d)=>sum + d.water, 0) / dayCount).toFixed(1);
+    const totalTraining = week.days.reduce((sum,d)=>sum + d.training, 0);
+
+    history.innerHTML += `
+    <div class="dayCard ${isOpen ? "dayCardToday" : ""}">
+      <div class="dayCardLeft">
+        <div class="dayCardLabel ${isOpen ? "today" : ""}">${label}</div>
+        <div class="dayCardMetrics">
+          <div>
+            <div class="dayCardMetricValue">${avgSleep}h</div>
+            <div class="dayCardMetricLabel">${t("sleep")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${totalSteps}</div>
+            <div class="dayCardMetricLabel">${t("steps")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${avgWater}L</div>
+            <div class="dayCardMetricLabel">${t("water")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${totalTraining}</div>
+            <div class="dayCardMetricLabel">${t("trainShort")}</div>
+          </div>
+        </div>
+      </div>
+      <div class="dayCardRing">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"/>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="${isOpen ? "#35d9ff" : "#5ecbff"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="dayCardRingText">${percent}%</div>
+      </div>
+    </div>
+    `;
+  });
+
+  updateViewMoreButton(weeks.length, historyDisplayLimit);
 }
 
 function updateViewMoreButton(totalDays, shownDays){

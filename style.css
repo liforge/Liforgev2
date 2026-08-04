@@ -24,6 +24,14 @@ html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;color:#e6e6e6;ba
 .panel{display:flex;flex-direction:column;gap:10px;}
 .statCard{padding:15px;border-radius:16px;background:rgba(15,16,20,.18);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);}
 .statLabel{font-size:13px;opacity:.8;}
+.historyTitle{
+  font-family:'Outfit',Arial,sans-serif;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#f2fbff;
+  margin-bottom:6px;
+}
 input{width:90px;padding:10px;border-radius:10px;border:none;margin-top:8px;background:#2a2f3a;color:white;text-align:center;font-size:16px;}
 #set_name{width:100%;}
 .langSwitch{
@@ -105,7 +113,13 @@ button:hover{background:rgba(255,255,255,.15);}
 .energyStatus{font-size:13px;letter-spacing:2px;opacity:.7;}
 .hudGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .brand{text-align:center;margin-bottom:28px;}
-.brandTitle{font-size:28px;font-weight:700;letter-spacing:8px;}
+.brandTitle{
+  font-family:'Outfit',Arial,sans-serif;
+  font-size:26px;
+  font-weight:600;
+  letter-spacing:6px;
+  color:#f5fbff;
+}
 .brandSubtitle{margin-top:6px;font-size:12px;opacity:.55;letter-spacing:3px;text-transform:uppercase;}
 #intro{
   transition: opacity .5s ease;
@@ -131,9 +145,9 @@ button:hover{background:rgba(255,255,255,.15);}
 .metricsList .metricCard{text-align:left;}
 .metricsList .metricHeader{justify-content:flex-start;gap:20px;}
 
-.startPanel{position:absolute;bottom:45px;left:50%;transform:translateX(-50%);width:230px;padding:20px;border-radius:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(18px);text-align:center;cursor:pointer;transition:.4s ease;box-shadow:0 0 30px rgba(255,255,255,.05);}
-.startPanel:hover{transform:translateX(-50%) translateY(-5px);background:rgba(255,255,255,.09);}
-.startIcon{font-size:30px;margin-bottom:12px;opacity:.85;}
+.startPanel{position:absolute;top:58%;left:50%;transform:translate(-50%,-50%);width:210px;padding:22px;border-radius:20px;background:rgba(255,255,255,.03);border:1px solid rgba(53,217,255,.25);backdrop-filter:blur(18px);text-align:center;cursor:pointer;transition:.4s ease;box-shadow:0 0 25px rgba(53,217,255,.08);}
+.startPanel:hover{transform:translate(-50%,-50%) translateY(-5px);background:rgba(255,255,255,.06);border-color:rgba(53,217,255,.4);}
+.startIcon{display:flex;justify-content:center;margin-bottom:14px;opacity:.9;}
 .startText{font-size:13px;letter-spacing:4px;font-weight:600;opacity:.85;}
 
 /* ===== SYSTEM LOADING (HEXAGON) ===== */
@@ -200,14 +214,77 @@ button:active{transform:scale(.96);}
 .updateIcon{width:28px;height:28px;filter:drop-shadow(0 0 8px rgba(53,217,255,.8));}
 .historyIcon{width:28px;height:28px;filter:drop-shadow(0 0 7px rgba(255,255,255,.45));}
 .directionIcon{width:28px;height:28px;filter:drop-shadow(0 0 7px rgba(255,255,255,.45));}
-.historyHeader{font-size:10px;letter-spacing:1.5px;opacity:.4;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:8px;text-transform:uppercase;}
-.historyItem{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:13px;}
-.historyHeader,.historyItem{display:grid;grid-template-columns:70px repeat(5,1fr);align-items:center;text-align:center;}
-.historyHeader{padding-bottom:12px;}
-.historyItem{padding:12px 0;}
-.historyHeader div,.historyItem div{overflow:hidden;white-space:nowrap;}
-.dayNumber{text-align:left;font-size:11px;letter-spacing:1px;opacity:.7;}
-.historyToday{display:grid;grid-template-columns:70px repeat(5,1fr);align-items:center;text-align:center;padding:32px 10px;margin-bottom:12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);font-size:15px;}
+.dayCard{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  margin-bottom:10px;
+}
+.dayCard.dayCardToday{
+  background:rgba(53,217,255,.06);
+  border-color:rgba(53,217,255,.3);
+}
+.dayCardLeft{
+  flex:1;
+  min-width:0;
+}
+.dayCardLabel{
+  font-size:11px;
+  letter-spacing:2px;
+  opacity:.6;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.dayCardLabel.today{
+  color:#35d9ff;
+  opacity:1;
+}
+.dayCardMetrics{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:6px;
+}
+.dayCardMetricValue{
+  font-size:14px;
+  font-weight:700;
+  color:#f2fbff;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.dayCardMetricLabel{
+  font-size:8.5px;
+  letter-spacing:.5px;
+  opacity:.45;
+  text-transform:uppercase;
+  margin-top:2px;
+  white-space:nowrap;
+}
+.dayCardRing{
+  width:54px;
+  height:54px;
+  position:relative;
+  flex-shrink:0;
+}
+.dayCardRing svg{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+.dayCardRingText{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
+  color:#f2fbff;
+}
 .momentumCard{position:relative;height:170px;margin-bottom:20px;padding:15px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);}
 .momentumTitle{font-size:12px;letter-spacing:3px;opacity:.6;margin-bottom:10px;position:relative;}
 .infoIcon{
@@ -478,4 +555,4 @@ button:active{transform:scale(.96);}
 .welcomeBanner.show{
   opacity:1;
   margin-bottom:10px;
-    }
+           }

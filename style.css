@@ -32,6 +32,58 @@ html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;color:#e6e6e6;ba
   color:#f2fbff;
   margin-bottom:6px;
 }
+.viewTabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:18px;
+}
+.viewTab{
+  width:100%;
+  aspect-ratio:1.5/1;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  font-family:'Outfit',Arial,sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:2px;
+  color:rgba(255,255,255,.45);
+  opacity:.75;
+  transition:opacity .25s ease, border-color .25s ease, background .25s ease, transform .2s ease;
+}
+.viewTabIcon{
+  color:rgba(255,255,255,.45);
+  transition:color .25s ease;
+}
+.viewTabDot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:transparent;
+  transition:background .25s ease, box-shadow .25s ease;
+}
+.viewTab.active{
+  color:#f2fbff;
+  opacity:1;
+  background:rgba(53,217,255,.08);
+  border-color:rgba(53,217,255,.35);
+  box-shadow:0 0 22px rgba(53,217,255,.1);
+}
+.viewTab.active .viewTabIcon{
+  color:#35d9ff;
+}
+.viewTab.active .viewTabDot{
+  background:#35d9ff;
+  box-shadow:0 0 8px #35d9ff;
+}
 input{width:90px;padding:10px;border-radius:10px;border:none;margin-top:8px;background:#2a2f3a;color:white;text-align:center;font-size:16px;}
 #set_name{width:100%;}
 .langSwitch{

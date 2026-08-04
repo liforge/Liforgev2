@@ -573,23 +573,49 @@ function renderHistory(){
     updateViewMoreButton(0, 0);
     return;
   }
-  history.innerHTML = `
-  <div class="historyHeader">
-    <div></div><div>${t("sleep")}</div><div>${t("steps")}</div><div>${t("water")}</div><div>${t("trainShort")}</div><div>${t("score")}</div>
-  </div>
-  `;
+
+  const circumference = 2 * Math.PI * 16;
+
   data.slice(0, historyDisplayLimit).forEach((day,index)=>{
+    const isToday = index === 0;
+    const percent = Math.max(0, Math.min(100, day.score));
+    const offset = circumference * (1 - percent / 100);
+    const label = isToday ? t("today") : t("dayLabel") + " " + (data.length - index);
+
     history.innerHTML += `
-    <div class="${index === 0 ? "historyToday" : "historyItem"}">
-      <div class="dayNumber">${index === 0 ? t("today") : t("dayLabel") + " " + (data.length - index)}</div>
-      <div>${day.sleep}h</div>
-      <div>${day.steps}</div>
-      <div>${day.water}L</div>
-      <div>${day.training}</div>
-      <div>${day.score}%</div>
+    <div class="dayCard ${isToday ? "dayCardToday" : ""}">
+      <div class="dayCardLeft">
+        <div class="dayCardLabel ${isToday ? "today" : ""}">${label}</div>
+        <div class="dayCardMetrics">
+          <div>
+            <div class="dayCardMetricValue">${day.sleep}h</div>
+            <div class="dayCardMetricLabel">${t("sleep")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${day.steps}</div>
+            <div class="dayCardMetricLabel">${t("steps")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${day.water}L</div>
+            <div class="dayCardMetricLabel">${t("water")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${day.training}</div>
+            <div class="dayCardMetricLabel">${t("trainShort")}</div>
+          </div>
+        </div>
+      </div>
+      <div class="dayCardRing">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"/>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="${isToday ? "#35d9ff" : "#5ecbff"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="dayCardRingText">${percent}%</div>
+      </div>
     </div>
     `;
   });
+
   updateViewMoreButton(data.length, historyDisplayLimit);
 }
 

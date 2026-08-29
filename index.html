@@ -69,26 +69,94 @@
 
 <section id="updatePage" class="page">
   <div class="panel">
-    <div class="statLabel" data-i18n="updateTodayTitle">UPDATE TODAY</div>
-    <div class="inputGrid">
-      <div class="statCard">
-        <div class="statLabel" data-i18n="sleep">Sleep</div>
-        <input id="sleep" type="number" data-i18n-ph="hoursPh" placeholder="Hours">
-      </div>
-      <div class="statCard">
-        <div class="statLabel" data-i18n="steps">Steps</div>
-        <input id="steps" type="number" data-i18n-ph="stepsPh" placeholder="Steps">
-      </div>
-      <div class="statCard">
-        <div class="statLabel" data-i18n="training">Training</div>
-        <input id="training" type="number" data-i18n-ph="sessionsPh" placeholder="Sessions">
-      </div>
-      <div class="statCard">
-        <div class="statLabel" data-i18n="water">Water</div>
-        <input id="water" type="number" data-i18n-ph="litersPh" placeholder="Liters">
-      </div>
+
+    <div class="updateHeader">
+      <div class="dailyLogTitle" data-i18n="updateTodayTitle">DAILY LOG</div>
+      <div class="updateSubtitle" data-i18n="keepInSync">Keep your system in sync.</div>
     </div>
-    <button onclick="save()" data-i18n="updateTodayBtn">Update Today</button>
+
+    <div class="updateGrid">
+
+      <div class="updateTile">
+        <div class="updateTileHeader">
+          <div class="hexIcon">
+            <svg viewBox="0 0 40 40"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="none" stroke="rgba(53,217,255,.4)" stroke-width="1.5"/></svg>
+            <svg class="hexIconGlyph" id="moonGlyph" viewBox="0 0 24 24" width="14" height="14"><path d="M16 3a7 7 0 1 0 5 12 8 8 0 0 1-5-12z" fill="none" stroke="#bfe6ff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="updateTileLabel" data-i18n="sleep">SLEEP</div>
+          <div class="updateTileValue" id="sleepValueWrap">
+            <span id="sleepValueH">7</span><span class="unit">h</span>
+            <span id="sleepValueM">0</span><span class="unit">m</span>
+          </div>
+        </div>
+        <input type="range" id="sleepSlider" class="sleepSlider" min="4" max="10" step="0.25" value="7" oninput="onSleepSliderChange()">
+        <div class="sliderLabels" id="sleepSliderLabels"><span>4h</span><span>10h</span></div>
+        <div class="lockedInText" id="sleepLockedText" onclick="unlockSleep()" data-i18n="lockedIn">LOCKED IN</div>
+      </div>
+
+      <div class="updateTile">
+        <div class="updateTileHeader">
+          <div class="hexIcon">
+            <svg viewBox="0 0 40 40"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="none" stroke="rgba(53,217,255,.4)" stroke-width="1.5"/></svg>
+            <svg class="hexIconGlyph" viewBox="0 0 24 24" width="12" height="12"><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" fill="none" stroke="#bfe6ff" stroke-width="1.4"/></svg>
+          </div>
+          <div class="updateTileLabel" data-i18n="steps">STEPS</div>
+          <div class="updateTileValue"><span id="stepsValue">0</span></div>
+        </div>
+        <div class="stepControls">
+          <button class="circleBtn" onclick="adjustSteps(-100)">−100</button>
+          <button class="circleBtn" onclick="adjustSteps(100)">+100</button>
+          <button class="circleBtn tiny" onclick="adjustSteps(-1000)">−1k</button>
+          <button class="circleBtn tiny" onclick="adjustSteps(1000)">+1k</button>
+        </div>
+      </div>
+
+      <div class="updateTile">
+        <div class="updateTileHeader">
+          <div class="hexIcon">
+            <svg viewBox="0 0 40 40"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="none" stroke="rgba(53,217,255,.4)" stroke-width="1.5"/></svg>
+            <svg class="hexIconGlyph" id="trainingGlyph" viewBox="0 0 24 24" width="12" height="12"><path d="M5 7 L19 7 L12 17 Z" fill="none" stroke="#bfe6ff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="updateTileLabel" data-i18n="training">TRAINING</div>
+        </div>
+        <div class="trainingControls">
+          <button class="addTrainingBtn" onclick="addTraining()">+</button>
+          <div class="updateTileHint" id="trainingHint" data-i18n="pressToAddTraining">Press to add one training</div>
+        </div>
+      </div>
+
+      <div class="updateTile">
+        <div class="updateTileHeader">
+          <div class="hexIcon">
+            <svg viewBox="0 0 40 40"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="none" stroke="rgba(53,217,255,.4)" stroke-width="1.5"/></svg>
+            <svg class="hexIconGlyph" viewBox="0 0 24 24" width="12" height="12">
+              <defs>
+                <clipPath id="dropClip">
+                  <path d="M12 3 C12 3 6 11 6 15.5 A6 6 0 0 0 18 15.5 C18 11 12 3 12 3 Z"/>
+                </clipPath>
+              </defs>
+              <rect id="waterFillRect" x="4" y="20" width="16" height="0" fill="#35d9ff" clip-path="url(#dropClip)"/>
+              <path d="M12 3 C12 3 6 11 6 15.5 A6 6 0 0 0 18 15.5 C18 11 12 3 12 3 Z" fill="none" stroke="#bfe6ff" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="updateTileLabel" data-i18n="water">WATER</div>
+          <div class="updateTileValue"><span id="waterValueNum">0.0</span><span class="unit">L</span></div>
+        </div>
+        <div class="waterQuickRow">
+          <button class="quickBtn" onclick="addWater(0.1)">0.1L</button>
+          <button class="quickBtn" onclick="addWater(0.2)">0.2L</button>
+          <button class="quickBtn" onclick="addWater(0.5)">0.5L</button>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="saveUpdatesBtn" onclick="save()">
+      <svg class="saveHex" viewBox="0 0 40 40" width="20" height="20"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/></svg>
+      <span data-i18n="saveUpdatesBtn">SAVE UPDATES</span>
+      <svg class="saveArrow" viewBox="0 0 24 24" width="18" height="18"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="#7fd0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
   </div>
 </section>
 
@@ -97,7 +165,7 @@
     <div class="momentumCard">
       <div class="momentumTitle">
         <span data-i18n="weeklyProgress">WEEKLY PROGRESS</span>
-        <span class="infoIcon" onclick="toggleInfoTooltip(event)">ⓘ</span>
+        <span class="infoIcon" onclick="toggleInfoTooltip(event, 'infoTooltip')">ⓘ</span>
         <div class="infoTooltip" id="infoTooltip" data-i18n="weeklyProgressInfo">
           Weekly Progress shows how you're building your week. Each day can add up to 14% to your weekly progress. Today's gain depends on your Energy Score.
         </div>
@@ -117,22 +185,28 @@
       </div>
     </div>
     <div class="viewTabs">
+      <svg class="viewTabsGlowSvg" viewBox="0 0 160 58" preserveAspectRatio="none">
+        <rect x="1" y="1" width="158" height="56" rx="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+        <line x1="80" y1="8" x2="80" y2="50" stroke="rgba(255,255,255,.14)" stroke-width="1"/>
+        <path id="topLeftGlow" class="glowSeg" pathLength="100" d="M80,1 L16,1 A15,15 0 0 0 1,16 L1,29"/>
+        <path id="bottomLeftGlow" class="glowSeg" pathLength="100" d="M80,57 L16,57 A15,15 0 0 1 1,42 L1,29"/>
+        <path id="topRightGlow" class="glowSeg" pathLength="100" d="M80,1 L144,1 A15,15 0 0 1 159,16 L159,29"/>
+        <path id="bottomRightGlow" class="glowSeg" pathLength="100" d="M80,57 L144,57 A15,15 0 0 0 159,42 L159,29"/>
+      </svg>
       <button id="tabDaily" class="viewTab active" onclick="switchHistoryView('daily')">
-        <svg class="viewTabIcon" viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <svg class="viewTabIcon" viewBox="0 0 24 24" width="20" height="20" fill="none">
           <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.6"/>
           <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
         <span data-i18n="dailyTab">DAILY</span>
-        <div class="viewTabDot"></div>
       </button>
       <button id="tabWeekly" class="viewTab" onclick="switchHistoryView('weekly')">
-        <svg class="viewTabIcon" viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <svg class="viewTabIcon" viewBox="0 0 24 24" width="20" height="20" fill="none">
           <rect x="3" y="4" width="18" height="17" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
           <path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M7 13.5h3M7 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
         <span data-i18n="weeklyTab">WEEKLY</span>
-        <div class="viewTabDot"></div>
       </button>
     </div>
     <div id="historyList"></div>
@@ -177,6 +251,12 @@
     <div class="statCard">
       <button onclick="saveMetrics()" data-i18n="saveMetrics">Save metrics</button>
     </div>
+    <button class="resetAllBtn" onclick="clearHistory()">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
+        <path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span data-i18n="resetAllDays">RESET ALL DAYS</span>
+    </button>
   </div>
 </section>
 

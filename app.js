@@ -41,8 +41,14 @@ const translations = {
   building: {en:"BUILDING", pl:"BUDOWANIE"},
   active: {en:"ACTIVE", pl:"AKTYWNY"},
   hydrated: {en:"HYDRATED", pl:"NAWODNIONY"},
-  updateTodayTitle: {en:"UPDATE TODAY", pl:"AKTUALIZUJ DZIŚ"},
+  updateTodayTitle: {en:"DAILY LOG", pl:"DZIENNIK DNIA"},
   updateTodayBtn: {en:"Update Today", pl:"Aktualizuj dziś"},
+  updateYourData: {en:"UPDATE YOUR DATA", pl:"ZAKTUALIZUJ DANE"},
+  keepInSync: {en:"Keep your system in sync.", pl:"Utrzymuj swój system w synchronizacji."},
+  pressToAddTraining: {en:"Press to add one training", pl:"Kliknij, aby dodać trening"},
+  trainingsAddedToday: {en:"training added today", pl:"treningów dodanych dziś"},
+  saveUpdatesBtn: {en:"SAVE UPDATES", pl:"ZAPISZ ZMIANY"},
+  lockedIn: {en:"LOCKED IN", pl:"ZABLOKOWANE"},
   hoursPh: {en:"Hours", pl:"Godziny"},
   stepsPh: {en:"Steps", pl:"Kroki"},
   sessionsPh: {en:"Sessions", pl:"Sesje"},
@@ -51,6 +57,10 @@ const translations = {
   weeklyProgressInfo: {
     en:"Weekly Progress shows how you're building your week. Each day can add up to 14% to your weekly progress. Today's gain depends on your Energy Score.",
     pl:"Progres Tygodnia pokazuje, jak budujesz swój tydzień. Każdy dzień może dodać maksymalnie 14% do tygodniowego progresu. Dzisiejszy przyrost zależy od Twojego Energy Score."
+  },
+  btsInfo: {
+    en:"BTS - Based on Yesterday - Shows your current progress relative to yesterday.",
+    pl:"BTS - Based on Yesterday - Pokazuje Twój obecny postęp w porównaniu do wczoraj."
   },
   historyTitle: {en:"HISTORY", pl:"HISTORIA"},
   sevenDays: {en:"7 DAYS", pl:"7 DNI"},
@@ -64,6 +74,11 @@ const translations = {
   trainingTarget: {en:"Training target", pl:"Cel: trening"},
   waterTarget: {en:"Water target", pl:"Cel: woda"},
   saveMetrics: {en:"Save metrics", pl:"Zapisz ustawienia"},
+  resetAllDays: {en:"RESET ALL DAYS", pl:"RESETUJ WSZYSTKIE DNI"},
+  resetAllDaysConfirm: {
+    en:"This will permanently delete all your logged days. Are you sure?",
+    pl:"To trwale usunie wszystkie zapisane dni. Na pewno?"
+  },
   languageLabel: {en:"Language", pl:"Język"},
   directionUpdated: {en:"DIRECTION UPDATED", pl:"ZAKTUALIZOWANO KIERUNEK"},
   dayUpdated: {en:"DAY UPDATED", pl:"DZIEŃ ZAKTUALIZOWANY"},
@@ -114,6 +129,7 @@ function applyTranslations(){
   renderDashboard();
   renderHistory();
   renderBuilding();
+  renderUpdatePage();
 }
 
 function loadUserName(){
@@ -245,8 +261,12 @@ function renderDashboard(){
   <div class="coreScore">
     <div id="dateTimeBlock" class="dateTimeBlock"></div>
     <div id="dayCompare" class="dayCompare"></div>
+    <div class="infoTooltip btsTooltip" id="btsTooltip" data-i18n="btsInfo">BTS - Based on Yesterday - Shows your current progress relative to yesterday.</div>
     <div class="energyLabel">${t("energyScoreLabel")}</div>
-    <div class="energyValue">${day.score}<span class="energyPercent">%</span></div>
+    <div class="energyValue">
+      <div class="energyHex"></div>
+      <div class="energyValueText">${day.score}<span class="energyPercent">%</span></div>
+    </div>
     <div class="energyStatus">${t("currentAlignment")}</div>
     ${streak > 0 ? `<div class="streakBadge">🔥 ${streak} ${t("dayStreak")}</div>` : ""}
   </div>
@@ -273,16 +293,16 @@ function renderDayCompare(){
     el.innerHTML = "";
     return;
   }
-  const todayGain = getDailyGain(data[0]);
-  const yesterdayGain = getDailyGain(data[1]);
-  const diff = Math.round(todayGain - yesterdayGain);
+  const todayScore = data[0].score;
+  const yesterdayScore = data[1].score;
+  const diff = Math.round(todayScore - yesterdayScore);
 
   if(diff > 0){
-    el.innerHTML = `<span class="compareUp">▲ ${diff}%</span>`;
+    el.innerHTML = `<span class="compareUp">▲ BTS: ${diff}%</span><span class="infoIcon" onclick="toggleInfoTooltip(event, 'btsTooltip')">ⓘ</span>`;
   }else if(diff < 0){
-    el.innerHTML = `<span class="compareDown">▼ ${Math.abs(diff)}%</span>`;
+    el.innerHTML = `<span class="compareDown">▼ BTS: ${Math.abs(diff)}%</span><span class="infoIcon" onclick="toggleInfoTooltip(event, 'btsTooltip')">ⓘ</span>`;
   }else{
-    el.innerHTML = `<span class="compareStable">${t("stable")}</span>`;
+    el.innerHTML = `<span class="compareStable">${t("stable")}</span><span class="infoIcon" onclick="toggleInfoTooltip(event, 'btsTooltip')">ⓘ</span>`;
   }
 }
 
@@ -324,28 +344,115 @@ function createMetric(title,value,percent,status){
   `;
 }
 
+let pendingSteps = 0;
+let pendingTraining = 0;
+let pendingWater = 0;
+let sleepSliderValue = 7;
+let sleepLockedIn = false;
+let moonLitTimeout = null;
+
+function getTodayEntryOrDefault(){
+  const todayStr = new Date().toISOString().split("T")[0];
+  const data = getData();
+  const found = data.find(d => d.date === todayStr);
+  return found || {sleep:7, steps:0, training:0, water:0};
+}
+
+function initUpdatePage(){
+  pendingSteps = 0;
+  pendingTraining = 0;
+  pendingWater = 0;
+  const todayStr = new Date().toISOString().split("T")[0];
+  const existing = getData().find(d => d.date === todayStr);
+  const today = existing || {sleep:7, steps:0, training:0, water:0};
+  sleepSliderValue = today.sleep || 7;
+  sleepLockedIn = !!existing;
+  renderUpdatePage();
+}
+
+function renderUpdatePage(){
+  const today = getTodayEntryOrDefault();
+
+  const h = Math.floor(sleepSliderValue);
+  const m = Math.round((sleepSliderValue - h) * 60);
+  const hEl = getEl("sleepValueH");
+  const mEl = getEl("sleepValueM");
+  if(hEl){ hEl.textContent = h; }
+  if(mEl){ mEl.textContent = m; }
+  const slider = getEl("sleepSlider");
+  if(slider){ slider.value = sleepSliderValue; }
+
+  const sliderLabels = getEl("sleepSliderLabels");
+  const lockedText = getEl("sleepLockedText");
+  if(slider){ slider.classList.toggle("hidden", sleepLockedIn); }
+  if(sliderLabels){ sliderLabels.classList.toggle("hidden", sleepLockedIn); }
+  if(lockedText){ lockedText.classList.toggle("show", sleepLockedIn); }
+
+  const stepsEl = getEl("stepsValue");
+  if(stepsEl){ stepsEl.textContent = (today.steps + pendingSteps).toLocaleString("en-US").replace(/,/g, " "); }
+
+  const hint = getEl("trainingHint");
+  if(hint){
+    hint.textContent = pendingTraining > 0
+      ? pendingTraining + " " + t("trainingsAddedToday")
+      : t("pressToAddTraining");
+  }
+  const trainingGlyph = getEl("trainingGlyph");
+  if(trainingGlyph){ trainingGlyph.classList.toggle("trainingLocked", pendingTraining > 0); }
+
+  const waterTotal = today.water + pendingWater;
+  const waterEl = getEl("waterValueNum");
+  if(waterEl){ waterEl.textContent = waterTotal.toFixed(1); }
+
+  const waterFillRect = getEl("waterFillRect");
+  if(waterFillRect){
+    const target = (METRICS && METRICS.water && METRICS.water.target) || 2.5;
+    const fillPercent = Math.max(0, Math.min(1, waterTotal / target));
+    const dropTop = 6;
+    const dropBottom = 20.5;
+    const fillHeight = fillPercent * (dropBottom - dropTop);
+    waterFillRect.setAttribute("y", dropBottom - fillHeight);
+    waterFillRect.setAttribute("height", fillHeight);
+  }
+}
+
+function unlockSleep(){
+  sleepLockedIn = false;
+  renderUpdatePage();
+}
+
+function onSleepSliderChange(){
+  const slider = getEl("sleepSlider");
+  if(!slider){ return; }
+  sleepSliderValue = Number(slider.value);
+  renderUpdatePage();
+
+  const moon = getEl("moonGlyph");
+  if(moon){
+    moon.classList.add("moonLit");
+    clearTimeout(moonLitTimeout);
+    moonLitTimeout = setTimeout(()=>{ moon.classList.remove("moonLit"); }, 700);
+  }
+}
+
+function adjustSteps(amount){
+  const today = getTodayEntryOrDefault();
+  pendingSteps += amount;
+  if(today.steps + pendingSteps < 0){ pendingSteps = -today.steps; }
+  renderUpdatePage();
+}
+
+function addTraining(){
+  pendingTraining += 1;
+  renderUpdatePage();
+}
+
+function addWater(amount){
+  pendingWater = Math.round((pendingWater + amount) * 10) / 10;
+  renderUpdatePage();
+}
+
 function save(){
-  const sleepEl = getEl("sleep");
-  const stepsEl = getEl("steps");
-  const trainingEl = getEl("training");
-  const waterEl = getEl("water");
-
-  const sleepInput = sleepEl?.value ?? "";
-  const stepsInput = stepsEl?.value ?? "";
-  const trainingInput = trainingEl?.value ?? "";
-  const waterInput = waterEl?.value ?? "";
-
-  let sleep = Number(sleepInput || 0);
-  let steps = Number(stepsInput || 0);
-  let training = Number(trainingInput || 0);
-  let water = Number(waterInput || 0);
-
-  if(sleep < 0) sleep = 0;
-  if(sleep > 24) sleep = 24;
-  if(steps < 0) steps = 0;
-  if(training < 0) training = 0;
-  if(water < 0) water = 0;
-
   const today = new Date().toISOString().split("T")[0];
   const data = getData();
   const todayIndex = data.findIndex(item => item.date === today);
@@ -354,10 +461,12 @@ function save(){
   if(todayIndex !== -1){ day = data[todayIndex]; }
   else{ day = {date:today,sleep:0,steps:0,training:0,water:0}; }
 
-  if(sleepInput !== ""){ day.sleep = sleep; }
-  if(stepsInput !== ""){ day.steps += steps; }
-  if(trainingInput !== ""){ day.training += training; }
-  if(waterInput !== ""){ day.water += water; }
+  day.sleep = sleepSliderValue;
+  day.steps += pendingSteps;
+  if(day.steps < 0){ day.steps = 0; }
+  day.training += pendingTraining;
+  day.water = Math.round((day.water + pendingWater) * 10) / 10;
+  if(day.water < 0){ day.water = 0; }
 
   day.score = calcScore(day.sleep, day.steps, day.training, day.water);
 
@@ -366,11 +475,12 @@ function save(){
 
   saveData(data);
 
-  if(sleepEl) sleepEl.value = day.sleep;
-  if(stepsEl) stepsEl.value = "";
-  if(trainingEl) trainingEl.value = "";
-  if(waterEl) waterEl.value = "";
+  pendingSteps = 0;
+  pendingTraining = 0;
+  pendingWater = 0;
+  sleepLockedIn = true;
 
+  renderUpdatePage();
   renderBuilding();
   renderHistory();
   renderDashboard();
@@ -620,9 +730,42 @@ function switchHistoryView(mode){
   if(tabDaily){ tabDaily.classList.toggle("active", mode === "daily"); }
   if(tabWeekly){ tabWeekly.classList.toggle("active", mode === "weekly"); }
 
+  animateTabGlow(mode);
+
   historyDisplayLimit = 7;
   renderBuilding();
   renderHistory();
+}
+
+function animateTabGlow(mode){
+  const allSegs = [
+    document.getElementById("topLeftGlow"),
+    document.getElementById("bottomLeftGlow"),
+    document.getElementById("topRightGlow"),
+    document.getElementById("bottomRightGlow")
+  ];
+  const activeSegs = mode === "daily"
+    ? [document.getElementById("topLeftGlow"), document.getElementById("bottomLeftGlow")]
+    : [document.getElementById("topRightGlow"), document.getElementById("bottomRightGlow")];
+
+  // gasimy wszystkie i resetujemy offset (bez przejścia)
+  allSegs.forEach(seg=>{
+    if(!seg){ return; }
+    seg.classList.remove("active");
+    seg.style.transition = "none";
+    seg.style.strokeDashoffset = "100";
+  });
+
+  // wymuszamy reflow, żeby reset zadziałał przed nowym rysowaniem
+  void document.querySelector(".viewTabsGlowSvg").getBoundingClientRect();
+
+  // zapalamy aktywną połówkę - diody "dochodzą" od góry i dołu
+  activeSegs.forEach(seg=>{
+    if(!seg){ return; }
+    seg.classList.add("active");
+    seg.style.transition = "";
+    seg.style.strokeDashoffset = "0";
+  });
 }
 
 function renderHistory(){
@@ -678,7 +821,7 @@ function renderDailyHistory(){
       <div class="dayCardRing">
         <svg viewBox="0 0 40 40">
           <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"/>
-          <circle cx="20" cy="20" r="16" fill="none" stroke="${isToday ? "#35d9ff" : "#5ecbff"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="${isToday ? "#35d9ff" : "#2a9fd6"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
         </svg>
         <div class="dayCardRingText">${percent}%</div>
       </div>
@@ -742,7 +885,7 @@ function renderWeeklyHistory(){
       <div class="dayCardRing">
         <svg viewBox="0 0 40 40">
           <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"/>
-          <circle cx="20" cy="20" r="16" fill="none" stroke="${isOpen ? "#35d9ff" : "#5ecbff"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="${isOpen ? "#35d9ff" : "#2a9fd6"}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
         </svg>
         <div class="dayCardRingText">${percent}%</div>
       </div>
@@ -795,25 +938,30 @@ function exportData(){
 }
 
 function clearHistory(){
+  const confirmed = window.confirm(t("resetAllDaysConfirm"));
+  if(!confirmed){ return; }
   localStorage.removeItem("liforge");
+  historyDisplayLimit = 7;
+  renderBuilding();
   renderHistory();
   renderDashboard();
   showToast(t("dataCleared"));
 }
 
-function toggleInfoTooltip(event){
+function toggleInfoTooltip(event, tooltipId){
   event.stopPropagation();
-  const tooltip = document.getElementById("infoTooltip");
+  const id = tooltipId || "infoTooltip";
+  const tooltip = document.getElementById(id);
   if(!tooltip){ return; }
   tooltip.classList.toggle("show");
 }
 
 document.addEventListener("click", (e)=>{
-  const tooltip = document.getElementById("infoTooltip");
-  if(!tooltip){ return; }
-  if(!e.target.closest(".infoIcon") && !e.target.closest(".infoTooltip")){
-    tooltip.classList.remove("show");
-  }
+  document.querySelectorAll(".infoTooltip.show").forEach(tooltip=>{
+    if(!e.target.closest(".infoIcon") && !e.target.closest(".infoTooltip")){
+      tooltip.classList.remove("show");
+    }
+  });
 });
 
 function showToast(message){
@@ -839,8 +987,8 @@ function showPage(page){
   settings.style.display="none";
 
   if(page==="core"){ hero.style.display="block"; renderDashboard(); }
-  if(page==="update"){ update.style.display="block"; }
-  if(page==="history"){ history.style.display="block"; renderBuilding(); renderHistory(); }
+  if(page==="update"){ update.style.display="block"; initUpdatePage(); }
+  if(page==="history"){ history.style.display="block"; renderBuilding(); renderHistory(); animateTabGlow(currentHistoryView); }
   if(page==="settings"){
     settings.style.display="block";
     const nameInput = getEl("set_name");

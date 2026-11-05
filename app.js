@@ -10,17 +10,31 @@ function getDefaultMetrics(){
     sleep:{target:7,max:1},
     steps:{target:8000,max:1},
     training:{target:2,max:1},
-    water:{target:2.5,max:1}
+    water:{target:2.5,max:1},
+    language:{target:20,max:1},
+    study:{target:60,max:1}
   };
 }
 
 function loadMetrics(){
   try{
     const saved = localStorage.getItem("metrics");
-    return saved ? JSON.parse(saved) : getDefaultMetrics();
+    const defaults = getDefaultMetrics();
+    if(!saved){ return defaults; }
+    const parsed = JSON.parse(saved);
+    // scalamy z domyślnymi, żeby starsze zapisy (bez language/study) nie powodowały błędów
+    return Object.assign({}, defaults, parsed);
   }catch(e){
     return getDefaultMetrics();
   }
+}
+
+function fmtMin(m){
+  m = Math.max(0, Math.round(m || 0));
+  if(m < 60){ return m + "m"; }
+  const h = Math.floor(m / 60);
+  const r = m % 60;
+  return r ? h + "h " + r + "m" : h + "h";
 }
 
 function getEl(id){ return document.getElementById(id) || null; }
@@ -29,72 +43,82 @@ function getEl(id){ return document.getElementById(id) || null; }
 // TŁUMACZENIA / i18n
 // =====================
 const translations = {
-  goInside: {en:"GO INSIDE", pl:"WEJDŹ"},
-  loadingSystem: {en:"LOADING SYSTEM", pl:"WCZYTYWANIE SYSTEMU"},
-  energyScoreLabel: {en:"ENERGY SCORE", pl:"WYNIK ENERGII"},
-  currentAlignment: {en:"CURRENT ALIGNMENT", pl:"AKTUALNE DOSTROJENIE"},
-  sleep: {en:"SLEEP", pl:"SEN"},
-  steps: {en:"STEPS", pl:"KROKI"},
-  training: {en:"TRAINING", pl:"TRENING"},
-  water: {en:"WATER", pl:"WODA"},
-  balanced: {en:"BALANCED", pl:"ZRÓWNOWAŻONY"},
-  building: {en:"BUILDING", pl:"BUDOWANIE"},
-  active: {en:"ACTIVE", pl:"AKTYWNY"},
-  hydrated: {en:"HYDRATED", pl:"NAWODNIONY"},
-  updateTodayTitle: {en:"DAILY LOG", pl:"DZIENNIK DNIA"},
-  updateTodayBtn: {en:"Update Today", pl:"Aktualizuj dziś"},
-  updateYourData: {en:"UPDATE YOUR DATA", pl:"ZAKTUALIZUJ DANE"},
-  keepInSync: {en:"Keep your system in sync.", pl:"Utrzymuj swój system w synchronizacji."},
-  pressToAddTraining: {en:"Press to add one training", pl:"Kliknij, aby dodać trening"},
-  trainingsAddedToday: {en:"training added today", pl:"treningów dodanych dziś"},
-  saveUpdatesBtn: {en:"SAVE UPDATES", pl:"ZAPISZ ZMIANY"},
-  lockedIn: {en:"LOCKED IN", pl:"ZABLOKOWANE"},
-  hoursPh: {en:"Hours", pl:"Godziny"},
-  stepsPh: {en:"Steps", pl:"Kroki"},
-  sessionsPh: {en:"Sessions", pl:"Sesje"},
-  litersPh: {en:"Liters", pl:"Litry"},
-  weeklyProgress: {en:"WEEKLY PROGRESS", pl:"PROGRES TYGODNIA"},
+  goInside: {en:"GO INSIDE", pl:"WEJDŹ", de:"REIN"},
+  loadingSystem: {en:"LOADING SYSTEM", pl:"WCZYTYWANIE SYSTEMU", de:"SYSTEM WIRD GELADEN"},
+  energyScoreLabel: {en:"ENERGY SCORE", pl:"WYNIK ENERGII", de:"ENERGIEWERT"},
+  currentAlignment: {en:"CURRENT ALIGNMENT", pl:"AKTUALNE DOSTROJENIE", de:"AKTUELLER ZUSTAND"},
+  sleep: {en:"SLEEP", pl:"SEN", de:"SCHLAF"},
+  steps: {en:"STEPS", pl:"KROKI", de:"SCHRITTE"},
+  training: {en:"TRAINING", pl:"TRENING", de:"TRAINING"},
+  water: {en:"WATER", pl:"WODA", de:"WASSER"},
+  balanced: {en:"BALANCED", pl:"ZRÓWNOWAŻONY", de:"AUSGEGLICHEN"},
+  building: {en:"BUILDING", pl:"BUDOWANIE", de:"AUFBAU"},
+  active: {en:"ACTIVE", pl:"AKTYWNY", de:"AKTIV"},
+  hydrated: {en:"HYDRATED", pl:"NAWODNIONY", de:"HYDRIERT"},
+  updateTodayTitle: {en:"DAILY LOG", pl:"DZIENNIK DNIA", de:"TAGESPROTOKOLL"},
+  updateTodayBtn: {en:"Update Today", pl:"Aktualizuj dziś", de:"Heute aktualisieren"},
+  updateYourData: {en:"UPDATE YOUR DATA", pl:"ZAKTUALIZUJ DANE", de:"DATEN AKTUALISIEREN"},
+  keepInSync: {en:"Keep your system in sync.", pl:"Utrzymuj swój system w synchronizacji.", de:"Halte dein System synchron."},
+  pressToAddTraining: {en:"Press to add one training", pl:"Kliknij, aby dodać trening", de:"Tippen, um ein Training hinzuzufügen"},
+  trainingsAddedToday: {en:"training added today", pl:"treningów dodanych dziś", de:"Trainings heute hinzugefügt"},
+  saveUpdatesBtn: {en:"SAVE UPDATES", pl:"ZAPISZ ZMIANY", de:"ÄNDERUNGEN SPEICHERN"},
+  lockedIn: {en:"LOCKED IN", pl:"ZABLOKOWANE", de:"GESPEICHERT"},
+  hoursPh: {en:"Hours", pl:"Godziny", de:"Stunden"},
+  stepsPh: {en:"Steps", pl:"Kroki", de:"Schritte"},
+  sessionsPh: {en:"Sessions", pl:"Sesje", de:"Einheiten"},
+  litersPh: {en:"Liters", pl:"Litry", de:"Liter"},
+  weeklyProgress: {en:"WEEKLY PROGRESS", pl:"PROGRES TYGODNIA", de:"WOCHENFORTSCHRITT"},
   weeklyProgressInfo: {
     en:"Weekly Progress shows how you're building your week. Each day can add up to 14% to your weekly progress. Today's gain depends on your Energy Score.",
-    pl:"Progres Tygodnia pokazuje, jak budujesz swój tydzień. Każdy dzień może dodać maksymalnie 14% do tygodniowego progresu. Dzisiejszy przyrost zależy od Twojego Energy Score."
+    pl:"Progres Tygodnia pokazuje, jak budujesz swój tydzień. Każdy dzień może dodać maksymalnie 14% do tygodniowego progresu. Dzisiejszy przyrost zależy od Twojego Energy Score.",
+    de:"Der Wochenfortschritt zeigt, wie du deine Woche aufbaust. Jeder Tag kann bis zu 14% zum Wochenfortschritt beitragen. Der heutige Zuwachs hängt von deinem Energiewert ab."
   },
   btsInfo: {
     en:"BTS - Based on Yesterday - Shows your current progress relative to yesterday.",
-    pl:"BTS - Based on Yesterday - Pokazuje Twój obecny postęp w porównaniu do wczoraj."
+    pl:"BTS - Based on Yesterday - Pokazuje Twój obecny postęp w porównaniu do wczoraj.",
+    de:"BTS - Based on Yesterday - Zeigt deinen aktuellen Fortschritt im Vergleich zu gestern."
   },
-  historyTitle: {en:"HISTORY", pl:"HISTORIA"},
-  sevenDays: {en:"7 DAYS", pl:"7 DNI"},
-  viewFullHistory: {en:"View full history", pl:"Pokaż całą historię"},
-  hideHistory: {en:"Hide history", pl:"Zwiń historię"},
-  exportData: {en:"Export data (.json)", pl:"Eksportuj dane (.json)"},
-  noDataYet: {en:"No data yet", pl:"Brak danych"},
-  directionTitle: {en:"DIRECTION", pl:"KIERUNEK"},
-  yourNamePh: {en:"Your name", pl:"Twoje imię"},
-  stepsTarget: {en:"Steps target", pl:"Cel: kroki"},
-  trainingTarget: {en:"Training target", pl:"Cel: trening"},
-  waterTarget: {en:"Water target", pl:"Cel: woda"},
-  saveMetrics: {en:"Save metrics", pl:"Zapisz ustawienia"},
-  resetAllDays: {en:"RESET ALL DAYS", pl:"RESETUJ WSZYSTKIE DNI"},
+  historyTitle: {en:"HISTORY", pl:"HISTORIA", de:"VERLAUF"},
+  sevenDays: {en:"7 DAYS", pl:"7 DNI", de:"7 TAGE"},
+  viewFullHistory: {en:"View full history", pl:"Pokaż całą historię", de:"Vollständigen Verlauf anzeigen"},
+  hideHistory: {en:"Hide history", pl:"Zwiń historię", de:"Verlauf ausblenden"},
+  exportData: {en:"Export data (.json)", pl:"Eksportuj dane (.json)", de:"Daten exportieren (.json)"},
+  noDataYet: {en:"No data yet", pl:"Brak danych", de:"Noch keine Daten"},
+  directionTitle: {en:"DIRECTION", pl:"KIERUNEK", de:"RICHTUNG"},
+  yourNamePh: {en:"Your name", pl:"Twoje imię", de:"Dein Name"},
+  stepsTarget: {en:"Steps target", pl:"Cel: kroki", de:"Ziel: Schritte"},
+  trainingTarget: {en:"Training target", pl:"Cel: trening", de:"Ziel: Training"},
+  waterTarget: {en:"Water target", pl:"Cel: woda", de:"Ziel: Wasser"},
+  saveMetrics: {en:"Save metrics", pl:"Zapisz ustawienia", de:"Einstellungen speichern"},
+  resetAllDays: {en:"RESET ALL DAYS", pl:"RESETUJ WSZYSTKIE DNI", de:"ALLE TAGE ZURÜCKSETZEN"},
   resetAllDaysConfirm: {
     en:"This will permanently delete all your logged days. Are you sure?",
-    pl:"To trwale usunie wszystkie zapisane dni. Na pewno?"
+    pl:"To trwale usunie wszystkie zapisane dni. Na pewno?",
+    de:"Dadurch werden alle erfassten Tage dauerhaft gelöscht. Bist du sicher?"
   },
-  languageLabel: {en:"Language", pl:"Język"},
-  directionUpdated: {en:"DIRECTION UPDATED", pl:"ZAKTUALIZOWANO KIERUNEK"},
-  dayUpdated: {en:"DAY UPDATED", pl:"DZIEŃ ZAKTUALIZOWANY"},
-  dataCleared: {en:"DATA CLEARED", pl:"DANE WYCZYSZCZONE"},
-  dataExported: {en:"DATA EXPORTED", pl:"DANE WYEKSPORTOWANE"},
-  today: {en:"TODAY", pl:"DZISIAJ"},
-  dayLabel: {en:"DAY", pl:"DZIEŃ"},
-  dailyTab: {en:"DAILY", pl:"DZIENNIE"},
-  weeklyTab: {en:"WEEKLY", pl:"TYGODNIOWO"},
-  weekLabel: {en:"WEEK", pl:"TYDZIEŃ"},
-  openWeek: {en:"OPEN WEEK", pl:"OTWARTY TYDZIEŃ"},
-  welcomeBack: {en:"WELCOME BACK", pl:"WITAJ Z POWROTEM"},
-  stable: {en:"STABLE", pl:"STABILNIE"},
-  score: {en:"SCORE", pl:"WYNIK"},
-  trainShort: {en:"TRAIN", pl:"TREN"},
-  dayStreak: {en:"DAY STREAK", pl:"DNI STREAK"}
+  languageLabel: {en:"Language", pl:"Język", de:"Sprache"},
+  directionUpdated: {en:"DIRECTION UPDATED", pl:"ZAKTUALIZOWANO KIERUNEK", de:"RICHTUNG AKTUALISIERT"},
+  dayUpdated: {en:"DAY UPDATED", pl:"DZIEŃ ZAKTUALIZOWANY", de:"TAG AKTUALISIERT"},
+  dataCleared: {en:"DATA CLEARED", pl:"DANE WYCZYSZCZONE", de:"DATEN GELÖSCHT"},
+  dataExported: {en:"DATA EXPORTED", pl:"DANE WYEKSPORTOWANE", de:"DATEN EXPORTIERT"},
+  today: {en:"TODAY", pl:"DZISIAJ", de:"HEUTE"},
+  dayLabel: {en:"DAY", pl:"DZIEŃ", de:"TAG"},
+  dailyTab: {en:"DAILY", pl:"DZIENNIE", de:"TÄGLICH"},
+  weeklyTab: {en:"WEEKLY", pl:"TYGODNIOWO", de:"WÖCHENTLICH"},
+  weekLabel: {en:"WEEK", pl:"TYDZIEŃ", de:"WOCHE"},
+  openWeek: {en:"OPEN WEEK", pl:"OTWARTY TYDZIEŃ", de:"OFFENE WOCHE"},
+  welcomeBack: {en:"WELCOME BACK", pl:"WITAJ Z POWROTEM", de:"WILLKOMMEN ZURÜCK"},
+  stable: {en:"STABLE", pl:"STABILNIE", de:"STABIL"},
+  score: {en:"SCORE", pl:"WYNIK", de:"WERT"},
+  trainShort: {en:"TRAIN", pl:"TREN", de:"TRAIN"},
+  language: {en:"LANGUAGE", pl:"JĘZYK OBCY", de:"FREMDSPRACHE"},
+  langShort: {en:"LANG", pl:"JĘZ.", de:"SPR."},
+  study: {en:"STUDY", pl:"NAUKA", de:"LERNEN"},
+  focused: {en:"FOCUSED", pl:"SKUPIONY", de:"FOKUSSIERT"},
+  growing: {en:"GROWING", pl:"ROZWÓJ", de:"WACHSEND"},
+  languageTarget: {en:"Language target (min)", pl:"Cel: język obcy (min)", de:"Ziel: Fremdsprache (Min.)"},
+  studyTarget: {en:"Study target (min)", pl:"Cel: nauka (min)", de:"Ziel: Lernen (Min.)"},
+  dayStreak: {en:"DAY STREAK", pl:"DNI STREAK", de:"TAGE STREAK"}
 };
 
 let currentLang = "en";
@@ -115,8 +139,10 @@ function setLanguage(lang){
 function updateLanguageButtons(){
   const btnEn = getEl("langBtnEn");
   const btnPl = getEl("langBtnPl");
+  const btnDe = getEl("langBtnDe");
   if(btnEn){ btnEn.classList.toggle("active", currentLang === "en"); }
   if(btnPl){ btnPl.classList.toggle("active", currentLang === "pl"); }
+  if(btnDe){ btnDe.classList.toggle("active", currentLang === "de"); }
 }
 
 function applyTranslations(){
@@ -141,7 +167,9 @@ function saveMetrics(){
     sleep:{target: Number(getEl("set_sleep")?.value) || 7, max:1},
     steps:{target: Number(getEl("set_steps")?.value) || 8000, max:1},
     training:{target: Number(getEl("set_training")?.value) || 2, max:1},
-    water:{target: Number(getEl("set_water")?.value) || 2.5, max:1}
+    water:{target: Number(getEl("set_water")?.value) || 2.5, max:1},
+    language:{target: Number(getEl("set_language")?.value) || (METRICS.language && METRICS.language.target) || 20, max:1},
+    study:{target: Number(getEl("set_study")?.value) || (METRICS.study && METRICS.study.target) || 60, max:1}
   };
   localStorage.setItem("metrics", JSON.stringify(METRICS));
 
@@ -210,8 +238,8 @@ function getTodayState(){
 
 function getDashboardData(){
   const day = getTodayState();
-  if(!day){ return {sleep:0,steps:0,training:0,water:0,score:0}; }
-  return {sleep:day.sleep,steps:day.steps,training:day.training,water:day.water,score:day.score};
+  if(!day){ return {sleep:0,steps:0,training:0,water:0,language:0,study:0,score:0}; }
+  return {sleep:day.sleep,steps:day.steps,training:day.training,water:day.water,language:day.language||0,study:day.study||0,score:day.score};
 }
 
 function calcScore(sleep,steps,training,water){
@@ -227,9 +255,13 @@ function calcScore(sleep,steps,training,water){
 
 function getMetricProgress(){
   const day = getTodayState();
-  if(!day){ return {sleep:0,steps:0,training:0,water:0}; }
+  if(!day){ return {sleep:0,steps:0,training:0,water:0,language:0,study:0}; }
   const m = METRICS || getDefaultMetrics();
+  const langTarget = (m.language && m.language.target) || 20;
+  const studyTarget = (m.study && m.study.target) || 60;
   return {
+    language: Math.min(Math.round((day.language || 0) / langTarget * 100),100),
+    study: Math.min(Math.round((day.study || 0) / studyTarget * 100),100),
     sleep: Math.min(Math.round(day.sleep / m.sleep.target * 100),100),
     steps: Math.min(Math.round(day.steps / m.steps.target * 100),100),
     training: Math.min(Math.round(day.training / m.training.target * 100),100),
@@ -262,6 +294,20 @@ function renderDashboard(){
     <div id="dateTimeBlock" class="dateTimeBlock"></div>
     <div id="dayCompare" class="dayCompare"></div>
     <div class="infoTooltip btsTooltip" id="btsTooltip" data-i18n="btsInfo">BTS - Based on Yesterday - Shows your current progress relative to yesterday.</div>
+    <div class="marbleLockWrap">
+      <div class="lockedInFlash" id="lockedInFlash" data-i18n="lockedIn">LOCKED IN</div>
+      <button class="marbleLockBtn" id="marbleLockBtn" onclick="toggleMarbleLock()">
+        <div class="marbleParticles" id="marbleParticles"></div>
+        <svg class="lockIcon" id="lockIconOpen" viewBox="0 0 24 24" width="20" height="20" fill="none">
+          <rect x="5" y="11" width="14" height="9" rx="2" stroke="#5a5a62" stroke-width="1.6"/>
+          <path d="M8 11V7a4 4 0 0 1 7.2-2.4" stroke="#5a5a62" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <svg class="lockIcon" id="lockIconClosed" viewBox="0 0 24 24" width="20" height="20" fill="none" style="display:none;">
+          <rect x="5" y="11" width="14" height="9" rx="2" stroke="#5a5a62" stroke-width="1.6"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#5a5a62" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
     <div class="energyLabel">${t("energyScoreLabel")}</div>
     <div class="energyValue">
       <div class="energyHex"></div>
@@ -275,6 +321,8 @@ function renderDashboard(){
     ${createMetric(t("steps"), day.steps, progress.steps, t("building"))}
     ${createMetric(t("training"), day.training, progress.training, t("active"))}
     ${createMetric(t("water"), day.water + "L", progress.water, t("hydrated"))}
+    ${createMetric(t("language"), fmtMin(day.language), progress.language, t("growing"))}
+    ${createMetric(t("study"), fmtMin(day.study), progress.study, t("focused"))}
   </div>
   `;
   renderDateTime();
@@ -306,6 +354,56 @@ function renderDayCompare(){
   }
 }
 
+let marbleLocked = false;
+
+function toggleMarbleLock(){
+  const btn = document.getElementById("marbleLockBtn");
+  const openIcon = document.getElementById("lockIconOpen");
+  const closedIcon = document.getElementById("lockIconClosed");
+  const flash = document.getElementById("lockedInFlash");
+  if(!btn){ return; }
+
+  if(!marbleLocked){
+    marbleLocked = true;
+    spawnMarbleParticles();
+    if(openIcon){ openIcon.style.display = "none"; }
+    if(closedIcon){ closedIcon.style.display = "block"; }
+    btn.classList.add("locked");
+    if(flash){
+      flash.classList.add("show");
+      setTimeout(()=>{ flash.classList.remove("show"); }, 1200);
+    }
+  }else{
+    marbleLocked = false;
+    if(openIcon){ openIcon.style.display = "block"; }
+    if(closedIcon){ closedIcon.style.display = "none"; }
+    btn.classList.remove("locked");
+  }
+}
+
+function spawnMarbleParticles(){
+  const container = document.getElementById("marbleParticles");
+  if(!container){ return; }
+  container.innerHTML = "";
+  const colors = ["#eceef0","#c3c4ca","#8d8d96","#dadbe0","#a9aab1"];
+  for(let i = 0; i < 14; i++){
+    const p = document.createElement("div");
+    p.className = "marbleParticle";
+    const angle = Math.random() * 360;
+    const dist = 16 + Math.random() * 26;
+    const dx = Math.cos(angle * Math.PI / 180) * dist;
+    const dy = Math.sin(angle * Math.PI / 180) * dist;
+    const size = 2 + Math.random() * 3;
+    p.style.setProperty("--dx", dx + "px");
+    p.style.setProperty("--dy", dy + "px");
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    container.appendChild(p);
+  }
+  setTimeout(()=>{ container.innerHTML = ""; }, 700);
+}
+
 function renderDateTime(){
   const el = document.getElementById("dateTimeBlock");
   if(!el){ return; }
@@ -321,9 +419,37 @@ function renderDateTime(){
   const dayName = days[now.getDay()];
   el.innerHTML = `
     <div class="dateText">${dateStr}</div>
-    <div class="timeText">${timeStr}</div>
+    <div class="timeRow">
+      <span class="timeText">${timeStr}</span>
+      ${currentWeatherTemp ? `<span class="weatherTemp">${currentWeatherTemp}</span>` : ""}
+    </div>
     <div class="dayNameText">${dayName}</div>
   `;
+}
+
+let currentWeatherTemp = null;
+
+function fetchWeather(){
+  if(!navigator.geolocation){ return; }
+  navigator.geolocation.getCurrentPosition(
+    (pos)=>{
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m`)
+        .then(res=>res.json())
+        .then(data=>{
+          if(data && data.current && typeof data.current.temperature_2m === "number"){
+            currentWeatherTemp = Math.round(data.current.temperature_2m) + "°C";
+            renderDateTime();
+          }
+        })
+        .catch(()=>{});
+    },
+    ()=>{
+      // lokalizacja odrzucona lub niedostępna - po prostu nie pokazujemy temperatury
+    },
+    {timeout:8000}
+  );
 }
 
 function createMetric(title,value,percent,status){
@@ -347,6 +473,8 @@ function createMetric(title,value,percent,status){
 let pendingSteps = 0;
 let pendingTraining = 0;
 let pendingWater = 0;
+let pendingLanguage = 0;
+let pendingStudy = 0;
 let sleepSliderValue = 7;
 let sleepLockedIn = false;
 let moonLitTimeout = null;
@@ -355,13 +483,15 @@ function getTodayEntryOrDefault(){
   const todayStr = new Date().toISOString().split("T")[0];
   const data = getData();
   const found = data.find(d => d.date === todayStr);
-  return found || {sleep:7, steps:0, training:0, water:0};
+  return found || {sleep:7, steps:0, training:0, water:0, language:0, study:0};
 }
 
 function initUpdatePage(){
   pendingSteps = 0;
   pendingTraining = 0;
   pendingWater = 0;
+  pendingLanguage = 0;
+  pendingStudy = 0;
   const todayStr = new Date().toISOString().split("T")[0];
   const existing = getData().find(d => d.date === todayStr);
   const today = existing || {sleep:7, steps:0, training:0, water:0};
@@ -403,6 +533,17 @@ function renderUpdatePage(){
   const waterTotal = today.water + pendingWater;
   const waterEl = getEl("waterValueNum");
   if(waterEl){ waterEl.textContent = waterTotal.toFixed(1); }
+
+  const langTotal = (today.language || 0) + pendingLanguage;
+  const studyTotal = (today.study || 0) + pendingStudy;
+  const langEl = getEl("languageValue");
+  const studyEl = getEl("studyValue");
+  if(langEl){ langEl.textContent = fmtMin(langTotal); }
+  if(studyEl){ studyEl.textContent = fmtMin(studyTotal); }
+  const langGlyph = getEl("languageGlyph");
+  const studyGlyph = getEl("studyGlyph");
+  if(langGlyph){ langGlyph.classList.toggle("glyphLit", pendingLanguage > 0); }
+  if(studyGlyph){ studyGlyph.classList.toggle("glyphLit", pendingStudy > 0); }
 
   const waterFillRect = getEl("waterFillRect");
   if(waterFillRect){
@@ -447,6 +588,20 @@ function addTraining(){
   renderUpdatePage();
 }
 
+function adjustMinutes(kind, delta){
+  const today = getTodayEntryOrDefault();
+  if(kind === "language"){
+    pendingLanguage += delta;
+    const base = today.language || 0;
+    if(base + pendingLanguage < 0){ pendingLanguage = -base; }
+  }else if(kind === "study"){
+    pendingStudy += delta;
+    const base = today.study || 0;
+    if(base + pendingStudy < 0){ pendingStudy = -base; }
+  }
+  renderUpdatePage();
+}
+
 function addWater(amount){
   pendingWater = Math.round((pendingWater + amount) * 10) / 10;
   renderUpdatePage();
@@ -459,7 +614,7 @@ function save(){
 
   let day;
   if(todayIndex !== -1){ day = data[todayIndex]; }
-  else{ day = {date:today,sleep:0,steps:0,training:0,water:0}; }
+  else{ day = {date:today,sleep:0,steps:0,training:0,water:0,language:0,study:0}; }
 
   day.sleep = sleepSliderValue;
   day.steps += pendingSteps;
@@ -467,6 +622,8 @@ function save(){
   day.training += pendingTraining;
   day.water = Math.round((day.water + pendingWater) * 10) / 10;
   if(day.water < 0){ day.water = 0; }
+  day.language = Math.max(0, (day.language || 0) + pendingLanguage);
+  day.study = Math.max(0, (day.study || 0) + pendingStudy);
 
   day.score = calcScore(day.sleep, day.steps, day.training, day.water);
 
@@ -478,6 +635,8 @@ function save(){
   pendingSteps = 0;
   pendingTraining = 0;
   pendingWater = 0;
+  pendingLanguage = 0;
+  pendingStudy = 0;
   sleepLockedIn = true;
 
   renderUpdatePage();
@@ -816,6 +975,14 @@ function renderDailyHistory(){
             <div class="dayCardMetricValue">${day.training}</div>
             <div class="dayCardMetricLabel">${t("trainShort")}</div>
           </div>
+          <div>
+            <div class="dayCardMetricValue">${fmtMin(day.language || 0)}</div>
+            <div class="dayCardMetricLabel">${t("langShort")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${fmtMin(day.study || 0)}</div>
+            <div class="dayCardMetricLabel">${t("study")}</div>
+          </div>
         </div>
       </div>
       <div class="dayCardRing">
@@ -858,6 +1025,8 @@ function renderWeeklyHistory(){
     const totalSteps = week.days.reduce((sum,d)=>sum + d.steps, 0);
     const avgWater = (week.days.reduce((sum,d)=>sum + d.water, 0) / dayCount).toFixed(1);
     const totalTraining = week.days.reduce((sum,d)=>sum + d.training, 0);
+    const totalLanguage = week.days.reduce((sum,d)=>sum + (d.language || 0), 0);
+    const totalStudy = week.days.reduce((sum,d)=>sum + (d.study || 0), 0);
 
     history.innerHTML += `
     <div class="dayCard ${isOpen ? "dayCardToday" : ""}">
@@ -879,6 +1048,14 @@ function renderWeeklyHistory(){
           <div>
             <div class="dayCardMetricValue">${totalTraining}</div>
             <div class="dayCardMetricLabel">${t("trainShort")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${fmtMin(totalLanguage)}</div>
+            <div class="dayCardMetricLabel">${t("langShort")}</div>
+          </div>
+          <div>
+            <div class="dayCardMetricValue">${fmtMin(totalStudy)}</div>
+            <div class="dayCardMetricLabel">${t("study")}</div>
           </div>
         </div>
       </div>
@@ -1030,7 +1207,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   updateLanguageButtons();
   generateParticles();
   setInterval(renderDateTime, 30000);
+  fetchWeather();
+  setInterval(fetchWeather, 900000);
 });
+
 
 // =====================
 // SERVICE WORKER / PWA

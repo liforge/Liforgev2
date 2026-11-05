@@ -167,6 +167,99 @@ button:hover{background:rgba(255,255,255,.15);}
     box-shadow:0 0 25px rgba(53,217,255,.25), inset 0 0 25px rgba(53,217,255,.15);
   }
 }
+/* ===== MARMUROWY PRZYCISK Z KŁÓDKĄ ===== */
+.marbleLockWrap{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  margin-bottom:16px;
+}
+.marbleLockBtn{
+  position:relative;
+  width:46px;
+  height:46px;
+  margin:0;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:13px;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,.95) 0%, rgba(235,235,240,.5) 28%, transparent 55%),
+    linear-gradient(135deg, #eceef0 0%, #d6d7db 22%, #f6f7f8 42%, #c9cace 62%, #f0f1f3 82%, #dcdde1 100%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 0 7px rgba(255,255,255,.22), inset 0 1px 2px rgba(255,255,255,.7), inset 0 -2px 3px rgba(0,0,0,.18);
+  overflow:visible;
+  transition:box-shadow .5s ease;
+}
+.marbleLockBtn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:
+    linear-gradient(112deg, transparent 28%, rgba(120,120,132,.22) 30%, transparent 33%),
+    linear-gradient(78deg, transparent 52%, rgba(140,140,152,.18) 54%, transparent 57%),
+    linear-gradient(148deg, transparent 68%, rgba(100,100,115,.18) 70%, transparent 74%);
+  pointer-events:none;
+}
+.marbleLockBtn.locked{
+  box-shadow:0 0 24px rgba(255,255,255,.8), 0 0 10px rgba(255,255,255,.6), inset 0 1px 2px rgba(255,255,255,.85), inset 0 -2px 3px rgba(0,0,0,.18);
+}
+.lockIcon{
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.6)) drop-shadow(0 -1px 1px rgba(0,0,0,.25));
+}
+.marbleParticles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+}
+.marbleParticle{
+  position:absolute;
+  top:50%;
+  left:50%;
+  border-radius:1px;
+  animation:marbleShard .65s ease-out forwards;
+}
+@keyframes marbleShard{
+  to{
+    transform:translate(var(--dx), var(--dy)) rotate(220deg);
+    opacity:0;
+  }
+}
+.lockedInFlash{
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2.5px;
+  color:#ffffff;
+  text-shadow:0 0 6px rgba(255,255,255,.85), 0 0 14px rgba(255,255,255,.4);
+  opacity:0;
+  pointer-events:none;
+  white-space:nowrap;
+  transition:opacity .3s ease;
+}
+.lockedInFlash.show{
+  opacity:1;
+}
+
+/* ===== IKONY JĘZYK OBCY / NAUKA ===== */
+#languageGlyph, #studyGlyph{
+  transition:filter .4s ease;
+}
+#languageGlyph.glyphLit{
+  filter:drop-shadow(0 0 4px rgba(255,255,255,.9));
+}
+#studyGlyph.glyphLit{
+  filter:drop-shadow(0 0 5px rgba(53,217,255,.95));
+}
+
 .energyLabel{font-size:12px;letter-spacing:4px;opacity:.6;}
 .energyPercent{
   font-size:16px;
@@ -481,14 +574,14 @@ button:hover{background:rgba(255,255,255,.15);}
 .resetAllBtn:active{
   background:rgba(255,90,90,.12);
 }
-.metricTitle{font-size:12px;letter-spacing:3px;opacity:.45;text-transform:uppercase;}
+.metricTitle{font-size:12px;letter-spacing:3px;color:#f2fbff;opacity:.85;text-transform:uppercase;}
 .metricValue{font-size:28px;font-weight:600;margin:4px 0;}
 .metricBar{flex:1;height:4px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden;}
 .metricHeader{width:100%;display:flex;justify-content:space-between;align-items:center;}
-.metricData{font-size:12px;letter-spacing:2px;opacity:.45;}
+.metricData{font-size:12px;letter-spacing:2px;color:#f2fbff;opacity:.85;}
 .metricBarRow{width:100%;display:flex;align-items:center;gap:10px;margin-top:12px;}
-.metricPercent{font-size:12px;letter-spacing:2px;opacity:.45;min-width:38px;text-align:right;}
-.metricStatus{margin-top:10px;font-size:10px;letter-spacing:3px;opacity:.25;text-align:right;}
+.metricPercent{font-size:12px;letter-spacing:2px;color:#f2fbff;opacity:.85;min-width:38px;text-align:right;}
+.metricStatus{margin-top:10px;font-size:10px;letter-spacing:3px;color:#f2fbff;opacity:.6;text-align:right;}
 .sleepCard{display:block;}
 .metricsList .metricCard{text-align:left;}
 .metricsList .metricHeader{justify-content:flex-start;gap:20px;}
@@ -603,8 +696,8 @@ button:active{transform:scale(.96);}
 }
 .dayCardMetrics{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap:6px;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px 6px;
 }
 .dayCardMetricValue{
   font-size:14px;
@@ -862,6 +955,18 @@ button:active{transform:scale(.96);}
   letter-spacing:1px;
   color:#dff3ff;
   line-height:1.1;
+}
+.timeRow{
+  display:flex;
+  align-items:baseline;
+  gap:7px;
+}
+.weatherTemp{
+  font-size:11px;
+  font-weight:600;
+  color:#9fe8ff;
+  opacity:.9;
+  letter-spacing:.5px;
 }
 .dayNameText{
   font-size:9px;
